@@ -1,5 +1,5 @@
 # Stereo Multitap Delay Plugin
-![](docs/front_image.png)
+![](Docs/front_image.png)
 
 This plugin allows you to create stereo multitap delay effects in your audio projects.
 
