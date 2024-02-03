@@ -27,11 +27,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     showgrid="true"
-     inkscape:zoom="8"
-     inkscape:cx="107.75"
-     inkscape:cy="21.3125"
-     inkscape:window-width="1299"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="602.5"
+     inkscape:cy="117.5"
+     inkscape:window-width="1606"
      inkscape:window-height="1034"
      inkscape:window-x="4"
      inkscape:window-y="36"
@@ -52,7 +52,7 @@
        dotted="false"
        gridanglex="30"
        gridanglez="30"
-       visible="true" />
+       visible="false" />
   </sodipodi:namedview>
   <defs
      id="defs1">
@@ -153,7 +153,8 @@
        x1="740"
        y1="281.02438"
        x2="740"
-       y2="200" />
+       y2="200"
+       gradientTransform="matrix(0.90702949,0,0,0.90702949,68.798183,22.312924)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient1"
@@ -251,6 +252,45 @@
        y1="45"
        x2="30"
        y2="15" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient41"
+       id="linearGradient14"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0486266,0,0,1.0486266,-1129.8358,-944.80984)"
+       x1="711.00012"
+       y1="268.99979"
+       x2="768.99957"
+       y2="211.00032" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient38"
+       id="linearGradient15"
+       gradientUnits="userSpaceOnUse"
+       x1="740"
+       y1="281.02438"
+       x2="740"
+       y2="200" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient41"
+       id="linearGradient16"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0486266,0,0,1.0486266,-1129.8358,-944.80984)"
+       x1="711.00012"
+       y1="268.99979"
+       x2="768.99957"
+       y2="211.00032" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient38"
+       id="linearGradient17"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.90702949,0,0,0.90702949,68.798183,22.312924)"
+       x1="740"
+       y1="281.02438"
+       x2="740"
+       y2="200" />
   </defs>
   <g
      inkscape:label="Layer 1"
@@ -350,6 +390,31 @@
          r="40" />
     </g>
     <g
+       id="g42-2"
+       transform="translate(164.99871,-116.9986)">
+      <ellipse
+         style="fill:#f2f2f2;fill-opacity:0.101961;stroke:url(#linearGradient14);stroke-width:4.19451;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse41-9"
+         cx="-353.85226"
+         cy="-693.1394"
+         rx="40.922009"
+         ry="40.922012"
+         transform="matrix(-0.70677465,0.70743875,-0.70677465,-0.70743875,0,0)" />
+      <ellipse
+         style="fill:#f2f2f2;fill-opacity:0.101961;stroke:url(#linearGradient15);stroke-width:4;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse42-1"
+         cx="740"
+         cy="240"
+         rx="39.024387"
+         ry="39.024391" />
+      <circle
+         style="fill:#f2f2f2;fill-opacity:0.1;stroke:#333333;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+         id="circle42-2"
+         cx="740"
+         cy="240"
+         r="40" />
+    </g>
+    <g
        id="g42-0"
        transform="translate(0,-115)"
        style="display:inline"
@@ -365,15 +430,44 @@
          ry="40.922012"
          transform="matrix(-0.70677465,0.70743875,-0.70677465,-0.70743875,0,0)" />
       <ellipse
-         style="fill:#f2f2f2;fill-opacity:0.101961;stroke:url(#linearGradient43);stroke-width:4;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:#f2f2f2;fill-opacity:0.101961;stroke:url(#linearGradient43);stroke-width:7.25623;stroke-dasharray:none;stroke-opacity:1"
          id="ellipse42-3"
          cx="740"
          cy="240"
-         rx="39.024387"
-         ry="39.024391" />
+         rx="35.396267"
+         ry="35.396275" />
       <circle
          style="fill:#f2f2f2;fill-opacity:0.101961;stroke:#333333;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
          id="circle42-5"
+         cx="740"
+         cy="240"
+         r="40" />
+    </g>
+    <g
+       id="g42-0-2"
+       transform="translate(0,-0.02487014)"
+       style="display:inline"
+       inkscape:export-filename="rotary_knob.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <ellipse
+         style="fill:#f2f2f2;fill-opacity:0.101961;stroke:url(#linearGradient16);stroke-width:4.19451;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse41-8-6"
+         cx="-353.85226"
+         cy="-693.1394"
+         rx="40.922009"
+         ry="40.922012"
+         transform="matrix(-0.70677465,0.70743875,-0.70677465,-0.70743875,0,0)" />
+      <ellipse
+         style="fill:#f2f2f2;fill-opacity:0.101961;stroke:url(#linearGradient17);stroke-width:7.25623;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse42-3-1"
+         cx="740"
+         cy="240"
+         rx="35.396267"
+         ry="35.396275" />
+      <circle
+         style="fill:#f2f2f2;fill-opacity:0.101961;stroke:#333333;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+         id="circle42-5-8"
          cx="740"
          cy="240"
          r="40" />
@@ -393,14 +487,14 @@
        x="670"
        y="65" />
     <rect
-       style="opacity:1;fill:none;fill-opacity:0.1;stroke:#4c90ff;stroke-width:2.00148;stroke-dasharray:none;stroke-opacity:0.99639"
+       style="opacity:1;fill:none;fill-opacity:0.1;stroke:#e5e5e5;stroke-width:2.00148;stroke-dasharray:none;stroke-opacity:1"
        id="rect45"
        width="61.998516"
        height="29.99852"
        x="598.00146"
        y="70" />
     <rect
-       style="fill:none;fill-opacity:0.1;stroke:#4c90ff;stroke-width:2;stroke-dasharray:none;stroke-opacity:0.99639"
+       style="fill:none;fill-opacity:0.1;stroke:#e5e5e5;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
        id="rect45-5"
        width="30.58075"
        height="30.58075"
@@ -452,7 +546,7 @@
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"
        transform="matrix(-1,0,0,1,177.56301,-0.437)"
-       style="display:inline">
+       style="display:none">
       <rect
          style="display:inline;fill:#ffffff;fill-opacity:1;stroke-width:1.5;stroke-linecap:square;paint-order:markers fill stroke"
          id="rect11"
@@ -494,7 +588,7 @@
        inkscape:export-filename="../bypass_button_pressed.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"
-       style="display:inline">
+       style="display:none">
       <rect
          style="display:inline;fill:#ffffff;fill-opacity:1;stroke-width:1.5;stroke-linecap:square;paint-order:markers fill stroke"
          id="rect11-3"
@@ -542,7 +636,7 @@
        inkscape:export-filename="../bypass_button_pressed_highlight.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"
-       style="display:inline"
+       style="display:none"
        transform="matrix(-1,0,0,1,100.56301,-0.437)">
       <rect
          style="display:inline;fill:#ffffff;fill-opacity:1;stroke-width:1.5;stroke-linecap:square;paint-order:markers fill stroke"
@@ -582,7 +676,7 @@
        inkscape:export-filename="../bypass_button_highlight.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"
-       style="display:inline"
+       style="display:none"
        transform="matrix(-1,0,0,1,59.563008,0.563)">
       <rect
          style="display:inline;fill:#ffffff;fill-opacity:1;stroke-width:1.5;stroke-linecap:square;paint-order:markers fill stroke"

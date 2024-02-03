@@ -40,7 +40,7 @@
     <component
        id="ruler-horizontal"
        width="639"
-       height= "20"
+       height="20"
        x="21"
        y="280" />
     <component
@@ -51,20 +51,38 @@
        y="110" />
     <component
        id="button-splitChannels"
-       width="32"
-       height= "32"
-       x = "554"
-       y = "69" />
+       width="24"
+       height="24"
+       x="558"
+       y="73" />
     <component
        id="button-leftChannel"
-       width="32"
-       height="32"
-       x = "597"
-       y = "69" />
+       width="27"
+       height="24"
+       x="601"
+       y="73" />
     <component
        id="button-rightChannel"
-       width="32"
-       height="32"
-       x = "629"
-       y = "69" />
+       width="27"
+       height="24"
+       x="630"
+       y="73" />
+    <component
+       id="button-gridLeft"
+       width="24"
+       height="24"
+       y="73"
+       x="23" />
+    <component 
+      id="button-gridRight"
+      width="24"
+      height="24"
+      y="73"
+      x="133" />
+    <component
+      id="label-gridRes"
+      width="142"
+      height="24"
+      y="73"
+      x="19" />
 </svg>

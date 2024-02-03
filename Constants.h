@@ -6,6 +6,7 @@ const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 300;
 
 // main theme colours
+const juce::Colour WHITE_COLOUR = juce::Colour(100, 100, 100);
 const juce::Colour BLUE_COLOUR = juce::Colour(76, 144, 255);
 const juce::Colour ORGANGE_COLOUR = juce::Colour(255, 144, 76);
 const juce::Colour GREEN_COLOUR = juce::Colour(144, 255, 76);
@@ -26,6 +27,8 @@ const juce::String COMPONENT_COMBOBOX_GRID_RESOLUTION = "comboBox-gridRes";
 const juce::String TEXT_BUTTON_CHANNEL_SPLIT = "X";
 const juce::String TEXT_BUTTON_CHANNEL_LEFT = "L";
 const juce::String TEXT_BUTTON_CHANNEL_RIGHT = "R";
+const juce::String TEXT_BUTTON_GRID_LEFT = "<";
+const juce::String TEXT_BUTTON_GRID_RIGHT = ">";
 
 const juce::String TEXT_UNIT_SLIDER_WETDRY = "mix";
 const juce::String TEXT_UNIT_SLIDER_GAIN = "db";
@@ -41,8 +44,8 @@ const float WETDRY_MAX = 1.0f;
 const float WETDRY_STEP = 0.01f;
 const float WETDRY_VALUE = 0.5f;
 
-const float GAIN_MIN = -24.0f;
-const float GAIN_MAX = 24.0f;
+const float GAIN_MIN = -9.0f;
+const float GAIN_MAX = 9.0f;
 const float GAIN_STEP = 1.0f;
 const float GAIN_VALUE = 0.0f;
 

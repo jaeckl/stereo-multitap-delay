@@ -11,6 +11,7 @@
 ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     : AudioProcessorEditor(&p)
     , fileLogger(juce::File("LogFile.txt"), "Log File")
+    , whiteButtonStyle(Constants::WHITE_COLOUR)
     , blueButtonStyle(Constants::BLUE_COLOUR)
     , orangeButtonStyle(Constants::ORGANGE_COLOUR)
     , greenButtonStyle(Constants::GREEN_COLOUR)
@@ -21,7 +22,16 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     , splitChannelsButton(Constants::COMPONENT_BUTTON_CHANNEL_SPLIT)
     , leftChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_LEFT)
     , rightChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_RIGHT)
-    , gridResolutionComboBox(Constants::COMPONENT_COMBOBOX_GRID_RESOLUTION)
+    , gridSelectLeftButton("button-gridLeft")
+    , gridSelectRightButton("button-gridRight")
+    , gridLabel("label-gridRes", Constants::GRID_QUATER)
+    , gridResolutions(
+          {Constants::GRID_HALF,
+           Constants::GRID_QUATER,
+           Constants::GRID_EIGHTH,
+           Constants::GRID_SIXTEENTH})
+    , gridResolutionsIndex(1)
+    //, gridResolutionComboBox(Constants::COMPONENT_COMBOBOX_GRID_RESOLUTION)
     , pointCanvas(Constants::COMPONENT_CANVAS)
     , horizontalRuler(Constants::COMPONENT_RULER_HORIZONTAL)
     , verticalRuler(Constants::COMPONENT_RULER_VERTICAL)
@@ -46,25 +56,28 @@ void ProcessorEditor::initializeControls() {
   bypassButton.setClickingTogglesState(true);
   bypassButton.setToggleState(
       false, juce::NotificationType::dontSendNotification);
-  configureGridComboBox();
   configureChannelButtons();
   configureRotarySliders();
   configureRulers();
 
   wetDrySlider.addListener(this);
   gainSlider.addListener(this);
-  gridResolutionComboBox.addListener(this);
   bypassButton.addListener(this);
   splitChannelsButton.addListener(this);
   leftChannelButton.addListener(this);
   rightChannelButton.addListener(this);
   leftChannelButton.setToggleState(
       true, juce::NotificationType::dontSendNotification);
+  gridSelectLeftButton.addListener(this);
+  gridSelectRightButton.addListener(this);
+  gridLabel.setJustificationType(juce::Justification::centred);
 }
 
 void ProcessorEditor::addControlsToView() {
   addAndMakeVisible(backgroundImg);
-  addAndMakeVisible(gridResolutionComboBox);
+  addAndMakeVisible(gridLabel);
+  addAndMakeVisible(gridSelectLeftButton);
+  addAndMakeVisible(gridSelectRightButton);
   addAndMakeVisible(wetDrySlider);
   addAndMakeVisible(gainSlider);
   addAndMakeVisible(pointCanvas);
@@ -92,20 +105,12 @@ void ProcessorEditor::configureBackgroundImage() {
   backgroundImg.setImage(format->decodeImage(imageData));
 }
 
-void ProcessorEditor::configureGridComboBox() {
-  gridResolutionComboBox.addItemList(
-      {Constants::GRID_HALF,
-       Constants::GRID_QUATER,
-       Constants::GRID_EIGHTH,
-       Constants::GRID_SIXTEENTH},
-      1);
-  gridResolutionComboBox.setSelectedId(2);
-}
-
 void ProcessorEditor::configureChannelButtons() {
   leftChannelButton.setLookAndFeel(&orangeButtonStyle);
   rightChannelButton.setLookAndFeel(&greenButtonStyle);
   splitChannelsButton.setLookAndFeel(&blueButtonStyle);
+  gridSelectLeftButton.setLookAndFeel(&whiteButtonStyle);
+  gridSelectRightButton.setLookAndFeel(&whiteButtonStyle);
 
   leftChannelButton.setClickingTogglesState(true);
   rightChannelButton.setClickingTogglesState(true);
@@ -114,6 +119,8 @@ void ProcessorEditor::configureChannelButtons() {
   leftChannelButton.setButtonText(Constants::TEXT_BUTTON_CHANNEL_LEFT);
   rightChannelButton.setButtonText(Constants::TEXT_BUTTON_CHANNEL_RIGHT);
   splitChannelsButton.setButtonText(Constants::TEXT_BUTTON_CHANNEL_SPLIT);
+  gridSelectLeftButton.setButtonText(Constants::TEXT_BUTTON_GRID_LEFT);
+  gridSelectRightButton.setButtonText(Constants::TEXT_BUTTON_GRID_RIGHT);
 
   leftChannelButton.setRadioGroupId(Constants::RadioGroups::LeftRightChannel);
   rightChannelButton.setRadioGroupId(Constants::RadioGroups::LeftRightChannel);
@@ -194,9 +201,12 @@ void ProcessorEditor::buttonClicked(juce::Button *button) {
     showGroupA();
   if (button == &rightChannelButton && rightChannelButton.getToggleState())
     showGroupB();
-  if (button == &bypassButton) {
+  if (button == &bypassButton)
     updateAudioBypass();
-  }
+  if (button == &gridSelectLeftButton)
+    changeGrid(-1);
+  if (button == &gridSelectRightButton)
+    changeGrid(+1);
 }
 
 void ProcessorEditor::updateAudioBypass() {
@@ -206,10 +216,23 @@ void ProcessorEditor::updateAudioBypass() {
     processorRef.isBypassing = false;
 }
 
-void ProcessorEditor::comboBoxChanged(juce::ComboBox *comboBox) {
-  if (comboBox == &gridResolutionComboBox)
-    updateGridResolution(std::pow(2, gridResolutionComboBox.getSelectedId()));
+void ProcessorEditor::changeGrid(int idx) {
+  gridResolutionsIndex = gridResolutionsIndex + idx;
+  if (gridResolutionsIndex == 0)
+    gridSelectLeftButton.setVisible(false);
+  else
+    gridSelectLeftButton.setVisible(true);
+
+  if (gridResolutionsIndex == gridResolutions.size() - 1)
+    gridSelectRightButton.setVisible(false);
+  else
+    gridSelectRightButton.setVisible(true);
+  gridLabel.setText(
+      gridResolutions[gridResolutionsIndex],
+      juce::NotificationType::dontSendNotification);
+  updateGridResolution(std::pow(2, gridResolutionsIndex + 1));
 }
+
 void ProcessorEditor::updateGridResolution(int numTicks) {
   horizontalRuler.setNumTicks(numTicks);
   repaint();

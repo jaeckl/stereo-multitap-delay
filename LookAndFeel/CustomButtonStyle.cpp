@@ -10,8 +10,12 @@ void CustomButtonStyle::drawButtonBackground(
     bool shoulDrawButtonAsHighlighted,
     bool shouldDrawButtonAsDown) {
   juce::ignoreUnused(shoulDrawButtonAsHighlighted);
-  g.setColour(backgroundColour);
-  if (shouldDrawButtonAsDown)
-    g.setColour(backgroundColour.withLightness(0.8));
-  g.fillRect(button.getLocalBounds());
+  g.setColour(backgroundColour.withAlpha(0.2f).withLightness(0.6));
+  if (!button.getToggleState()) {
+    g.setColour(backgroundColour.withAlpha(0.2f));
+  }
+  if (shouldDrawButtonAsDown) {
+    g.setColour(backgroundColour.withAlpha(0.2f).withLightness(0.6));
+  }
+  g.fillAll();
 }

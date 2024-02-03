@@ -17,8 +17,7 @@
 class ProcessorEditor final
     : public juce::AudioProcessorEditor
     , private juce::Slider::Listener
-    , private juce::Button::Listener
-    , private juce::ComboBox::Listener {
+    , private juce::Button::Listener {
 public:
   explicit ProcessorEditor(AudioPluginAudioProcessor &);
   ~ProcessorEditor() override;
@@ -30,6 +29,7 @@ public:
 private:
   juce::FileLogger fileLogger;
 
+  CustomButtonStyle whiteButtonStyle;
   CustomButtonStyle blueButtonStyle;
   CustomButtonStyle orangeButtonStyle;
   CustomButtonStyle greenButtonStyle;
@@ -44,7 +44,11 @@ private:
   juce::TextButton leftChannelButton;
   juce::TextButton rightChannelButton;
 
-  juce::ComboBox gridResolutionComboBox;
+  juce::TextButton gridSelectLeftButton;
+  juce::TextButton gridSelectRightButton;
+  juce::Label gridLabel;
+  std::vector<juce::String> gridResolutions;
+  int gridResolutionsIndex;
 
   std::vector<juce::Point<float>> combinedPoints;
   std::vector<juce::Point<float>> leftChannelPoints;
@@ -62,7 +66,6 @@ private:
   void initializeControls();
   void addControlsToView();
   void configureBackgroundImage();
-  void configureGridComboBox();
   void configureChannelButtons();
   void configureRotarySliders();
   void configureRulers();
@@ -78,7 +81,6 @@ private:
 
   void sliderValueChanged(juce::Slider *slider) override;
   void buttonClicked(juce::Button *button) override;
-  void comboBoxChanged(juce::ComboBox *comboBox) override;
   void handleDelayComboBox();
 
   void switchBetweenModes();
@@ -86,6 +88,7 @@ private:
   void showGroupB();
   void showEditorConfig(std::shared_ptr<IDelayEditorConfig> config);
   std::pair<int, int> computeWetDryRatio(float value);
+  void changeGrid(int idx);
   void updateGridResolution(int numTicks);
   void updateAudioBypass();
   AudioPluginAudioProcessor &processorRef;
