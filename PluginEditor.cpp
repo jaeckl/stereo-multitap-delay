@@ -1,8 +1,8 @@
 #include "PluginEditor.h"
-#include "CanvasRuler.h"
+#include "Components/CanvasRuler.h"
+#include "Components/CustomRotaryKnob.h"
+#include "Components/IDelayEditorConfig.h"
 #include "Constants.h"
-#include "CustomRotaryKnob.h"
-#include "DelayEditorConfig.h"
 #include "PluginProcessor.h"
 #include <BinaryData.h>
 #include <format>
@@ -17,9 +17,11 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     , backgroundImg(Constants::COMPONENT_IMAGE_BACKGROUND)
     , wetDrySlider(Constants::COMPONENT_SLIDER_WETDRY, Constants::BLUE_COLOUR)
     , gainSlider(Constants::COMPONENT_SLIDER_GAIN, Constants::BLUE_COLOUR)
+    , bypassButton("button-bypass")
     , splitChannelsButton(Constants::COMPONENT_BUTTON_CHANNEL_SPLIT)
     , leftChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_LEFT)
     , rightChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_RIGHT)
+    , gridResolutionComboBox(Constants::COMPONENT_COMBOBOX_GRID_RESOLUTION)
     , pointCanvas(Constants::COMPONENT_CANVAS)
     , horizontalRuler(Constants::COMPONENT_RULER_HORIZONTAL)
     , verticalRuler(Constants::COMPONENT_RULER_VERTICAL)
@@ -40,12 +42,19 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
 
 void ProcessorEditor::initializeControls() {
   configureBackgroundImage();
+  bypassButton.setToggleable(true);
+  bypassButton.setClickingTogglesState(true);
+  bypassButton.setToggleState(
+      false, juce::NotificationType::dontSendNotification);
+  configureGridComboBox();
   configureChannelButtons();
   configureRotarySliders();
   configureRulers();
 
   wetDrySlider.addListener(this);
   gainSlider.addListener(this);
+  gridResolutionComboBox.addListener(this);
+  bypassButton.addListener(this);
   splitChannelsButton.addListener(this);
   leftChannelButton.addListener(this);
   rightChannelButton.addListener(this);
@@ -55,11 +64,13 @@ void ProcessorEditor::initializeControls() {
 
 void ProcessorEditor::addControlsToView() {
   addAndMakeVisible(backgroundImg);
+  addAndMakeVisible(gridResolutionComboBox);
   addAndMakeVisible(wetDrySlider);
   addAndMakeVisible(gainSlider);
   addAndMakeVisible(pointCanvas);
   addAndMakeVisible(horizontalRuler);
   addAndMakeVisible(verticalRuler);
+  addAndMakeVisible(bypassButton);
   addAndMakeVisible(splitChannelsButton);
   addAndMakeVisible(leftChannelButton);
   addAndMakeVisible(rightChannelButton);
@@ -79,6 +90,16 @@ void ProcessorEditor::configureBackgroundImage() {
       false);
   auto format = juce::ImageFileFormat::findImageFormatForStream(imageData);
   backgroundImg.setImage(format->decodeImage(imageData));
+}
+
+void ProcessorEditor::configureGridComboBox() {
+  gridResolutionComboBox.addItemList(
+      {Constants::GRID_HALF,
+       Constants::GRID_QUATER,
+       Constants::GRID_EIGHTH,
+       Constants::GRID_SIXTEENTH},
+      1);
+  gridResolutionComboBox.setSelectedId(2);
 }
 
 void ProcessorEditor::configureChannelButtons() {
@@ -173,8 +194,26 @@ void ProcessorEditor::buttonClicked(juce::Button *button) {
     showGroupA();
   if (button == &rightChannelButton && rightChannelButton.getToggleState())
     showGroupB();
+  if (button == &bypassButton) {
+    updateAudioBypass();
+  }
 }
 
+void ProcessorEditor::updateAudioBypass() {
+  if (bypassButton.getToggleState())
+    processorRef.isBypassing = true;
+  else
+    processorRef.isBypassing = false;
+}
+
+void ProcessorEditor::comboBoxChanged(juce::ComboBox *comboBox) {
+  if (comboBox == &gridResolutionComboBox)
+    updateGridResolution(std::pow(2, gridResolutionComboBox.getSelectedId()));
+}
+void ProcessorEditor::updateGridResolution(int numTicks) {
+  horizontalRuler.setNumTicks(numTicks);
+  repaint();
+}
 void ProcessorEditor::showEditorConfig(
     std::shared_ptr<IDelayEditorConfig> config) {
   activeEditorConfig = config;

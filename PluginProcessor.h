@@ -1,9 +1,7 @@
 #pragma once
 
-#include "BufferMixer.h"
-#include "DelayLine.h"
-#include "DelayLineConfig.h"
-#include "SampleMixer.h"
+#include "Audio/IDelayLineConfig.h"
+#include "Audio/Mixer/LinearBufferMixer.h"
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <memory>
 #include <vector>
@@ -19,6 +17,7 @@ public:
   LinearBufferMixer<float> bufferMixer;
   std::shared_ptr<IDelayLineConfig> delayLineConfig;
   bool isBufferInitialized = false;
+  bool isBypassing = false;
 
   int maxDelayInSamples() { return samplesPerBar(); }
   //==============================================================================

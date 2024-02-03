@@ -1,0 +1,70 @@
+<svg
+   width="800"
+   height="300">
+   <component
+       id="image-background"
+       width="800"
+       height="300"
+       x="0"
+       y="0" />
+    <component
+      id="button-bypass"
+      width="39"
+      height="39"
+      x="10"
+      y="10" />
+    <component
+      id="comboBox-gridRes"
+      width="142"
+      height="32"
+      x="19"
+      y="69" />
+    <component
+       id="slider-wetdry"
+       width="86"
+       height="86"
+       x="697"
+       y="82" />
+    <component
+       id="slider-gain"
+       width="86"
+       height="86"
+       x="697"
+       y="196" />
+    <component
+       id="component-canvas"
+       width="639"
+       height="170"
+       x="21"
+       y="110" />
+    <component
+       id="ruler-horizontal"
+       width="639"
+       height= "20"
+       x="21"
+       y="280" />
+    <component
+       id="ruler-vertical"
+       width="22"
+       height="171"
+       x="0"
+       y="110" />
+    <component
+       id="button-splitChannels"
+       width="32"
+       height= "32"
+       x = "554"
+       y = "69" />
+    <component
+       id="button-leftChannel"
+       width="32"
+       height="32"
+       x = "597"
+       y = "69" />
+    <component
+       id="button-rightChannel"
+       width="32"
+       height="32"
+       x = "629"
+       y = "69" />
+</svg>

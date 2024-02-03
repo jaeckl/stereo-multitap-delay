@@ -1,5 +1,5 @@
 #include "PluginProcessor.h"
-#include "DelayLineConfig.h"
+#include "Audio/StereoDelayLineConfig.h"
 #include "PluginEditor.h"
 
 //==============================================================================
@@ -117,34 +117,36 @@ void AudioPluginAudioProcessor::processBlock(
   juce::ignoreUnused(midiMessages);
 
   juce::ScopedNoDenormals noDenormals;
+  if (!isBypassing) {
+    bpm = getPlayHead()->getPosition()->getBpm().orFallback(120);
+    if (!isBufferInitialized) {
+      delayLineConfig->init(samplesPerBar());
+      isBufferInitialized = true;
+    }
 
-  bpm = getPlayHead()->getPosition()->getBpm().orFallback(120);
-  if (!isBufferInitialized) {
-    delayLineConfig->init(samplesPerBar());
-    isBufferInitialized = true;
-  }
+    auto totalNumInputChannels = getTotalNumInputChannels();
+    auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-  auto totalNumInputChannels = getTotalNumInputChannels();
-  auto totalNumOutputChannels = getTotalNumOutputChannels();
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+      buffer.clear(i, 0, buffer.getNumSamples());
 
-  for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-    buffer.clear(i, 0, buffer.getNumSamples());
+    juce::AudioBuffer<float> wetBuffer(
+        buffer.getNumChannels(), buffer.getNumSamples());
+    for (auto channel = 0; channel < buffer.getNumChannels(); ++channel)
+      wetBuffer.copyFrom(
+          channel, 0, buffer, channel, 0, buffer.getNumSamples());
 
-  juce::AudioBuffer<float> wetBuffer(
-      buffer.getNumChannels(), buffer.getNumSamples());
-  for (auto channel = 0; channel < buffer.getNumChannels(); ++channel)
-    wetBuffer.copyFrom(channel, 0, buffer, channel, 0, buffer.getNumSamples());
+    delayLineConfig->processBlock(wetBuffer);
+    bufferMixer.setWetLevel(delayMix);
+    bufferMixer.mix(buffer, buffer, wetBuffer);
 
-  delayLineConfig->processBlock(wetBuffer);
-  bufferMixer.setWetLevel(delayMix);
-  bufferMixer.mix(buffer, buffer, wetBuffer);
-
-  for (auto channel = 0; channel < buffer.getNumChannels(); ++channel) {
-    auto *readBuffer = buffer.getReadPointer(channel);
-    auto writeBuffer = buffer.getWritePointer(channel);
-    for (auto sample = 0; sample < buffer.getNumSamples(); ++sample) {
-      writeBuffer[sample] =
-          juce::Decibels::decibelsToGain(outputVolume) * readBuffer[sample];
+    for (auto channel = 0; channel < buffer.getNumChannels(); ++channel) {
+      auto *readBuffer = buffer.getReadPointer(channel);
+      auto writeBuffer = buffer.getWritePointer(channel);
+      for (auto sample = 0; sample < buffer.getNumSamples(); ++sample) {
+        writeBuffer[sample] =
+            juce::Decibels::decibelsToGain(outputVolume) * readBuffer[sample];
+      }
     }
   }
 }

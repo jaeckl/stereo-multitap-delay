@@ -73,13 +73,11 @@ juce_add_plugin(
              # AUv3
   PRODUCT_NAME
   "Simple Delay Line") # The name of the final executable, which can differ
-# from the target name
-
-# `juce_generate_juce_header` will create a JuceHeader.h for a given target,
-# which will be generated into your build tree. This should be included with
-# `#include <JuceHeader.h>`. The include path for this header will be
-# automatically added to the target. The main function of the JuceHeader is to
-# include all your JUCE module headers; if you're happy to include module
+# from the target name `juce_generate_juce_header` will create a JuceHeader.h
+# for a given target, which will be generated into your build tree. This should
+# be included with `#include <JuceHeader.h>`. The include path for this header
+# will be automatically added to the target. The main function of the JuceHeader
+# is to include all your JUCE module headers; if you're happy to include module
 # headers directly, you probably don't need to call this.
 
 # juce_generate_juce_header(AudioPluginExample)
@@ -88,9 +86,23 @@ juce_add_plugin(
 # the sources as the first argument, then a visibility parameter for the sources
 # which should normally be PRIVATE. Finally, we supply a list of source files
 # that will be built into the target. This is a standard CMake command.
-
-target_sources(SimpleDelayLine PRIVATE PluginEditor.cpp PluginProcessor.cpp)
-
+add_subdirectory(LookAndFeel)
+target_sources(
+  SimpleDelayLine
+  PRIVATE PluginEditor.cpp
+          PluginProcessor.cpp
+          Audio/StereoDelayLineConfig.cpp
+          Audio/MonoDelayLineConfig.cpp
+          Components/CanvasRuler.cpp
+          Components/CustomRotaryKnob.cpp
+          Components/MultiDelayEditorConfig.cpp
+          Components/SingleDelayEditorConfig.cpp
+          Components/UIElementPlacer.cpp
+          Components/XYPointCanvas.cpp
+          Components/BypassButton.cpp
+          LookAndFeel/CustomButtonStyle.cpp
+          LookAndFeel/CustomRotarySliderStyle.cpp)
+target_include_directories(SimpleDelayLine PRIVATE ${PROJECT_SOURCE_DIR})
 # `target_compile_definitions` adds some preprocessor definitions to our target.
 # In a Projucer project, these might be passed in the 'Preprocessor Definitions'
 # field. JUCE modules also make use of compile definitions to switch certain
@@ -119,8 +131,16 @@ target_compile_definitions(
 # images, fonts, icons etc.). Conversion to binary-data will happen when your
 # target is built.
 
-juce_add_binary_data(AudioPluginData SOURCES plugin_background.png
-                     rotary_knob.png layouts/base_layout.svg)
+juce_add_binary_data(
+  AudioPluginData
+  SOURCES
+  Assets/plugin_background.png
+  Assets/rotary_knob.png
+  Assets/bypass_button.png
+  Assets/bypass_button_highlight.png
+  Assets/bypass_button_pressed.png
+  Assets/bypass_button_pressed_highlight.png
+  Layouts/base_layout.svg)
 
 # `target_link_libraries` links libraries and JUCE modules to other libraries or
 # executables. Here, we're linking our executable target to the

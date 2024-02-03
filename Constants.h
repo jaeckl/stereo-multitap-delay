@@ -21,7 +21,7 @@ const juce::String COMPONENT_BUTTON_CHANNEL_RIGHT = "button-rightChannel";
 const juce::String COMPONENT_CANVAS = "component-canvas";
 const juce::String COMPONENT_RULER_HORIZONTAL = "ruler-horizontal";
 const juce::String COMPONENT_RULER_VERTICAL = "ruler-vertical";
-
+const juce::String COMPONENT_COMBOBOX_GRID_RESOLUTION = "comboBox-gridRes";
 // component labels
 const juce::String TEXT_BUTTON_CHANNEL_SPLIT = "X";
 const juce::String TEXT_BUTTON_CHANNEL_LEFT = "L";
@@ -56,4 +56,10 @@ const int TICK_MARKER_LENGTH = 8;
 const int TICK_MARKER_WIDTH = 2;
 
 const int RULER_VERTICAL_NUM_TICKS = 2;
+
+// grid resolution combobox items
+const juce::String GRID_HALF = "1/2";
+const juce::String GRID_QUATER = "1/4";
+const juce::String GRID_EIGHTH = "1/8";
+const juce::String GRID_SIXTEENTH = "1/16";
 } // namespace Constants

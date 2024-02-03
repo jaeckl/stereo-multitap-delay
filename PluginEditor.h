@@ -1,12 +1,15 @@
 #pragma once
 
-#include "CanvasRuler.h"
-#include "CustomRotaryKnob.h"
-#include "CustomStyle.h"
-#include "DelayEditorConfig.h"
+#include "Components/BypassButton.h"
+#include "Components/CanvasRuler.h"
+#include "Components/CustomRotaryKnob.h"
+#include "Components/IDelayEditorConfig.h"
+#include "Components/MultiDelayEditorConfig.h"
+#include "Components/SingleDelayEditorConfig.h"
+#include "Components/UIElementPlacer.h"
+#include "Components/XYPointCanvas.h"
+#include "LookAndFeel/CustomButtonStyle.h"
 #include "PluginProcessor.h"
-#include "UIElementPlacer.h"
-#include "XYPointCanvas.h"
 #include <memory>
 #include <utility>
 #include <vector>
@@ -14,7 +17,8 @@
 class ProcessorEditor final
     : public juce::AudioProcessorEditor
     , private juce::Slider::Listener
-    , private juce::Button::Listener {
+    , private juce::Button::Listener
+    , private juce::ComboBox::Listener {
 public:
   explicit ProcessorEditor(AudioPluginAudioProcessor &);
   ~ProcessorEditor() override;
@@ -35,9 +39,12 @@ private:
   CustomRotaryKnob wetDrySlider;
   CustomRotaryKnob gainSlider;
 
+  BypassButton bypassButton;
   juce::TextButton splitChannelsButton;
   juce::TextButton leftChannelButton;
   juce::TextButton rightChannelButton;
+
+  juce::ComboBox gridResolutionComboBox;
 
   std::vector<juce::Point<float>> combinedPoints;
   std::vector<juce::Point<float>> leftChannelPoints;
@@ -55,6 +62,7 @@ private:
   void initializeControls();
   void addControlsToView();
   void configureBackgroundImage();
+  void configureGridComboBox();
   void configureChannelButtons();
   void configureRotarySliders();
   void configureRulers();
@@ -70,6 +78,7 @@ private:
 
   void sliderValueChanged(juce::Slider *slider) override;
   void buttonClicked(juce::Button *button) override;
+  void comboBoxChanged(juce::ComboBox *comboBox) override;
   void handleDelayComboBox();
 
   void switchBetweenModes();
@@ -77,6 +86,8 @@ private:
   void showGroupB();
   void showEditorConfig(std::shared_ptr<IDelayEditorConfig> config);
   std::pair<int, int> computeWetDryRatio(float value);
+  void updateGridResolution(int numTicks);
+  void updateAudioBypass();
   AudioPluginAudioProcessor &processorRef;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ProcessorEditor)
 };
