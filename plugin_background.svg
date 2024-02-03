@@ -27,15 +27,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     showgrid="true"
-     inkscape:zoom="2.86"
-     inkscape:cx="640.38462"
-     inkscape:cy="154.02098"
-     inkscape:window-width="1606"
+     showgrid="false"
+     inkscape:zoom="5.33"
+     inkscape:cx="734.803"
+     inkscape:cy="108.91182"
+     inkscape:window-width="1074"
      inkscape:window-height="1034"
      inkscape:window-x="4"
      inkscape:window-y="36"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      inkscape:current-layer="layer1">
     <inkscape:grid
        id="grid1"
@@ -52,10 +52,46 @@
        dotted="false"
        gridanglex="30"
        gridanglez="30"
-       visible="true" />
+       visible="false" />
   </sodipodi:namedview>
   <defs
      id="defs1">
+    <linearGradient
+       id="linearGradient6"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#5e5e5e;stop-opacity:0.54527557;"
+         offset="0"
+         id="stop6" />
+      <stop
+         style="stop-color:#e2e2e2;stop-opacity:0.54921257;"
+         offset="1"
+         id="stop7" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#5e5e5e;stop-opacity:1;"
+         offset="0"
+         id="stop3" />
+      <stop
+         style="stop-color:#5e5e5e;stop-opacity:0;"
+         offset="1"
+         id="stop4" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#333333;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#0a0a0a;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
     <linearGradient
        id="linearGradient41"
        inkscape:collect="always">
@@ -118,6 +154,34 @@
        y1="281.02438"
        x2="740"
        y2="200" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1"
+       id="linearGradient2"
+       x1="740"
+       y1="85"
+       x2="740"
+       y2="130"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3"
+       id="linearGradient4"
+       x1="0"
+       y1="30"
+       x2="800"
+       y2="30"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(2)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6"
+       id="linearGradient7"
+       x1="740.15009"
+       y1="131"
+       x2="740"
+       y2="85.975609"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <g
      inkscape:label="Layer 1"
@@ -131,11 +195,11 @@
        x="0"
        y="0.5" />
     <rect
-       style="fill:#f2f2f2;fill-opacity:0.1;stroke:none;stroke-width:1.88562;stroke-dasharray:none;stroke-opacity:0.5"
+       style="fill:#f2f2f2;fill-opacity:0.1;stroke:url(#linearGradient4);stroke-width:1.88562;stroke-dasharray:none"
        id="rect26"
        width="800"
        height="60"
-       x="0"
+       x="2"
        y="0" />
     <path
        style="fill:#f2f2f2;fill-opacity:0.1;stroke:#002055;stroke-width:2;stroke-dasharray:none;stroke-opacity:0.245487"
@@ -218,7 +282,11 @@
     </g>
     <g
        id="g42-0"
-       transform="translate(0,-115)">
+       transform="translate(0,-115)"
+       style="display:none"
+       inkscape:export-filename="rotary_knob.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <ellipse
          style="fill:#f2f2f2;fill-opacity:0.101961;stroke:url(#linearGradient42);stroke-width:4.19451;stroke-dasharray:none;stroke-opacity:1"
          id="ellipse41-8"
@@ -292,5 +360,21 @@
        style="fill:none;fill-opacity:0.1;stroke:#e5e5e5;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
        d="M 21.972272,281 V 110"
        id="path46-0" />
+    <g
+       id="g7"
+       inkscape:export-filename="rotary_knob.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <path
+         id="rect1"
+         style="fill:url(#linearGradient2);stroke-width:2.68328;stroke-opacity:0.99639"
+         d="m 735,85 h 10 v 10 c 0,0 0,5 -5,5 -5,0 -5,-5 -5,-5 z"
+         sodipodi:nodetypes="cccscc" />
+      <path
+         id="rect1-5"
+         style="fill:none;fill-opacity:1;stroke:url(#linearGradient7);stroke-width:2;stroke-linecap:round;stroke-dasharray:none;paint-order:markers stroke fill"
+         d="M 745,87.3 V 95 c 0,0 0,5 -5,5 -5,0 -5,-5 -5,-5 v -7.7"
+         sodipodi:nodetypes="ccscc" />
+    </g>
   </g>
 </svg>

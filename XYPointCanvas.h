@@ -116,10 +116,10 @@ public:
   void setColour(juce::Colour colour) { pointColour = colour; }
 
   void paint(juce::Graphics &g) override {
-    g.setColour(juce::Colours::grey.withAlpha(0.02f));
+    g.setColour(pointColour.withAlpha(0.04f));
     g.fillRect(getLocalBounds());
 
-    for (size_t i = 0; i < model->getNumPoints(); ++i) {
+    for (size_t i = 0; i < static_cast<size_t>(model->getNumPoints()); ++i) {
       auto point = discreteFromFractionalPoint(
           model->getPoint(i), getWidth(), getHeight());
       if (optionalPointIndex.has_value() && i == optionalPointIndex.value()) {
@@ -132,6 +132,10 @@ public:
         g.drawLine(point.x, point.y, point.x, getHeight(), 2);
       }
     }
+
+    g.setColour(pointColour.withAlpha(0.4f));
+    g.drawLine(0, 1, getWidth(), 1, 2);
+    g.drawLine(getWidth() - 1, 2, getWidth() - 1, getHeight(), 2);
   }
 
 private:

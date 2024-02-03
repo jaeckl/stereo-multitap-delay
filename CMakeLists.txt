@@ -20,6 +20,9 @@ cmake_minimum_required(VERSION 3.15)
 project(DELAY_LINES VERSION 0.0.1)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 # If you've installed JUCE somehow (via a package manager, or directly using the
 # CMake install target), you'll need to tell this project that it depends on the
 # installed copy of JUCE. If you've included JUCE directly in your source tree
@@ -117,7 +120,7 @@ target_compile_definitions(
 # target is built.
 
 juce_add_binary_data(AudioPluginData SOURCES plugin_background.png
-                     layouts/base_layout.svg)
+                     rotary_knob.png layouts/base_layout.svg)
 
 # `target_link_libraries` links libraries and JUCE modules to other libraries or
 # executables. Here, we're linking our executable target to the

@@ -1,20 +1,28 @@
 #include "PluginEditor.h"
+#include "CanvasRuler.h"
+#include "Constants.h"
+#include "CustomRotaryKnob.h"
 #include "DelayEditorConfig.h"
 #include "PluginProcessor.h"
 #include <BinaryData.h>
+#include <format>
 #include <memory>
-
 //==============================================================================
 ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     : AudioProcessorEditor(&p)
     , fileLogger(juce::File("LogFile.txt"), "Log File")
-    , backgroundImg("image-background")
-    , wetDrySlider("slider-wetdry")
-    , gainSlider("slider-gain")
-    , splitChannelsButton("button-splitChannels")
-    , leftChannelButton("button-leftChannel")
-    , rightChannelButton("button-rightChannel")
-    , pointCanvas("component-canvas")
+    , blueButtonStyle(Constants::BLUE_COLOUR)
+    , orangeButtonStyle(Constants::ORGANGE_COLOUR)
+    , greenButtonStyle(Constants::GREEN_COLOUR)
+    , backgroundImg(Constants::COMPONENT_IMAGE_BACKGROUND)
+    , wetDrySlider(Constants::COMPONENT_SLIDER_WETDRY, Constants::BLUE_COLOUR)
+    , gainSlider(Constants::COMPONENT_SLIDER_GAIN, Constants::BLUE_COLOUR)
+    , splitChannelsButton(Constants::COMPONENT_BUTTON_CHANNEL_SPLIT)
+    , leftChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_LEFT)
+    , rightChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_RIGHT)
+    , pointCanvas(Constants::COMPONENT_CANVAS)
+    , horizontalRuler(Constants::COMPONENT_RULER_HORIZONTAL)
+    , verticalRuler(Constants::COMPONENT_RULER_VERTICAL)
     , xmlLayouter(this)
     , delayEditorConfigSingle(std::make_shared<SingleDelayEditorConfig>())
     , delayEditorConfigMulti(std::make_shared<MultiDelayEditorConfig>())
@@ -22,7 +30,7 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     , processorRef(p) {
   // Make sure that before the constructor has finished, you've set the
   // editor's size to whatever you need it to be.
-  setSize(800, 300);
+  setSize(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
   setResizable(false, false);
   activeEditorConfig->initialize(processorRef.delayLineConfig, &processorRef);
 
@@ -33,14 +41,11 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
 void ProcessorEditor::initializeControls() {
   configureBackgroundImage();
   configureChannelButtons();
-  configureRotarySlider(&wetDrySlider, 0.0, 1.0, 0.01, 0.5);
-  configureRotarySlider(&gainSlider, 0.0, 1.0, 0.01, 1.0);
-
-  pointCanvas.setPointModel(activeEditorConfig.get());
+  configureRotarySliders();
+  configureRulers();
 
   wetDrySlider.addListener(this);
   gainSlider.addListener(this);
-
   splitChannelsButton.addListener(this);
   leftChannelButton.addListener(this);
   rightChannelButton.addListener(this);
@@ -53,6 +58,8 @@ void ProcessorEditor::addControlsToView() {
   addAndMakeVisible(wetDrySlider);
   addAndMakeVisible(gainSlider);
   addAndMakeVisible(pointCanvas);
+  addAndMakeVisible(horizontalRuler);
+  addAndMakeVisible(verticalRuler);
   addAndMakeVisible(splitChannelsButton);
   addAndMakeVisible(leftChannelButton);
   addAndMakeVisible(rightChannelButton);
@@ -67,33 +74,89 @@ void ProcessorEditor::addControlsToView() {
 
 void ProcessorEditor::configureBackgroundImage() {
   auto imageData = juce::MemoryInputStream(
-      BinaryData::plugin_background_png, BinaryData::plugin_background_pngSize,
+      BinaryData::plugin_background_png,
+      BinaryData::plugin_background_pngSize,
       false);
   auto format = juce::ImageFileFormat::findImageFormatForStream(imageData);
   backgroundImg.setImage(format->decodeImage(imageData));
 }
 
 void ProcessorEditor::configureChannelButtons() {
+  leftChannelButton.setLookAndFeel(&orangeButtonStyle);
+  rightChannelButton.setLookAndFeel(&greenButtonStyle);
+  splitChannelsButton.setLookAndFeel(&blueButtonStyle);
+
   leftChannelButton.setClickingTogglesState(true);
-  leftChannelButton.setButtonText("L");
   rightChannelButton.setClickingTogglesState(true);
-  rightChannelButton.setButtonText("R");
   splitChannelsButton.setClickingTogglesState(true);
-  splitChannelsButton.setButtonText("X");
-  leftChannelButton.setRadioGroupId(1001);
-  rightChannelButton.setRadioGroupId(1001);
+
+  leftChannelButton.setButtonText(Constants::TEXT_BUTTON_CHANNEL_LEFT);
+  rightChannelButton.setButtonText(Constants::TEXT_BUTTON_CHANNEL_RIGHT);
+  splitChannelsButton.setButtonText(Constants::TEXT_BUTTON_CHANNEL_SPLIT);
+
+  leftChannelButton.setRadioGroupId(Constants::RadioGroups::LeftRightChannel);
+  rightChannelButton.setRadioGroupId(Constants::RadioGroups::LeftRightChannel);
 }
 
+void ProcessorEditor::configureRotarySliders() {
+  configureRotarySlider(
+      &wetDrySlider,
+      Constants::WETDRY_MIN,
+      Constants::WETDRY_MAX,
+      Constants::WETDRY_STEP,
+      Constants::WETDRY_VALUE,
+      Constants::TEXT_UNIT_SLIDER_WETDRY,
+      [this](juce::Slider *s) -> juce::String {
+        auto ratio = computeWetDryRatio(s->getValue());
+        return juce::String(std::format(
+            Constants::FORMAT_STRING_WETDRY, ratio.first, ratio.second));
+      });
+  configureRotarySlider(
+      &gainSlider,
+      Constants::GAIN_MIN,
+      Constants::GAIN_MAX,
+      Constants::GAIN_STEP,
+      Constants::GAIN_VALUE,
+      Constants::TEXT_UNIT_SLIDER_GAIN,
+      [](juce::Slider *s) -> juce::String {
+        if (s->getValue() >= 0)
+          return juce::String(
+              std::format(Constants::FORMAT_STRING_GAIN_POS, s->getValue()));
+        else
+          return juce::String(
+              std::format(Constants::FORMAT_STRING_GAIN_NEG, s->getValue()));
+      });
+}
+void ProcessorEditor::configureRulers() {
+  int ticks = 4;
+  pointCanvas.setPointModel(activeEditorConfig.get());
+  horizontalRuler.setAlignment(CanvasRuler::Alignment::Top);
+  horizontalRuler.setNumTicks(ticks);
+  horizontalRuler.setTickMarkerSize(
+      Constants::TICK_MARKER_LENGTH, Constants::TICK_MARKER_WIDTH);
+  horizontalRuler.setTickLabelFunction([](int idx, int size) -> juce::String {
+    if (idx == size)
+      return Constants::TEXT_RULER_HORIZONTAL_TICKS_END;
+    else
+      return std::format(Constants::FORMAT_STRING_BEATS, idx + 1, size);
+  });
+  verticalRuler.setAlignment(CanvasRuler::Alignment::Right);
+  verticalRuler.setNumTicks(Constants::RULER_VERTICAL_NUM_TICKS);
+  verticalRuler.setTickMarkerSize(
+      Constants::TICK_MARKER_LENGTH, Constants::TICK_MARKER_WIDTH);
+}
 void ProcessorEditor::configureRotarySlider(
-    juce::Slider *slider,
+    CustomRotaryKnob *slider,
     float minValue,
     float maxValue,
     float stepSize,
-    float value) {
-  slider->setSliderStyle(juce::Slider::RotaryVerticalDrag);
+    float value,
+    juce::String unitString,
+    std::function<juce::String(juce::Slider *)> formater) {
   slider->setRange(minValue, maxValue, stepSize);
-  slider->setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
   slider->setValue(value);
+  slider->setUnitName(unitString);
+  slider->setValueFormater(formater);
 }
 
 void ProcessorEditor::sliderValueChanged(juce::Slider *slider) {
@@ -104,34 +167,12 @@ void ProcessorEditor::sliderValueChanged(juce::Slider *slider) {
 }
 
 void ProcessorEditor::buttonClicked(juce::Button *button) {
-  if (button == &splitChannelsButton) {
-    if (splitChannelsButton.getToggleState()) {
-      leftChannelButton.setVisible(true);
-      rightChannelButton.setVisible(true);
-
-      showEditorConfig(delayEditorConfigMulti);
-
-      if (leftChannelButton.getToggleState()) {
-        showGroupA();
-      } else {
-        showGroupB();
-      }
-    } else {
-      leftChannelButton.setVisible(false);
-      rightChannelButton.setVisible(false);
-
-      pointCanvas.setColour(juce::Colour(76, 144, 255));
-
-      showEditorConfig(delayEditorConfigSingle);
-    }
-    repaint();
-  }
-  if (button == &leftChannelButton && leftChannelButton.getToggleState()) {
+  if (button == &splitChannelsButton)
+    switchBetweenModes();
+  if (button == &leftChannelButton && leftChannelButton.getToggleState())
     showGroupA();
-  }
-  if (button == &rightChannelButton && rightChannelButton.getToggleState()) {
+  if (button == &rightChannelButton && rightChannelButton.getToggleState())
     showGroupB();
-  }
 }
 
 void ProcessorEditor::showEditorConfig(
@@ -142,17 +183,44 @@ void ProcessorEditor::showEditorConfig(
   activeEditorConfig->initialize(processorRef.delayLineConfig, &processorRef);
 }
 
+void ProcessorEditor::switchBetweenModes() {
+  if (splitChannelsButton.getToggleState()) {
+
+    leftChannelButton.setVisible(true);
+    rightChannelButton.setVisible(true);
+
+    showEditorConfig(delayEditorConfigMulti);
+    if (leftChannelButton.getToggleState())
+      showGroupA();
+    else
+      showGroupB();
+  } else {
+    leftChannelButton.setVisible(false);
+    rightChannelButton.setVisible(false);
+
+    pointCanvas.setColour(Constants::BLUE_COLOUR);
+    showEditorConfig(delayEditorConfigSingle);
+  }
+  repaint();
+}
+
 void ProcessorEditor::showGroupA() {
-  pointCanvas.setColour(juce::Colour(255, 144, 76));
+  pointCanvas.setColour(Constants::ORGANGE_COLOUR);
   auto *conf = dynamic_cast<MultiDelayEditorConfig *>(activeEditorConfig.get());
   conf->enableGroupA();
   repaint();
 }
 void ProcessorEditor::showGroupB() {
-  pointCanvas.setColour(juce::Colour(144, 255, 76));
+  pointCanvas.setColour(Constants::GREEN_COLOUR);
   auto *conf = dynamic_cast<MultiDelayEditorConfig *>(activeEditorConfig.get());
   conf->enableGroupB();
   repaint();
+}
+
+std::pair<int, int> ProcessorEditor::computeWetDryRatio(float value) {
+  return {
+      static_cast<int>((1.0f - value) * 100),
+      static_cast<int>(std::round(value * 100.0f))};
 }
 
 ProcessorEditor::~ProcessorEditor() {}

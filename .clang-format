@@ -1,0 +1,7 @@
+BasedOnStyle: LLVM
+BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
+BinPackParameters: false
+BinPackArguments: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AlignAfterOpenBracket: AlwaysBreak

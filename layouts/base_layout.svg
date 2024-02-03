@@ -21,9 +21,21 @@
        y="196" />
     <component
        id="component-canvas"
-       width="637"
+       width="639"
        height="170"
-       x="23"
+       x="21"
+       y="110" />
+    <component
+       id="ruler-horizontal"
+       width="639"
+       height= "20"
+       x="21"
+       y="280" />
+    <component
+       id="ruler-vertical"
+       width="22"
+       height="171"
+       x="0"
        y="110" />
     <component
        id="button-splitChannels"

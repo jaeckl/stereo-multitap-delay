@@ -1,10 +1,14 @@
 #pragma once
 
+#include "CanvasRuler.h"
+#include "CustomRotaryKnob.h"
+#include "CustomStyle.h"
 #include "DelayEditorConfig.h"
 #include "PluginProcessor.h"
 #include "UIElementPlacer.h"
 #include "XYPointCanvas.h"
 #include <memory>
+#include <utility>
 #include <vector>
 //==============================================================================
 class ProcessorEditor final
@@ -22,10 +26,14 @@ public:
 private:
   juce::FileLogger fileLogger;
 
+  CustomButtonStyle blueButtonStyle;
+  CustomButtonStyle orangeButtonStyle;
+  CustomButtonStyle greenButtonStyle;
+
   juce::ImageComponent backgroundImg;
 
-  juce::Slider wetDrySlider;
-  juce::Slider gainSlider;
+  CustomRotaryKnob wetDrySlider;
+  CustomRotaryKnob gainSlider;
 
   juce::TextButton splitChannelsButton;
   juce::TextButton leftChannelButton;
@@ -36,6 +44,8 @@ private:
   std::vector<juce::Point<float>> rightChannelPoints;
 
   XYPointCanvas pointCanvas;
+  CanvasRuler horizontalRuler;
+  CanvasRuler verticalRuler;
 
   XMLElementLayouter xmlLayouter;
   std::shared_ptr<SingleDelayEditorConfig> delayEditorConfigSingle;
@@ -46,21 +56,27 @@ private:
   void addControlsToView();
   void configureBackgroundImage();
   void configureChannelButtons();
+  void configureRotarySliders();
+  void configureRulers();
+
   void configureRotarySlider(
-      juce::Slider *slider,
+      CustomRotaryKnob *slider,
       float minValue,
       float maxValue,
       float stepSize,
-      float value);
+      float value,
+      juce::String unitString,
+      std::function<juce::String(juce::Slider *)> formater);
 
   void sliderValueChanged(juce::Slider *slider) override;
   void buttonClicked(juce::Button *button) override;
   void handleDelayComboBox();
 
+  void switchBetweenModes();
   void showGroupA();
   void showGroupB();
   void showEditorConfig(std::shared_ptr<IDelayEditorConfig> config);
-
+  std::pair<int, int> computeWetDryRatio(float value);
   AudioPluginAudioProcessor &processorRef;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ProcessorEditor)
 };

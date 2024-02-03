@@ -143,7 +143,8 @@ void AudioPluginAudioProcessor::processBlock(
     auto *readBuffer = buffer.getReadPointer(channel);
     auto writeBuffer = buffer.getWritePointer(channel);
     for (auto sample = 0; sample < buffer.getNumSamples(); ++sample) {
-      writeBuffer[sample] = outputVolume * readBuffer[sample];
+      writeBuffer[sample] =
+          juce::Decibels::decibelsToGain(outputVolume) * readBuffer[sample];
     }
   }
 }
