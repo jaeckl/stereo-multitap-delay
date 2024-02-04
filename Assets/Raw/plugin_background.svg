@@ -29,14 +29,14 @@
      inkscape:document-units="px"
      showgrid="false"
      inkscape:zoom="1"
-     inkscape:cx="602.5"
-     inkscape:cy="117.5"
+     inkscape:cx="362.5"
+     inkscape:cy="37.5"
      inkscape:window-width="1606"
      inkscape:window-height="1034"
      inkscape:window-x="4"
      inkscape:window-y="36"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer1">
+     inkscape:current-layer="g6-9">
     <inkscape:grid
        id="grid1"
        units="px"
@@ -291,6 +291,25 @@
        y1="281.02438"
        x2="740"
        y2="200" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3"
+       id="linearGradient18"
+       gradientUnits="userSpaceOnUse"
+       x1="30"
+       y1="45"
+       x2="30"
+       y2="15" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3"
+       id="linearGradient19"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-1.1285143,0,0,-1.128514,63.855933,63.854926)"
+       x1="30"
+       y1="45"
+       x2="30"
+       y2="15" />
   </defs>
   <g
      inkscape:label="Layer 1"
@@ -581,6 +600,42 @@
          style="fill:none;stroke:#333333;stroke-width:1.5;stroke-linecap:square;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
          d="M 25,32.245959 H 35"
          id="path6" />
+    </g>
+    <rect
+       style="fill:#1b1b1b;fill-opacity:1;stroke:none;stroke-width:18.5827;stroke-linecap:square;paint-order:markers fill stroke"
+       id="rect19"
+       width="458.62552"
+       height="40"
+       x="170"
+       y="10" />
+    <g
+       id="g6-9"
+       inkscape:export-filename="../bypass_button.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       transform="matrix(-1,0,0,1,214.56301,-5.437)"
+       style="display:inline">
+      <g
+         id="g5-2"
+         inkscape:export-filename="../bypass_button.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96">
+        <path
+           id="rect2-7-70"
+           style="fill:none;stroke:url(#linearGradient18);stroke-width:3;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+           d="m -410.3125,15.9375 h 450.625 c 2.077499,0 3.75,1.6725 3.75,3.750001 v 30.625002 c 0,2.077501 -1.672501,3.750001 -3.75,3.750001 h -450.625 c -2.0775,0 -3.75,-1.6725 -3.75,-3.750001 V 19.687501 c 0,-2.077501 1.6725,-3.750001 3.75,-3.750001 z"
+           sodipodi:nodetypes="sssssssss" />
+        <path
+           id="rect2-7-6-9"
+           style="fill:none;stroke:url(#linearGradient19);stroke-width:3.38554;stroke-linecap:round;stroke-dasharray:none;paint-order:markers fill stroke"
+           d="M 41.638309,55.869234 H -411.6373 c -2.34449,0 -4.23193,-1.887441 -4.23193,-4.23193 V 18.3617 c 0,-2.344489 1.88744,-4.23193 4.23193,-4.23193 H 41.638309 c 2.344486,0 4.231929,1.887441 4.231929,4.23193 v 33.275604 c 0,2.344489 -1.887443,4.23193 -4.231929,4.23193 z"
+           sodipodi:nodetypes="sssssssss" />
+        <path
+           id="rect2-3"
+           style="fill:none;stroke:#333333;stroke-width:2;stroke-linecap:round;paint-order:markers fill stroke"
+           d="M -411,15 H 41 c 2.216,0 4,1.784 4,4 v 32 c 0,2.216 -1.784,4 -4,4 h -452 c -2.216,0 -4,-1.784 -4,-4 V 19 c 0,-2.216 1.784,-4 4,-4 z"
+           sodipodi:nodetypes="sssssssss" />
+      </g>
     </g>
     <g
        id="g6-2"

@@ -13,6 +13,12 @@
       height="39"
       x="10"
       y="10" />
+    <component 
+      id="comboBox-preset"
+      width="459"
+      height="39"
+      x="170"
+      y="10" />
     <component
       id="comboBox-gridRes"
       width="142"

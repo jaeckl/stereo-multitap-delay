@@ -86,7 +86,6 @@ juce_add_plugin(
 # the sources as the first argument, then a visibility parameter for the sources
 # which should normally be PRIVATE. Finally, we supply a list of source files
 # that will be built into the target. This is a standard CMake command.
-add_subdirectory(LookAndFeel)
 target_sources(
   SimpleDelayLine
   PRIVATE PluginEditor.cpp
@@ -101,7 +100,9 @@ target_sources(
           Components/XYPointCanvas.cpp
           Components/BypassButton.cpp
           LookAndFeel/CustomButtonStyle.cpp
-          LookAndFeel/CustomRotarySliderStyle.cpp)
+          LookAndFeel/CustomRotarySliderStyle.cpp
+          Presets/FilePreset.cpp
+          Presets/PresetManager.cpp)
 target_include_directories(SimpleDelayLine PRIVATE ${PROJECT_SOURCE_DIR})
 # `target_compile_definitions` adds some preprocessor definitions to our target.
 # In a Projucer project, these might be passed in the 'Preprocessor Definitions'
@@ -133,6 +134,8 @@ target_compile_definitions(
 
 juce_add_binary_data(
   AudioPluginData
+  NAMESPACE
+  BinaryData
   SOURCES
   Assets/plugin_background.png
   Assets/rotary_knob.png
@@ -141,6 +144,21 @@ juce_add_binary_data(
   Assets/bypass_button_pressed.png
   Assets/bypass_button_pressed_highlight.png
   Layouts/base_layout.svg)
+
+file(GLOB preset_files "PresetFiles/*")
+
+juce_add_binary_data(
+  AudioPluginPresets
+  NAMESPACE
+  BinaryPresets
+  HEADER_NAME
+  BinaryPresets.h
+  SOURCES
+  ${preset_files})
+set_property(
+  DIRECTORY
+  APPEND
+  PROPERTY CMAKE_CONFIGURE_DEPENDS "PresetFiles/*")
 
 # `target_link_libraries` links libraries and JUCE modules to other libraries or
 # executables. Here, we're linking our executable target to the
@@ -151,7 +169,7 @@ juce_add_binary_data(
 
 target_link_libraries(
   SimpleDelayLine
-  PRIVATE AudioPluginData # If we'd created a binary data target,
+  PRIVATE AudioPluginData AudioPluginPresets
           # we'd link to it here
           juce::juce_audio_utils
   PUBLIC juce::juce_recommended_config_flags juce::juce_recommended_lto_flags

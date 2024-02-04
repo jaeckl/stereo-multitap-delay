@@ -57,18 +57,18 @@ void CanvasRuler::paint(juce::Graphics &g) {
   int offset = 0;
   for (auto i = 0; i < numberOfTicks + 1; i++) {
     if (i == 0)
-      offset = 1;
+      offset = 1 + tickMarkerWidth / 2;
     else if (i == numberOfTicks)
-      offset = -2 - offset2;
+      offset = -tickMarkerWidth / 2 - offset2;
     else
       offset = 0;
 
     switch (alignment) {
     case Top: {
       g.drawLine(
-          i * tickSpacing + offset + i,
+          i * tickSpacing + offset + i - tickMarkerWidth / 2,
           0,
-          i * tickSpacing + offset + i,
+          i * tickSpacing + offset + i - tickMarkerWidth / 2,
           tickMarkerLength,
           tickMarkerWidth);
       auto text = tickLabelFunction(i, numberOfTicks);
@@ -105,9 +105,9 @@ void CanvasRuler::paint(juce::Graphics &g) {
     case Right:
       g.drawLine(
           getWidth(),
-          i * tickSpacing + offset + i,
+          i * tickSpacing + offset + i - tickMarkerWidth / 2,
           getWidth() - tickMarkerLength,
-          i * tickSpacing + offset + i,
+          i * tickSpacing + offset + i - tickMarkerWidth / 2,
           tickMarkerWidth);
       break;
     }

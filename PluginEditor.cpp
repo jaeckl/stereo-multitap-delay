@@ -4,6 +4,7 @@
 #include "Components/IDelayEditorConfig.h"
 #include "Constants.h"
 #include "PluginProcessor.h"
+#include "Presets/IPreset.h"
 #include <BinaryData.h>
 #include <format>
 #include <memory>
@@ -11,6 +12,7 @@
 ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     : AudioProcessorEditor(&p)
     , fileLogger(juce::File("LogFile.txt"), "Log File")
+    , presetManager()
     , whiteButtonStyle(Constants::WHITE_COLOUR)
     , blueButtonStyle(Constants::BLUE_COLOUR)
     , orangeButtonStyle(Constants::ORGANGE_COLOUR)
@@ -18,19 +20,22 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     , backgroundImg(Constants::COMPONENT_IMAGE_BACKGROUND)
     , wetDrySlider(Constants::COMPONENT_SLIDER_WETDRY, Constants::BLUE_COLOUR)
     , gainSlider(Constants::COMPONENT_SLIDER_GAIN, Constants::BLUE_COLOUR)
-    , bypassButton("button-bypass")
+    , bypassButton(Constants::COMPONENT_BUTTON_BYPASS)
+    , presetComboBox(Constants::COMPONENT_COMBOBOX_PRESETS)
     , splitChannelsButton(Constants::COMPONENT_BUTTON_CHANNEL_SPLIT)
     , leftChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_LEFT)
     , rightChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_RIGHT)
-    , gridSelectLeftButton("button-gridLeft")
-    , gridSelectRightButton("button-gridRight")
-    , gridLabel("label-gridRes", Constants::GRID_QUATER)
+    , gridSelectLeftButton(Constants::COMPONENT_BUTTON_GRID_LEFT)
+    , gridSelectRightButton(Constants::COMPONENT_BUTTON_GRID_RIGHT)
+    , gridLabel(
+          Constants::COMPONENT_LABEL_GRID_RES,
+          Constants::GRID_LABEL + Constants::GRID_QUATER)
     , gridResolutions(
           {Constants::GRID_HALF,
            Constants::GRID_QUATER,
            Constants::GRID_EIGHTH,
            Constants::GRID_SIXTEENTH})
-    , gridResolutionsIndex(1)
+    , gridResolutionsIndex(Constants::GRID_RES_INITIAL_INDEX)
     //, gridResolutionComboBox(Constants::COMPONENT_COMBOBOX_GRID_RESOLUTION)
     , pointCanvas(Constants::COMPONENT_CANVAS)
     , horizontalRuler(Constants::COMPONENT_RULER_HORIZONTAL)
@@ -52,16 +57,17 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
 
 void ProcessorEditor::initializeControls() {
   configureBackgroundImage();
+  configureChannelButtons();
+  configureRotarySliders();
+  configureRulers();
+  configurePresetComboBox();
   bypassButton.setToggleable(true);
   bypassButton.setClickingTogglesState(true);
   bypassButton.setToggleState(
       false, juce::NotificationType::dontSendNotification);
-  configureChannelButtons();
-  configureRotarySliders();
-  configureRulers();
-
   wetDrySlider.addListener(this);
   gainSlider.addListener(this);
+  presetComboBox.addListener(this);
   bypassButton.addListener(this);
   splitChannelsButton.addListener(this);
   leftChannelButton.addListener(this);
@@ -84,6 +90,7 @@ void ProcessorEditor::addControlsToView() {
   addAndMakeVisible(horizontalRuler);
   addAndMakeVisible(verticalRuler);
   addAndMakeVisible(bypassButton);
+  addAndMakeVisible(presetComboBox);
   addAndMakeVisible(splitChannelsButton);
   addAndMakeVisible(leftChannelButton);
   addAndMakeVisible(rightChannelButton);
@@ -103,6 +110,9 @@ void ProcessorEditor::configureBackgroundImage() {
       false);
   auto format = juce::ImageFileFormat::findImageFormatForStream(imageData);
   backgroundImg.setImage(format->decodeImage(imageData));
+}
+void ProcessorEditor::configurePresetComboBox() {
+  presetComboBox.addItemList(presetManager.getPresetNameList(), 1);
 }
 
 void ProcessorEditor::configureChannelButtons() {
@@ -209,6 +219,22 @@ void ProcessorEditor::buttonClicked(juce::Button *button) {
     changeGrid(+1);
 }
 
+void ProcessorEditor::comboBoxChanged(juce::ComboBox *comboBox) {
+  if (comboBox == &presetComboBox) {
+    applyPreset(static_cast<size_t>(presetComboBox.getSelectedId() - 1));
+  }
+}
+
+void ProcessorEditor::applyPreset(size_t presetId) {
+  activeEditorConfig->clearPoints();
+  auto preset = presetManager.getPreset(presetId);
+  activeEditorConfig->clearPoints();
+  for (auto &point : preset->getPresetPoints())
+    activeEditorConfig->addPoint(point);
+  presetComboBox.setSelectedId(0, juce::NotificationType::dontSendNotification);
+  repaint();
+}
+
 void ProcessorEditor::updateAudioBypass() {
   if (bypassButton.getToggleState())
     processorRef.isBypassing = true;
@@ -228,7 +254,7 @@ void ProcessorEditor::changeGrid(int idx) {
   else
     gridSelectRightButton.setVisible(true);
   gridLabel.setText(
-      gridResolutions[gridResolutionsIndex],
+      Constants::GRID_LABEL + gridResolutions[gridResolutionsIndex],
       juce::NotificationType::dontSendNotification);
   updateGridResolution(std::pow(2, gridResolutionsIndex + 1));
 }

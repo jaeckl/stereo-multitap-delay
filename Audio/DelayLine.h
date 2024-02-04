@@ -48,7 +48,7 @@ public:
   int addReadingHead(int delayInSamples, float mixingAmplitude) {
     jassert(
         juce::isPositiveAndBelow(delayInSamples, m_buffer.getNumSamples() - 1));
-    int readIndex = m_writeIndex - delayInSamples;
+    int readIndex = m_writeIndex - delayInSamples - 1;
     if (readIndex < 0)
       readIndex = m_buffer.getNumSamples() + readIndex;
     m_readIndices.push_back(readIndex);
@@ -60,7 +60,7 @@ public:
     jassert(juce::isPositiveAndBelow(delayIndex, m_readIndices.size()));
     jassert(
         juce::isPositiveAndBelow(delayInSamples, m_buffer.getNumSamples() - 1));
-    int readIndex = m_writeIndex - delayInSamples;
+    int readIndex = m_writeIndex - delayInSamples - 1;
     if (readIndex < 0)
       readIndex = m_buffer.getNumSamples() + readIndex;
     m_readIndices[static_cast<size_t>(delayIndex)] = readIndex;

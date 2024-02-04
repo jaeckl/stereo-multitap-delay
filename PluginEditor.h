@@ -10,6 +10,7 @@
 #include "Components/XYPointCanvas.h"
 #include "LookAndFeel/CustomButtonStyle.h"
 #include "PluginProcessor.h"
+#include "Presets/PresetManager.h"
 #include <memory>
 #include <utility>
 #include <vector>
@@ -17,7 +18,8 @@
 class ProcessorEditor final
     : public juce::AudioProcessorEditor
     , private juce::Slider::Listener
-    , private juce::Button::Listener {
+    , private juce::Button::Listener
+    , private juce::ComboBox::Listener {
 public:
   explicit ProcessorEditor(AudioPluginAudioProcessor &);
   ~ProcessorEditor() override;
@@ -28,6 +30,8 @@ public:
 
 private:
   juce::FileLogger fileLogger;
+
+  PresetManager presetManager;
 
   CustomButtonStyle whiteButtonStyle;
   CustomButtonStyle blueButtonStyle;
@@ -40,6 +44,8 @@ private:
   CustomRotaryKnob gainSlider;
 
   BypassButton bypassButton;
+
+  juce::ComboBox presetComboBox;
   juce::TextButton splitChannelsButton;
   juce::TextButton leftChannelButton;
   juce::TextButton rightChannelButton;
@@ -66,6 +72,7 @@ private:
   void initializeControls();
   void addControlsToView();
   void configureBackgroundImage();
+  void configurePresetComboBox();
   void configureChannelButtons();
   void configureRotarySliders();
   void configureRulers();
@@ -81,6 +88,7 @@ private:
 
   void sliderValueChanged(juce::Slider *slider) override;
   void buttonClicked(juce::Button *button) override;
+  void comboBoxChanged(juce::ComboBox *comboBox) override;
   void handleDelayComboBox();
 
   void switchBetweenModes();
@@ -91,6 +99,7 @@ private:
   void changeGrid(int idx);
   void updateGridResolution(int numTicks);
   void updateAudioBypass();
+  void applyPreset(size_t presetId);
   AudioPluginAudioProcessor &processorRef;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ProcessorEditor)
 };

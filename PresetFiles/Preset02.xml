@@ -1,0 +1,6 @@
+<preset name="1/4 Delay">
+  <point x="0.0" y="0.5"/> 
+  <point x="0.25" y="0.5"/>
+  <point x="0.5" y="0.5"/>
+  <point x="0.75" y="0.5"/>
+</preset>

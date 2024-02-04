@@ -67,7 +67,10 @@ void SingleDelayEditorConfig::removePoint(int pointIndex) {
 juce::Point<float> SingleDelayEditorConfig::getPoint(int pointIndex) {
   return points[static_cast<size_t>(pointIndex)];
 }
-void SingleDelayEditorConfig::clearPoints() { points.clear(); }
+void SingleDelayEditorConfig::clearPoints() {
+  points.clear();
+  delayLineConfig->clear();
+}
 
 int SingleDelayEditorConfig::getNumPoints() { return points.size(); }
 

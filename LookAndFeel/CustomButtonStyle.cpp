@@ -2,6 +2,8 @@
 CustomButtonStyle::CustomButtonStyle(const juce::Colour &colour) {
   setColour(juce::TextButton::buttonColourId, colour.darker(1.0));
   setColour(juce::TextButton::buttonOnColourId, colour);
+  setColour(juce::TextButton::textColourOnId, juce::Colours::black);
+  setColour(juce::TextButton::textColourOffId, juce::Colours::white);
 }
 void CustomButtonStyle::drawButtonBackground(
     juce::Graphics &g,

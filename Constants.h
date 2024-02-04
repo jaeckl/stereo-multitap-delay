@@ -23,6 +23,12 @@ const juce::String COMPONENT_CANVAS = "component-canvas";
 const juce::String COMPONENT_RULER_HORIZONTAL = "ruler-horizontal";
 const juce::String COMPONENT_RULER_VERTICAL = "ruler-vertical";
 const juce::String COMPONENT_COMBOBOX_GRID_RESOLUTION = "comboBox-gridRes";
+
+const juce::String COMPONENT_BUTTON_BYPASS = "button-bypass";
+const juce::String COMPONENT_COMBOBOX_PRESETS = "comboBox-preset";
+const juce::String COMPONENT_BUTTON_GRID_LEFT = "button-gridLeft";
+const juce::String COMPONENT_BUTTON_GRID_RIGHT = "button-gridRight";
+const juce::String COMPONENT_LABEL_GRID_RES = "label-gridRes";
 // component labels
 const juce::String TEXT_BUTTON_CHANNEL_SPLIT = "X";
 const juce::String TEXT_BUTTON_CHANNEL_LEFT = "L";
@@ -38,7 +44,7 @@ const juce::String TEXT_RULER_HORIZONTAL_TICKS_END = "1 bar";
 // button groups
 enum RadioGroups { LeftRightChannel = 1001 };
 
-// ranges
+// rotary button values
 const float WETDRY_MIN = 0.0f;
 const float WETDRY_MAX = 1.0f;
 const float WETDRY_STEP = 0.01f;
@@ -54,13 +60,16 @@ constexpr char FORMAT_STRING_GAIN_POS[] = "+{:.0}";
 constexpr char FORMAT_STRING_GAIN_NEG[] = "{:.0}";
 constexpr char FORMAT_STRING_BEATS[] = "{}/{}";
 
-// sizes
+// ruler
 const int TICK_MARKER_LENGTH = 8;
 const int TICK_MARKER_WIDTH = 2;
 
 const int RULER_VERTICAL_NUM_TICKS = 2;
 
-// grid resolution combobox items
+// grid resolution
+const int GRID_RES_INITIAL_INDEX = 1;
+
+const juce::String GRID_LABEL = "Grid: ";
 const juce::String GRID_HALF = "1/2";
 const juce::String GRID_QUATER = "1/4";
 const juce::String GRID_EIGHTH = "1/8";
