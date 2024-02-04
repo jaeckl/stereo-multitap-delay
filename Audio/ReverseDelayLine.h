@@ -7,13 +7,14 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <vector>
 
-template <typename SampleType> class DelayLine : public IDelayLine<SampleType> {
+template <typename SampleType>
+class ReverseDelayLine : public IDelayLine<SampleType> {
 public:
-  DelayLine()
-      : DelayLine(100, {}) {}
-  DelayLine(int bufferSize)
-      : DelayLine(bufferSize, {}) {}
-  DelayLine(int bufferSize, std::vector<HeadInfo> readingHeads)
+  ReverseDelayLine()
+      : ReverseDelayLine(100, {}) {}
+  ReverseDelayLine(int bufferSize)
+      : ReverseDelayLine(bufferSize, {}) {}
+  ReverseDelayLine(int bufferSize, std::vector<HeadInfo> readingHeads)
       : m_buffer(1, bufferSize)
       , m_readIndices()
       , m_writeIndex(0)
@@ -26,11 +27,19 @@ public:
 
     SampleType outputSample = 0;
     for (size_t i = 0; i < m_readIndices.size(); i++) {
-      float delaySample = m_buffer.getSample(0, m_readIndices[i]);
-      if (++m_readIndices[i] >= m_buffer.getNumSamples()) {
-        m_readIndices[i] = 0;
+      if (!isRunning[i]) {
+        if (m_writeIndex == m_delaysInSamples[i])
+          isRunning[i] = true;
+        m_readIndices[i] = m_delaysInSamples[i];
+      } else {
+        float delaySample = m_buffer.getSample(0, m_readIndices[i]);
+        if (--m_readIndices[i] < 0) {
+          m_readIndices[i] = m_buffer.getNumSamples() - 1;
+        }
+        outputSample = m_mixers[i].mix(outputSample, delaySample);
+        // if (m_readIndices[i] == m_writeIndex)
+        //   isRunning[i] = false;
       }
-      outputSample = m_mixers[i].mix(outputSample, delaySample);
     }
     m_buffer.setSample(0, m_writeIndex, sample + feedBack * outputSample);
 
@@ -48,10 +57,12 @@ public:
   int addReadingHead(int delayInSamples, float mixingAmplitude) {
     jassert(
         juce::isPositiveAndBelow(delayInSamples, m_buffer.getNumSamples() - 1));
-    int readIndex = m_writeIndex - delayInSamples;
+    int readIndex = m_writeIndex - 2 * delayInSamples;
     if (readIndex < 0)
       readIndex = m_buffer.getNumSamples() + readIndex;
     m_readIndices.push_back(readIndex);
+    m_delaysInSamples.push_back(delayInSamples);
+    isRunning.push_back(false);
     m_mixers.push_back(LinearMixer<SampleType>(1.0, mixingAmplitude));
     return m_readIndices.size() - 1;
   }
@@ -71,11 +82,13 @@ public:
     jassert(juce::isPositiveAndBelow(delayIndex, m_readIndices.size()));
     m_readIndices.erase(m_readIndices.begin() + delayIndex);
     m_mixers.erase(m_mixers.begin() + delayIndex);
+    isRunning.erase(isRunning.begin() + delayIndex);
   }
 
   void clear() {
     m_readIndices.clear();
     m_mixers.clear();
+    isRunning.clear();
   }
 
   void setBufferSize(int bufferSize) {
@@ -83,13 +96,14 @@ public:
     m_writeIndex = 0;
   }
 
-  int getBufferSize() { return m_buffer.getNumSamples(); }
-
+  int getBufferSize() { return m_buffer.getNumSamples() - 1; }
   void setFeedBack(float feedBackAmount) { feedBack = feedBackAmount; }
 
 private:
   juce::AudioBuffer<SampleType> m_buffer;
+  std::vector<bool> isRunning;
   std::vector<int> m_readIndices;
+  std::vector<int> m_delaysInSamples;
   std::vector<LinearMixer<SampleType>> m_mixers;
   int m_writeIndex;
   float feedBack;

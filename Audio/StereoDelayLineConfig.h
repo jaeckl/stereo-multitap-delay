@@ -1,5 +1,6 @@
 #include "DelayLine.h"
 #include "IDelayLineConfig.h"
+#include "ReverseDelayLine.h"
 
 class StereoDelayLineConfig : public IDelayLineConfig {
 private:
