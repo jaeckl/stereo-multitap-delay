@@ -57,22 +57,22 @@
        y="110" />
     <component
        id="button-splitChannels"
-       width="24"
-       height="24"
-       x="558"
-       y="73" />
+       width="32"
+       height="32"
+       x="628"
+       y="69" />
     <component
        id="button-leftChannel"
-       width="27"
-       height="24"
-       x="601"
-       y="73" />
+       width="32"
+       height="32"
+       x="558"
+       y="69" />
     <component
        id="button-rightChannel"
-       width="27"
-       height="24"
-       x="630"
-       y="73" />
+       width="32"
+       height="32"
+       x="591"
+       y="69" />
     <component
        id="button-gridLeft"
        width="24"

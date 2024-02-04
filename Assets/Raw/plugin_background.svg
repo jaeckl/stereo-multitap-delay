@@ -31,12 +31,12 @@
      inkscape:zoom="1"
      inkscape:cx="362.5"
      inkscape:cy="37.5"
-     inkscape:window-width="1606"
+     inkscape:window-width="1462"
      inkscape:window-height="1034"
-     inkscape:window-x="4"
+     inkscape:window-x="147"
      inkscape:window-y="36"
      inkscape:window-maximized="0"
-     inkscape:current-layer="g6-9">
+     inkscape:current-layer="layer1">
     <inkscape:grid
        id="grid1"
        units="px"
@@ -506,14 +506,14 @@
        x="670"
        y="65" />
     <rect
-       style="opacity:1;fill:none;fill-opacity:0.1;stroke:#e5e5e5;stroke-width:2.00148;stroke-dasharray:none;stroke-opacity:1"
+       style="display:none;opacity:1;fill:none;fill-opacity:0.1;stroke:#e5e5e5;stroke-width:2.00148;stroke-dasharray:none;stroke-opacity:1"
        id="rect45"
        width="61.998516"
        height="29.99852"
        x="598.00146"
        y="70" />
     <rect
-       style="fill:none;fill-opacity:0.1;stroke:#e5e5e5;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
+       style="display:none;fill:none;fill-opacity:0.1;stroke:#e5e5e5;stroke-width:2;stroke-dasharray:none;stroke-opacity:1"
        id="rect45-5"
        width="30.58075"
        height="30.58075"

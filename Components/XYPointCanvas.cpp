@@ -1,4 +1,3 @@
-#pragma once
 #include "XYPointCanvas.h"
 #include "XYPointModel.h"
 #include <juce_gui_basics/juce_gui_basics.h>
