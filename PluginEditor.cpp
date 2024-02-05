@@ -1,9 +1,11 @@
 #include "PluginEditor.h"
+#include "BinaryData.h"
 #include "Components/FileSystemButton.h"
 #include "Components/IDelayEditorConfig.h"
 #include "Constants.h"
 #include "PluginProcessor.h"
 #include "Presets/IPreset.h"
+#include "Views/XYEditorView.h"
 #include <BinaryData.h>
 #include <format>
 #include <memory>
@@ -12,6 +14,9 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     : AudioProcessorEditor(&p)
     , fileLogger(juce::File("LogFile.txt"), "Log File")
     , presetManager()
+    , delayEditorConfigSingle(std::make_shared<SingleDelayEditorConfig>())
+    , delayEditorConfigMulti(std::make_shared<MultiDelayEditorConfig>())
+    , activeEditorConfig(delayEditorConfigSingle)
     , whiteButtonStyle(Constants::WHITE_COLOUR, true)
     , blueButtonStyle(Constants::BLUE_COLOUR)
     , orangeButtonStyle(Constants::ORGANGE_COLOUR)
@@ -22,32 +27,12 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     , bypassButton(Constants::COMPONENT_BUTTON_BYPASS)
     , presetComboBox(Constants::COMPONENT_COMBOBOX_PRESETS)
     , fileSystemButton("button-filesystem")
-    , splitChannelsButton(Constants::COMPONENT_BUTTON_CHANNEL_SPLIT)
-    , leftChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_LEFT)
-    , rightChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_RIGHT)
-    , gridSelectLeftButton(Constants::COMPONENT_BUTTON_GRID_LEFT)
-    , gridSelectRightButton(Constants::COMPONENT_BUTTON_GRID_RIGHT)
-    , gridLabel(
-          Constants::COMPONENT_LABEL_GRID_RES,
-          Constants::GRID_LABEL + Constants::GRID_QUATER)
-    , gridResolutions(
-          {Constants::GRID_HALF,
-           Constants::GRID_QUATER,
-           Constants::GRID_EIGHTH,
-           Constants::GRID_SIXTEENTH})
-    , gridResolutionsIndex(Constants::GRID_RES_INITIAL_INDEX)
-    //, gridResolutionComboBox(Constants::COMPONENT_COMBOBOX_GRID_RESOLUTION)
-    , pointCanvas(Constants::COMPONENT_CANVAS)
-    , horizontalRuler(Constants::COMPONENT_RULER_HORIZONTAL)
-    , verticalRuler(Constants::COMPONENT_RULER_VERTICAL)
-    , xmlLayouter(this)
-    , delayEditorConfigSingle(std::make_shared<SingleDelayEditorConfig>())
-    , delayEditorConfigMulti(std::make_shared<MultiDelayEditorConfig>())
-    , activeEditorConfig(delayEditorConfigSingle)
+    , xyEditorView("view-xyeditor", this, activeEditorConfig.get())
+    , xmlLayouter(this, BinaryData::base_layout_xml)
     , processorRef(p) {
   // Make sure that before the constructor has finished, you've set the
   // editor's size to whatever you need it to be.
-  setSize(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
+  // setSize(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
   setResizable(false, false);
   activeEditorConfig->initialize(processorRef.delayLineConfig, &processorRef);
 
@@ -57,47 +42,27 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
 
 void ProcessorEditor::initializeControls() {
   configureBackgroundImage();
-  configureChannelButtons();
   configureRotarySliders();
-  configureRulers();
   configurePresetComboBox();
 
   wetDrySlider.addListener(this);
   gainSlider.addListener(this);
   presetComboBox.addListener(this);
   bypassButton.addListener(this);
-  splitChannelsButton.addListener(this);
-  leftChannelButton.addListener(this);
-  rightChannelButton.addListener(this);
-  leftChannelButton.setToggleState(
-      true, juce::NotificationType::dontSendNotification);
-  gridSelectLeftButton.addListener(this);
-  gridSelectRightButton.addListener(this);
-  gridLabel.setJustificationType(juce::Justification::centred);
+  fileSystemButton.addListener(this);
 }
 
 void ProcessorEditor::addControlsToView() {
   addAndMakeVisible(backgroundImg);
-  addAndMakeVisible(gridLabel);
-  addAndMakeVisible(gridSelectLeftButton);
-  addAndMakeVisible(gridSelectRightButton);
+
   addAndMakeVisible(wetDrySlider);
   addAndMakeVisible(gainSlider);
-  addAndMakeVisible(pointCanvas);
-  addAndMakeVisible(horizontalRuler);
-  addAndMakeVisible(verticalRuler);
+
   addAndMakeVisible(bypassButton);
   addAndMakeVisible(presetComboBox);
   addAndMakeVisible(fileSystemButton);
-  addAndMakeVisible(splitChannelsButton);
-  addAndMakeVisible(leftChannelButton);
-  addAndMakeVisible(rightChannelButton);
-  leftChannelButton.setVisible(false);
-  rightChannelButton.setVisible(false);
-  xmlLayouter.fromDocument(juce::parseXML(juce::String(
-                                              BinaryData::base_layout_svg,
-                                              BinaryData::base_layout_svgSize))
-                               .get());
+  addAndMakeVisible(xyEditorView);
+
   xmlLayouter.updateComponentBounds();
 }
 
@@ -111,27 +76,6 @@ void ProcessorEditor::configureBackgroundImage() {
 }
 void ProcessorEditor::configurePresetComboBox() {
   presetComboBox.addItemList(presetManager.getPresetNameList(), 1);
-}
-
-void ProcessorEditor::configureChannelButtons() {
-  leftChannelButton.setLookAndFeel(&orangeButtonStyle);
-  rightChannelButton.setLookAndFeel(&greenButtonStyle);
-  splitChannelsButton.setLookAndFeel(&blueButtonStyle);
-  gridSelectLeftButton.setLookAndFeel(&whiteButtonStyle);
-  gridSelectRightButton.setLookAndFeel(&whiteButtonStyle);
-
-  leftChannelButton.setClickingTogglesState(true);
-  rightChannelButton.setClickingTogglesState(true);
-  splitChannelsButton.setClickingTogglesState(true);
-
-  leftChannelButton.setButtonText(Constants::TEXT_BUTTON_CHANNEL_LEFT);
-  rightChannelButton.setButtonText(Constants::TEXT_BUTTON_CHANNEL_RIGHT);
-  splitChannelsButton.setButtonText(Constants::TEXT_BUTTON_CHANNEL_SPLIT);
-  gridSelectLeftButton.setButtonText(Constants::TEXT_BUTTON_GRID_LEFT);
-  gridSelectRightButton.setButtonText(Constants::TEXT_BUTTON_GRID_RIGHT);
-
-  leftChannelButton.setRadioGroupId(Constants::RadioGroups::LeftRightChannel);
-  rightChannelButton.setRadioGroupId(Constants::RadioGroups::LeftRightChannel);
 }
 
 void ProcessorEditor::configureRotarySliders() {
@@ -163,24 +107,7 @@ void ProcessorEditor::configureRotarySliders() {
               std::format(Constants::FORMAT_STRING_GAIN_NEG, s->getValue()));
       });
 }
-void ProcessorEditor::configureRulers() {
-  int ticks = 4;
-  pointCanvas.setPointModel(activeEditorConfig.get());
-  horizontalRuler.setAlignment(CanvasRuler::Alignment::Top);
-  horizontalRuler.setNumTicks(ticks);
-  horizontalRuler.setTickMarkerSize(
-      Constants::TICK_MARKER_LENGTH, Constants::TICK_MARKER_WIDTH);
-  horizontalRuler.setTickLabelFunction([](int idx, int size) -> juce::String {
-    if (idx == size)
-      return Constants::TEXT_RULER_HORIZONTAL_TICKS_END;
-    else
-      return std::format(Constants::FORMAT_STRING_BEATS, idx + 1, size);
-  });
-  verticalRuler.setAlignment(CanvasRuler::Alignment::Right);
-  verticalRuler.setNumTicks(Constants::RULER_VERTICAL_NUM_TICKS);
-  verticalRuler.setTickMarkerSize(
-      Constants::TICK_MARKER_LENGTH, Constants::TICK_MARKER_WIDTH);
-}
+
 void ProcessorEditor::configureRotarySlider(
     CustomRotaryKnob *slider,
     float minValue,
@@ -203,18 +130,18 @@ void ProcessorEditor::sliderValueChanged(juce::Slider *slider) {
 }
 
 void ProcessorEditor::buttonClicked(juce::Button *button) {
-  if (button == &splitChannelsButton)
-    switchBetweenModes();
-  if (button == &leftChannelButton && leftChannelButton.getToggleState())
+  if (button->getName() == Constants::COMPONENT_BUTTON_CHANNEL_SPLIT)
+    switchBetweenModes(button->getToggleState());
+  if (button->getName() == Constants::COMPONENT_BUTTON_CHANNEL_LEFT &&
+      button->getToggleState())
     showGroupA();
-  if (button == &rightChannelButton && rightChannelButton.getToggleState())
+  if (button->getName() == Constants::COMPONENT_BUTTON_CHANNEL_RIGHT &&
+      button->getToggleState())
     showGroupB();
   if (button == &bypassButton)
     updateAudioBypass();
-  if (button == &gridSelectLeftButton)
-    changeGrid(-1);
-  if (button == &gridSelectRightButton)
-    changeGrid(+1);
+  if (button == &fileSystemButton)
+    xyEditorView.setVisible(!xyEditorView.isVisible());
 }
 
 void ProcessorEditor::comboBoxChanged(juce::ComboBox *comboBox) {
@@ -240,64 +167,39 @@ void ProcessorEditor::updateAudioBypass() {
     processorRef.isBypassing = false;
 }
 
-void ProcessorEditor::changeGrid(int idx) {
-  gridResolutionsIndex = gridResolutionsIndex + idx;
-  if (gridResolutionsIndex == 0)
-    gridSelectLeftButton.setVisible(false);
-  else
-    gridSelectLeftButton.setVisible(true);
-
-  if (gridResolutionsIndex == gridResolutions.size() - 1)
-    gridSelectRightButton.setVisible(false);
-  else
-    gridSelectRightButton.setVisible(true);
-  gridLabel.setText(
-      Constants::GRID_LABEL + gridResolutions[gridResolutionsIndex],
-      juce::NotificationType::dontSendNotification);
-  updateGridResolution(std::pow(2, gridResolutionsIndex + 1));
-}
-
-void ProcessorEditor::updateGridResolution(int numTicks) {
-  horizontalRuler.setNumTicks(numTicks);
-  repaint();
-}
 void ProcessorEditor::showEditorConfig(
     std::shared_ptr<IDelayEditorConfig> config) {
   activeEditorConfig = config;
 
-  pointCanvas.setPointModel(activeEditorConfig.get());
+  xyEditorView.setCanvasPointModel(activeEditorConfig.get());
   activeEditorConfig->initialize(processorRef.delayLineConfig, &processorRef);
 }
 
-void ProcessorEditor::switchBetweenModes() {
-  if (splitChannelsButton.getToggleState()) {
+void ProcessorEditor::switchBetweenModes(bool toggleState) {
+  if (toggleState) {
 
-    leftChannelButton.setVisible(true);
-    rightChannelButton.setVisible(true);
-
+    xyEditorView.setChannelButtonsVisible(true);
     showEditorConfig(delayEditorConfigMulti);
-    if (leftChannelButton.getToggleState())
+    if (xyEditorView.isLeftChannelSelected())
       showGroupA();
     else
       showGroupB();
   } else {
-    leftChannelButton.setVisible(false);
-    rightChannelButton.setVisible(false);
-
-    pointCanvas.setColour(Constants::BLUE_COLOUR);
+    xyEditorView.setChannelButtonsVisible(false);
+    xyEditorView.setCanvasColour(Constants::BLUE_COLOUR);
     showEditorConfig(delayEditorConfigSingle);
   }
   repaint();
 }
 
 void ProcessorEditor::showGroupA() {
-  pointCanvas.setColour(Constants::ORGANGE_COLOUR);
+  xyEditorView.setCanvasColour(Constants::ORGANGE_COLOUR);
   auto *conf = dynamic_cast<MultiDelayEditorConfig *>(activeEditorConfig.get());
   conf->enableGroupA();
   repaint();
 }
 void ProcessorEditor::showGroupB() {
-  pointCanvas.setColour(Constants::GREEN_COLOUR);
+  xyEditorView.setCanvasColour(Constants::GREEN_COLOUR);
   auto *conf = dynamic_cast<MultiDelayEditorConfig *>(activeEditorConfig.get());
   conf->enableGroupB();
   repaint();

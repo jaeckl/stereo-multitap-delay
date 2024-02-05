@@ -95,6 +95,7 @@ void XYPointCanvas::modifierKeysChanged(const juce::ModifierKeys &keys) {
 void XYPointCanvas::setColour(juce::Colour colour) { pointColour = colour; }
 
 void XYPointCanvas::paint(juce::Graphics &g) {
+  // g.setColour(juce::Colours::red);
   g.setColour(pointColour.withAlpha(0.04f));
   g.fillRect(getLocalBounds());
 
@@ -104,11 +105,11 @@ void XYPointCanvas::paint(juce::Graphics &g) {
     if (optionalPointIndex.has_value() && i == optionalPointIndex.value()) {
       g.setColour(pointColour.withLightness(0.8));
       g.fillEllipse(point.x - 7, point.y - 7, 14, 14);
-      g.drawLine(point.x, point.y, point.x, getHeight(), 2);
+      g.drawRect(point.x - 1, point.y, 2, getHeight() - point.y);
     } else {
       g.setColour(pointColour);
       g.fillEllipse(point.x - 5, point.y - 5, 10, 10);
-      g.drawLine(point.x, point.y, point.x, getHeight(), 2);
+      g.drawRect(point.x - 1, point.y, 2, getHeight() - point.y);
     }
   }
 

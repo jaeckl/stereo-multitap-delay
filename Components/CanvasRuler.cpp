@@ -11,6 +11,7 @@ void CanvasRuler::setAlignment(Alignment rulerAlignment) {
 void CanvasRuler::setTickMarkerSize(int length, int width) {
   tickMarkerLength = length;
   tickMarkerWidth = width;
+  axisWidth = width;
 }
 void CanvasRuler::setTickLabelFunction(
     std::function<juce::String(int, int)> function) {
@@ -18,98 +19,272 @@ void CanvasRuler::setTickLabelFunction(
 }
 void CanvasRuler::paint(juce::Graphics &g) {
   // g.setColour(juce::Colours::red);
-  // g.fillRect(getLocalBounds());
+  // g.fillAll();
   //   render axis
   juce::Font font;
   font.setHeight(12.0f);
+
   g.setFont(font);
   g.setColour(rulerColor);
   switch (alignment) {
-  case Top:
-    g.drawLine(0, 0, getWidth(), 0, tickMarkerWidth);
-    break;
-  case Bottom:
-    g.drawLine(0, getHeight(), getWidth(), getHeight(), tickMarkerWidth);
-    break;
-  case Left:
-    g.drawLine(0, 0, 0, getHeight(), tickMarkerWidth);
-    break;
-  case Right:
-    g.drawLine(getWidth(), 0, getWidth(), getHeight(), tickMarkerWidth);
+  case Top: {
+    drawAxisTop(g);
+    drawTicksTop(g);
+    drawTickLabelTop(g);
     break;
   }
-  int tickSpacing = 0;
-  int offset2 = 0;
-  switch (alignment) {
-  case Top:
-  case Bottom:
-    tickSpacing = getWidth() / (numberOfTicks);
-    if (getWidth() % 2 == 0)
-      offset2 = 1;
-    break;
-  case Left:
-  case Right:
-    tickSpacing = getHeight() / (numberOfTicks);
-    if (getHeight() % 2 == 0)
-      offset2 = 1;
+  case Bottom: {
+    drawAxisBottom(g);
+    drawTicksBottom(g);
     break;
   }
-  int offset = 0;
-  for (auto i = 0; i < numberOfTicks + 1; i++) {
-    if (i == 0)
-      offset = 1 + tickMarkerWidth / 2;
-    else if (i == numberOfTicks)
-      offset = -tickMarkerWidth / 2 - offset2;
-    else
-      offset = 0;
+  case Left: {
+    drawAxisLeft(g);
+    drawTicksLeft(g);
+    break;
+  }
+  case Right: {
+    drawAxisRight(g);
+    drawTicksRight(g);
+    break;
+  }
+  }
+}
+void CanvasRuler::drawAxisTop(juce::Graphics &g) {
+  g.fillRect(0, 0, getWidth() - 1, axisWidth);
+}
+void CanvasRuler::drawAxisBottom(juce::Graphics &g) {
+  g.fillRect(0, getHeight() - axisWidth, getWidth(), axisWidth);
+}
+void CanvasRuler::drawAxisLeft(juce::Graphics &g) {
+  g.fillRect(0, 0, axisWidth, getHeight() - 1);
+}
+void CanvasRuler::drawAxisRight(juce::Graphics &g) {
+  g.fillRect(getWidth() - axisWidth, 0, axisWidth, getHeight() - 1);
+}
 
-    switch (alignment) {
-    case Top: {
-      g.drawLine(
-          i * tickSpacing + offset + i - tickMarkerWidth / 2,
-          0,
-          i * tickSpacing + offset + i - tickMarkerWidth / 2,
-          tickMarkerLength,
-          tickMarkerWidth);
-      auto text = tickLabelFunction(i, numberOfTicks);
-      int width = g.getCurrentFont().getStringWidth(text);
-      int height = getHeight() - tickMarkerLength;
-      int x;
-      if (i == 0)
-        x = 0;
-      else if (i == numberOfTicks)
-        x = getWidth() - width;
-      else
-        x = (i * tickSpacing + offset + i) - width / 2;
-      int y = tickMarkerLength;
-      g.drawFittedText(
-          text, x, y, width, height, juce::Justification::centred, 1);
-      break;
-    }
-    case Bottom:
-      g.drawLine(
-          i * tickSpacing + offset + i,
-          getHeight(),
-          i * tickSpacing + offset + i,
-          getHeight() - tickMarkerLength,
-          tickMarkerWidth);
-      break;
-    case Left:
-      g.drawLine(
-          0,
-          i * tickSpacing + offset + i,
-          tickMarkerLength,
-          i * tickSpacing + offset + i,
-          tickMarkerWidth);
-      break;
-    case Right:
-      g.drawLine(
-          getWidth(),
-          i * tickSpacing + offset + i - tickMarkerWidth / 2,
-          getWidth() - tickMarkerLength,
-          i * tickSpacing + offset + i - tickMarkerWidth / 2,
-          tickMarkerWidth);
-      break;
-    }
+void CanvasRuler::drawTicksTop(juce::Graphics &g) {
+  // draw first tick
+  g.fillRect(0, 0, tickMarkerWidth, tickMarkerLength);
+  int sectionWidth = getWidth() / numberOfTicks;
+
+  for (auto i = 1; i < numberOfTicks; ++i)
+    g.fillRect(
+        i * sectionWidth - tickMarkerWidth / 2,
+        0,
+        tickMarkerWidth,
+        tickMarkerLength);
+  // draw last tick
+  g.fillRect(
+      getWidth() - tickMarkerWidth, 0, tickMarkerWidth, tickMarkerLength);
+}
+
+void CanvasRuler::drawTicksBottom(juce::Graphics &g) {
+  g.fillRect(
+      0, getHeight() - tickMarkerLength, tickMarkerWidth, tickMarkerLength);
+  int sectionWidth = getWidth() / numberOfTicks;
+
+  for (auto i = 1; i < numberOfTicks; ++i)
+    g.fillRect(
+        i * sectionWidth - tickMarkerWidth / 2,
+        getHeight() - tickMarkerLength,
+        tickMarkerWidth,
+        tickMarkerLength);
+  // draw last tick
+  g.fillRect(
+      getWidth() - tickMarkerWidth,
+      getHeight() - tickMarkerLength,
+      tickMarkerWidth,
+      tickMarkerLength);
+}
+
+void CanvasRuler::drawTicksLeft(juce::Graphics &g) {
+  g.fillRect(0, 0, tickMarkerLength, tickMarkerWidth);
+  int sectionWidth = getHeight() / numberOfTicks;
+
+  for (auto i = 1; i < numberOfTicks; ++i)
+    g.fillRect(
+        0,
+        i * sectionWidth - tickMarkerWidth / 2,
+        tickMarkerWidth,
+        tickMarkerLength);
+  // draw last tick
+  g.fillRect(
+      0, getHeight() - tickMarkerWidth, tickMarkerLength, tickMarkerWidth);
+}
+
+void CanvasRuler::drawTicksRight(juce::Graphics &g) {
+  g.fillRect(
+      getWidth() - tickMarkerLength, 0, tickMarkerLength, tickMarkerWidth);
+  int sectionWidth = getHeight() / numberOfTicks;
+
+  for (auto i = 1; i < numberOfTicks; ++i)
+    g.fillRect(
+        getWidth() - tickMarkerLength,
+        i * sectionWidth - tickMarkerWidth / 2,
+        tickMarkerLength,
+        tickMarkerWidth);
+  // draw last tick
+  g.fillRect(
+      getWidth() - tickMarkerLength,
+      getHeight() - tickMarkerWidth,
+      tickMarkerLength,
+      tickMarkerWidth);
+}
+
+void CanvasRuler::drawTickLabelTop(juce::Graphics &g) {
+  // draw first tick
+  juce::Font font = g.getCurrentFont();
+  auto label = tickLabelFunction(0, numberOfTicks + 1);
+  auto textWidth = font.getStringWidth(label);
+  g.drawFittedText(
+      label.toStdString(),
+      0,
+      tickMarkerLength,
+      textWidth,
+      getHeight() - tickMarkerLength,
+      juce::Justification::centred,
+      1);
+  int sectionWidth = getWidth() / numberOfTicks;
+
+  for (auto i = 1; i < numberOfTicks; ++i) {
+    label = tickLabelFunction(i, numberOfTicks + 1);
+    textWidth = font.getStringWidth(label);
+    g.drawFittedText(
+        label.toStdString(),
+        i * sectionWidth - textWidth / 2,
+        tickMarkerLength,
+        textWidth,
+        getHeight() - tickMarkerLength,
+        juce::Justification::centred,
+        1);
   }
+  label = tickLabelFunction(numberOfTicks + 1, numberOfTicks + 1);
+  textWidth = font.getStringWidth(label);
+  g.drawFittedText(
+      label.toStdString(),
+      getWidth() - textWidth,
+      tickMarkerLength,
+      textWidth,
+      getHeight() - tickMarkerLength,
+      juce::Justification::centred,
+      1);
+}
+void CanvasRuler::drawTickLabelBottom(juce::Graphics &g) {
+  // draw first tick
+  juce::Font font = g.getCurrentFont();
+  auto label = tickLabelFunction(0, numberOfTicks + 1);
+  auto textWidth = font.getStringWidth(label);
+  g.drawFittedText(
+      label.toStdString(),
+      0,
+      0,
+      textWidth,
+      getHeight() - tickMarkerLength,
+      juce::Justification::centred,
+      1);
+  int sectionWidth = getWidth() / numberOfTicks;
+
+  for (auto i = 1; i < numberOfTicks; ++i) {
+    label = tickLabelFunction(i, numberOfTicks + 1);
+    textWidth = font.getStringWidth(label);
+    g.drawFittedText(
+        label.toStdString(),
+        i * sectionWidth - textWidth / 2,
+        0,
+        textWidth,
+        getHeight() - tickMarkerLength,
+        juce::Justification::centred,
+        1);
+  }
+  label = tickLabelFunction(numberOfTicks + 1, numberOfTicks + 1);
+  textWidth = font.getStringWidth(label);
+  g.drawFittedText(
+      label.toStdString(),
+      getWidth() - textWidth,
+      0,
+      textWidth,
+      getHeight() - tickMarkerLength,
+      juce::Justification::centred,
+      1);
+}
+void CanvasRuler::drawTickLabelLeft(juce::Graphics &g) {
+  // draw first tick
+  juce::Font font = g.getCurrentFont();
+  auto label = tickLabelFunction(0, numberOfTicks + 1);
+  auto textWidth = getWidth() - tickMarkerLength;
+  auto textHeight = font.getHeight();
+
+  g.drawFittedText(
+      label.toStdString(),
+      tickMarkerLength,
+      0,
+      textWidth,
+      textHeight,
+      juce::Justification::centred,
+      1);
+  int sectionWidth = getWidth() / numberOfTicks;
+
+  for (auto i = 1; i < numberOfTicks; ++i) {
+    label = tickLabelFunction(i, numberOfTicks + 1);
+    textWidth = font.getStringWidth(label);
+    g.drawFittedText(
+        label.toStdString(),
+        textWidth,
+        i * sectionWidth - textHeight / 2,
+        textWidth,
+        textHeight,
+        juce::Justification::centred,
+        1);
+  }
+  label = tickLabelFunction(numberOfTicks + 1, numberOfTicks + 1);
+  textWidth = font.getStringWidth(label);
+  g.drawFittedText(
+      label.toStdString(),
+      textWidth,
+      getHeight() - textHeight,
+      textWidth,
+      textHeight,
+      juce::Justification::centred,
+      1);
+}
+void CanvasRuler::drawTickLabelRight(juce::Graphics &g) {
+  // draw first tick
+  juce::Font font = g.getCurrentFont();
+  auto label = tickLabelFunction(0, numberOfTicks + 1);
+  auto textWidth = getWidth() - tickMarkerLength;
+  auto textHeight = font.getHeight();
+
+  g.drawFittedText(
+      label.toStdString(),
+      tickMarkerLength,
+      0,
+      textWidth,
+      textHeight,
+      juce::Justification::centred,
+      1);
+  int sectionWidth = getWidth() / numberOfTicks;
+
+  for (auto i = 1; i < numberOfTicks; ++i) {
+    label = tickLabelFunction(i, numberOfTicks + 1);
+    textWidth = font.getStringWidth(label);
+    g.drawFittedText(
+        label.toStdString(),
+        textWidth,
+        i * sectionWidth - textHeight / 2,
+        textWidth,
+        textHeight,
+        juce::Justification::centred,
+        1);
+  }
+  label = tickLabelFunction(numberOfTicks + 1, numberOfTicks + 1);
+  textWidth = font.getStringWidth(label);
+  g.drawFittedText(
+      label.toStdString(),
+      textWidth,
+      getHeight() - textHeight,
+      textWidth,
+      textHeight,
+      juce::Justification::centred,
+      1);
 }

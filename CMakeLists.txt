@@ -103,7 +103,8 @@ target_sources(
           LookAndFeel/CustomButtonStyle.cpp
           LookAndFeel/CustomRotarySliderStyle.cpp
           Presets/FilePreset.cpp
-          Presets/PresetManager.cpp)
+          Presets/PresetManager.cpp
+          Views/XYEditorView.cpp)
 target_include_directories(SimpleDelayLine PRIVATE ${PROJECT_SOURCE_DIR})
 # `target_compile_definitions` adds some preprocessor definitions to our target.
 # In a Projucer project, these might be passed in the 'Preprocessor Definitions'
@@ -148,7 +149,8 @@ juce_add_binary_data(
   Assets/Icons/icon_arrow_right.png
   Assets/Icons/icon_folder.png
   Assets/Icons/icon_folder_on.png
-  Layouts/base_layout.svg)
+  Layouts/base_layout.xml
+  Layouts/xyeditor_layout.xml)
 
 file(GLOB preset_files "PresetFiles/*")
 

@@ -12,6 +12,7 @@
 #include "LookAndFeel/CustomButtonStyle.h"
 #include "PluginProcessor.h"
 #include "Presets/PresetManager.h"
+#include "Views/XYEditorView.h"
 #include <memory>
 #include <utility>
 #include <vector>
@@ -34,6 +35,10 @@ private:
 
   PresetManager presetManager;
 
+  std::shared_ptr<SingleDelayEditorConfig> delayEditorConfigSingle;
+  std::shared_ptr<MultiDelayEditorConfig> delayEditorConfigMulti;
+  std::shared_ptr<IDelayEditorConfig> activeEditorConfig;
+
   CustomButtonStyle whiteButtonStyle;
   CustomButtonStyle blueButtonStyle;
   CustomButtonStyle orangeButtonStyle;
@@ -49,36 +54,19 @@ private:
   juce::ComboBox presetComboBox;
   FileSystemButton fileSystemButton;
 
-  juce::TextButton splitChannelsButton;
-  juce::TextButton leftChannelButton;
-  juce::TextButton rightChannelButton;
-
-  juce::TextButton gridSelectLeftButton;
-  juce::TextButton gridSelectRightButton;
-  juce::Label gridLabel;
-  std::vector<juce::String> gridResolutions;
-  int gridResolutionsIndex;
+  XYEditorView xyEditorView;
 
   std::vector<juce::Point<float>> combinedPoints;
   std::vector<juce::Point<float>> leftChannelPoints;
   std::vector<juce::Point<float>> rightChannelPoints;
 
-  XYPointCanvas pointCanvas;
-  CanvasRuler horizontalRuler;
-  CanvasRuler verticalRuler;
-
   XMLElementLayouter xmlLayouter;
-  std::shared_ptr<SingleDelayEditorConfig> delayEditorConfigSingle;
-  std::shared_ptr<MultiDelayEditorConfig> delayEditorConfigMulti;
-  std::shared_ptr<IDelayEditorConfig> activeEditorConfig;
 
   void initializeControls();
   void addControlsToView();
   void configureBackgroundImage();
   void configurePresetComboBox();
-  void configureChannelButtons();
   void configureRotarySliders();
-  void configureRulers();
 
   void configureRotarySlider(
       CustomRotaryKnob *slider,
@@ -94,13 +82,12 @@ private:
   void comboBoxChanged(juce::ComboBox *comboBox) override;
   void handleDelayComboBox();
 
-  void switchBetweenModes();
+  void switchBetweenModes(bool toggleState);
   void showGroupA();
   void showGroupB();
   void showEditorConfig(std::shared_ptr<IDelayEditorConfig> config);
   std::pair<int, int> computeWetDryRatio(float value);
-  void changeGrid(int idx);
-  void updateGridResolution(int numTicks);
+
   void updateAudioBypass();
   void applyPreset(size_t presetId);
   AudioPluginAudioProcessor &processorRef;

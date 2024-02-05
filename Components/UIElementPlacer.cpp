@@ -1,13 +1,24 @@
 #include "UIElementPlacer.h"
+#include <BinaryData.h>
 #include <juce_core/juce_core.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 
 XMLElementLayouter::XMLElementLayouter(juce::Component *component)
     : rootComponent(component) {}
 
+XMLElementLayouter::XMLElementLayouter(
+    juce::Component *component,
+    const char *layoutResource)
+    : XMLElementLayouter(component) {
+  fromDocument(
+      juce::parseXMLIfTagMatches(juce::String(layoutResource), "layout").get());
+}
+
 bool XMLElementLayouter::fromDocument(juce::XmlElement *element) {
   if (!element)
     return false;
+  rootWidth = element->getIntAttribute("width");
+  rootHeight = element->getIntAttribute("height");
   for (const auto *child : element->getChildWithTagNameIterator("component")) {
     auto id = child->getStringAttribute("id");
     if (id.isEmpty())
@@ -20,6 +31,7 @@ bool XMLElementLayouter::fromDocument(juce::XmlElement *element) {
   return true;
 }
 void XMLElementLayouter::updateComponentBounds() {
+  rootComponent->setSize(rootWidth, rootHeight);
   for (auto &child : rootComponent->getChildren()) {
     auto it = elementBounds.find(child->getName());
     if (it != elementBounds.end())

@@ -21,4 +21,20 @@ private:
   std::function<juce::String(int, int)> tickLabelFunction;
   int tickMarkerLength = 5;
   int tickMarkerWidth = 2;
+  int axisWidth = 2;
+
+  void drawAxisTop(juce::Graphics &g);
+  void drawAxisBottom(juce::Graphics &g);
+  void drawAxisLeft(juce::Graphics &g);
+  void drawAxisRight(juce::Graphics &g);
+
+  void drawTicksTop(juce::Graphics &g);
+  void drawTicksBottom(juce::Graphics &g);
+  void drawTicksLeft(juce::Graphics &g);
+  void drawTicksRight(juce::Graphics &g);
+
+  void drawTickLabelTop(juce::Graphics &g);
+  void drawTickLabelBottom(juce::Graphics &g);
+  void drawTickLabelLeft(juce::Graphics &g);
+  void drawTickLabelRight(juce::Graphics &g);
 };

@@ -1,4 +1,4 @@
-<svg
+<layout
    width="800"
    height="300">
    <component
@@ -51,7 +51,7 @@
        y="110" />
     <component
        id="ruler-horizontal"
-       width="639"
+       width="640"
        height="20"
        x="21"
        y="280" />
@@ -97,4 +97,10 @@
       height="24"
       y="73"
       x="19" />
-</svg>
+    <component 
+      id="view-xyeditor"
+      width="674"
+      height="240"
+      y="60"
+      x="0" />
+</layout>
