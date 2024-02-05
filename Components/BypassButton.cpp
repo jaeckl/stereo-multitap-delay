@@ -29,4 +29,7 @@ BypassButton::BypassButton(const juce::String &name)
       overImageOn.get(),
       nullptr,
       nullptr);
+  setToggleable(true);
+  setClickingTogglesState(true);
+  setToggleState(false, juce::NotificationType::dontSendNotification);
 }

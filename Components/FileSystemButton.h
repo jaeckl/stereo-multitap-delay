@@ -1,9 +1,9 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
-class BypassButton : public juce::DrawableButton {
+class FileSystemButton : public juce::DrawableButton {
 public:
-  explicit BypassButton(const juce::String &name);
+  explicit FileSystemButton(const juce::String &name);
 
 private:
   std::unique_ptr<juce::Drawable> normalImage;

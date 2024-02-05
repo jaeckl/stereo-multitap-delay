@@ -3,6 +3,7 @@
 #include "Components/BypassButton.h"
 #include "Components/CanvasRuler.h"
 #include "Components/CustomRotaryKnob.h"
+#include "Components/FileSystemButton.h"
 #include "Components/IDelayEditorConfig.h"
 #include "Components/MultiDelayEditorConfig.h"
 #include "Components/SingleDelayEditorConfig.h"
@@ -46,6 +47,8 @@ private:
   BypassButton bypassButton;
 
   juce::ComboBox presetComboBox;
+  FileSystemButton fileSystemButton;
+
   juce::TextButton splitChannelsButton;
   juce::TextButton leftChannelButton;
   juce::TextButton rightChannelButton;

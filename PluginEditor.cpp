@@ -1,6 +1,5 @@
 #include "PluginEditor.h"
-#include "Components/CanvasRuler.h"
-#include "Components/CustomRotaryKnob.h"
+#include "Components/FileSystemButton.h"
 #include "Components/IDelayEditorConfig.h"
 #include "Constants.h"
 #include "PluginProcessor.h"
@@ -22,6 +21,7 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     , gainSlider(Constants::COMPONENT_SLIDER_GAIN, Constants::BLUE_COLOUR)
     , bypassButton(Constants::COMPONENT_BUTTON_BYPASS)
     , presetComboBox(Constants::COMPONENT_COMBOBOX_PRESETS)
+    , fileSystemButton("button-filesystem")
     , splitChannelsButton(Constants::COMPONENT_BUTTON_CHANNEL_SPLIT)
     , leftChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_LEFT)
     , rightChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_RIGHT)
@@ -61,10 +61,7 @@ void ProcessorEditor::initializeControls() {
   configureRotarySliders();
   configureRulers();
   configurePresetComboBox();
-  bypassButton.setToggleable(true);
-  bypassButton.setClickingTogglesState(true);
-  bypassButton.setToggleState(
-      false, juce::NotificationType::dontSendNotification);
+
   wetDrySlider.addListener(this);
   gainSlider.addListener(this);
   presetComboBox.addListener(this);
@@ -91,6 +88,7 @@ void ProcessorEditor::addControlsToView() {
   addAndMakeVisible(verticalRuler);
   addAndMakeVisible(bypassButton);
   addAndMakeVisible(presetComboBox);
+  addAndMakeVisible(fileSystemButton);
   addAndMakeVisible(splitChannelsButton);
   addAndMakeVisible(leftChannelButton);
   addAndMakeVisible(rightChannelButton);

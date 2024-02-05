@@ -99,6 +99,7 @@ target_sources(
           Components/UIElementPlacer.cpp
           Components/XYPointCanvas.cpp
           Components/BypassButton.cpp
+          Components/FileSystemButton.cpp
           LookAndFeel/CustomButtonStyle.cpp
           LookAndFeel/CustomRotarySliderStyle.cpp
           Presets/FilePreset.cpp
@@ -143,6 +144,10 @@ juce_add_binary_data(
   Assets/bypass_button_highlight.png
   Assets/bypass_button_pressed.png
   Assets/bypass_button_pressed_highlight.png
+  Assets/Icons/icon_arrow_left.png
+  Assets/Icons/icon_arrow_right.png
+  Assets/Icons/icon_folder.png
+  Assets/Icons/icon_folder_on.png
   Layouts/base_layout.svg)
 
 file(GLOB preset_files "PresetFiles/*")
