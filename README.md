@@ -5,11 +5,11 @@ This plugin allows you to create stereo multitap delay effects in your audio pro
 
 ## Key Features
 - Easily load and mange preset files directly within the plugin
-  - Browse your file system and select preset files to instantly hear new presets ![](Docs/front_image_browse.png)
+  - Browse your file system and select preset files to instantly hear new presets ![](Docs/browse_files.gif)
 - Draw delay timestamps on a canvas
-  - Adjust position and amplitude of each timestamp
+  - Adjust position and amplitude of each timestamp ![](Docs/move_point.gif)
 - Single and multichannel delay modes
-  - Select between processing the left (L), right (R), or both channels
+  - Select between processing the left (L), right (R), or both channels ![](Docs/switch_channel.gif)
 - Adjustable wet/dry mix
   - Top right rotary slider controls blend between dry input signal and wet delayed signal
 - Output gain adjustment
