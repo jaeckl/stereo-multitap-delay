@@ -12,7 +12,6 @@ class XYEditorView
 
 private:
   juce::Button::Listener *buttonListener;
-  XYPointModel *pointModel;
 
   CustomButtonStyle whiteButtonStyle;
   CustomButtonStyle blueButtonStyle;
@@ -52,11 +51,12 @@ private:
   void changeGrid(int gridIndexDelta);
   void updateGridResolution(int numTicks);
 
+  void setColours(juce::Button &button, juce::Colour colour);
+
 public:
   XYEditorView(
       const juce::String &name,
-      juce::Button::Listener *buttonListener,
-      XYPointModel *model);
+      juce::Button::Listener *buttonListener);
   void paint(juce::Graphics &g) override;
   void resized() override;
   void setCanvasColour(juce::Colour colour);

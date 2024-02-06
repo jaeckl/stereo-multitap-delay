@@ -100,11 +100,14 @@ target_sources(
           Components/XYPointCanvas.cpp
           Components/BypassButton.cpp
           Components/FileSystemButton.cpp
+          Components/BreadCrumb.cpp
+          Components/CustomFileListComponent.cpp
           LookAndFeel/CustomButtonStyle.cpp
           LookAndFeel/CustomRotarySliderStyle.cpp
           Presets/FilePreset.cpp
           Presets/PresetManager.cpp
-          Views/XYEditorView.cpp)
+          Views/XYEditorView.cpp
+          Views/FileBrowserView.cpp)
 target_include_directories(SimpleDelayLine PRIVATE ${PROJECT_SOURCE_DIR})
 # `target_compile_definitions` adds some preprocessor definitions to our target.
 # In a Projucer project, these might be passed in the 'Preprocessor Definitions'
@@ -149,8 +152,13 @@ juce_add_binary_data(
   Assets/Icons/icon_arrow_right.png
   Assets/Icons/icon_folder.png
   Assets/Icons/icon_folder_on.png
+  Assets/Icons/icon_folder_small.png
+  Assets/Icons/icon_folder_small_on.png
+  Assets/Icons/icon_file_small.png
+  Assets/Icons/icon_file_small_on.png
   Layouts/base_layout.xml
-  Layouts/xyeditor_layout.xml)
+  Layouts/xyeditor_layout.xml
+  Layouts/filebrowser_layout.xml)
 
 file(GLOB preset_files "PresetFiles/*")
 

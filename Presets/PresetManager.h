@@ -8,6 +8,8 @@ public:
   const IPreset *getPreset(size_t presetId);
   juce::StringArray getPresetNameList();
 
+  size_t loadPresetFromFile(const juce::File &file);
+
 private:
   std::vector<std::unique_ptr<IPreset>> presets;
   void loadFromMemory();

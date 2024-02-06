@@ -1,0 +1,32 @@
+ <layout width="674" height="240">
+   <component
+      id="breadcrumb-dirs"
+      width="631"
+      height="24"
+      x="22"
+      y="22"/>
+   <component
+      id="filelist"
+      width="623"
+      height="163"
+      x="26"
+      y="51" />
+   <component
+      id="label-nopreset"
+      width="623"
+      height="163"
+      x="26"
+      y="51" />
+   <component 
+      id="button-back"
+      width="24"
+      height="24"
+      x="22"
+      y="22" />
+   <component
+      id="label-folderpath"
+      width="600"
+      height="24"
+      x="47"
+      y="22"/>
+</layout>

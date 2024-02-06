@@ -135,7 +135,7 @@ void CanvasRuler::drawTicksRight(juce::Graphics &g) {
 void CanvasRuler::drawTickLabelTop(juce::Graphics &g) {
   // draw first tick
   juce::Font font = g.getCurrentFont();
-  auto label = tickLabelFunction(0, numberOfTicks + 1);
+  auto label = tickLabelFunction(0, numberOfTicks);
   auto textWidth = font.getStringWidth(label);
   g.drawFittedText(
       label.toStdString(),
@@ -148,7 +148,7 @@ void CanvasRuler::drawTickLabelTop(juce::Graphics &g) {
   int sectionWidth = getWidth() / numberOfTicks;
 
   for (auto i = 1; i < numberOfTicks; ++i) {
-    label = tickLabelFunction(i, numberOfTicks + 1);
+    label = tickLabelFunction(i, numberOfTicks);
     textWidth = font.getStringWidth(label);
     g.drawFittedText(
         label.toStdString(),
@@ -159,7 +159,7 @@ void CanvasRuler::drawTickLabelTop(juce::Graphics &g) {
         juce::Justification::centred,
         1);
   }
-  label = tickLabelFunction(numberOfTicks + 1, numberOfTicks + 1);
+  label = tickLabelFunction(numberOfTicks, numberOfTicks);
   textWidth = font.getStringWidth(label);
   g.drawFittedText(
       label.toStdString(),
@@ -173,7 +173,7 @@ void CanvasRuler::drawTickLabelTop(juce::Graphics &g) {
 void CanvasRuler::drawTickLabelBottom(juce::Graphics &g) {
   // draw first tick
   juce::Font font = g.getCurrentFont();
-  auto label = tickLabelFunction(0, numberOfTicks + 1);
+  auto label = tickLabelFunction(0, numberOfTicks);
   auto textWidth = font.getStringWidth(label);
   g.drawFittedText(
       label.toStdString(),
@@ -186,7 +186,7 @@ void CanvasRuler::drawTickLabelBottom(juce::Graphics &g) {
   int sectionWidth = getWidth() / numberOfTicks;
 
   for (auto i = 1; i < numberOfTicks; ++i) {
-    label = tickLabelFunction(i, numberOfTicks + 1);
+    label = tickLabelFunction(i, numberOfTicks);
     textWidth = font.getStringWidth(label);
     g.drawFittedText(
         label.toStdString(),
@@ -197,7 +197,7 @@ void CanvasRuler::drawTickLabelBottom(juce::Graphics &g) {
         juce::Justification::centred,
         1);
   }
-  label = tickLabelFunction(numberOfTicks + 1, numberOfTicks + 1);
+  label = tickLabelFunction(numberOfTicks, numberOfTicks);
   textWidth = font.getStringWidth(label);
   g.drawFittedText(
       label.toStdString(),
@@ -211,7 +211,7 @@ void CanvasRuler::drawTickLabelBottom(juce::Graphics &g) {
 void CanvasRuler::drawTickLabelLeft(juce::Graphics &g) {
   // draw first tick
   juce::Font font = g.getCurrentFont();
-  auto label = tickLabelFunction(0, numberOfTicks + 1);
+  auto label = tickLabelFunction(0, numberOfTicks);
   auto textWidth = getWidth() - tickMarkerLength;
   auto textHeight = font.getHeight();
 
@@ -226,7 +226,7 @@ void CanvasRuler::drawTickLabelLeft(juce::Graphics &g) {
   int sectionWidth = getWidth() / numberOfTicks;
 
   for (auto i = 1; i < numberOfTicks; ++i) {
-    label = tickLabelFunction(i, numberOfTicks + 1);
+    label = tickLabelFunction(i, numberOfTicks);
     textWidth = font.getStringWidth(label);
     g.drawFittedText(
         label.toStdString(),
@@ -237,7 +237,7 @@ void CanvasRuler::drawTickLabelLeft(juce::Graphics &g) {
         juce::Justification::centred,
         1);
   }
-  label = tickLabelFunction(numberOfTicks + 1, numberOfTicks + 1);
+  label = tickLabelFunction(numberOfTicks, numberOfTicks);
   textWidth = font.getStringWidth(label);
   g.drawFittedText(
       label.toStdString(),
@@ -251,7 +251,7 @@ void CanvasRuler::drawTickLabelLeft(juce::Graphics &g) {
 void CanvasRuler::drawTickLabelRight(juce::Graphics &g) {
   // draw first tick
   juce::Font font = g.getCurrentFont();
-  auto label = tickLabelFunction(0, numberOfTicks + 1);
+  auto label = tickLabelFunction(0, numberOfTicks);
   auto textWidth = getWidth() - tickMarkerLength;
   auto textHeight = font.getHeight();
 
@@ -266,7 +266,7 @@ void CanvasRuler::drawTickLabelRight(juce::Graphics &g) {
   int sectionWidth = getWidth() / numberOfTicks;
 
   for (auto i = 1; i < numberOfTicks; ++i) {
-    label = tickLabelFunction(i, numberOfTicks + 1);
+    label = tickLabelFunction(i, numberOfTicks);
     textWidth = font.getStringWidth(label);
     g.drawFittedText(
         label.toStdString(),
@@ -277,7 +277,7 @@ void CanvasRuler::drawTickLabelRight(juce::Graphics &g) {
         juce::Justification::centred,
         1);
   }
-  label = tickLabelFunction(numberOfTicks + 1, numberOfTicks + 1);
+  label = tickLabelFunction(numberOfTicks, numberOfTicks);
   textWidth = font.getStringWidth(label);
   g.drawFittedText(
       label.toStdString(),

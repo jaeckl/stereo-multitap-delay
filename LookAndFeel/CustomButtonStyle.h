@@ -1,11 +1,10 @@
 #pragma once
+#include <algorithm>
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <memory>
 class CustomButtonStyle : public juce::LookAndFeel_V4 {
 public:
-  explicit CustomButtonStyle(
-      const juce::Colour &colour,
-      bool flat = false,
-      const char *imageResource = nullptr);
+  explicit CustomButtonStyle(const juce::Colour &colour, bool flat = false);
   void drawButtonBackground(
       juce::Graphics &g,
       juce::Button &button,
@@ -13,7 +12,42 @@ public:
       bool shoulDrawButtonAsHighlighted,
       bool shouldDrawButtonAsDown) override;
 
+  // juce::Font getTextButtonFont(juce::TextButton &, int buttonHeight)
+  // override;
+  juce::Font getLabelFont(juce::Label &) override;
+  juce::Font getTextButtonFont(juce::TextButton &button, int height) override;
+  void drawFileBrowserRow(
+      juce::Graphics &,
+      int width,
+      int height,
+      const juce::File &file,
+      const juce::String &filename,
+      juce::Image *icon,
+      const juce::String &fileSizeDescription,
+      const juce::String &fileTimeDescription,
+      bool isDirectory,
+      bool isItemSelected,
+      int itemIndex,
+      juce::DirectoryContentsDisplayComponent &) override;
+  void drawScrollbar(
+      juce::Graphics &g,
+      juce::ScrollBar &scrollbar,
+      int x,
+      int y,
+      int width,
+      int height,
+      bool isScrollbarVertical,
+      int thumbStartPosition,
+      int thumbSize,
+      bool isMouseOver,
+      bool isMouseDown) override;
+
 private:
   bool flat = false;
-  juce::Image buttonIcon;
+  juce::Font font;
+  juce::Image iconFolderSmall;
+  juce::Image iconFolderSmallOn;
+  juce::Image iconFileSmall;
+  juce::Image iconFileSmallOn;
+  juce::Image loadImage(const char *resourceName, int size);
 };

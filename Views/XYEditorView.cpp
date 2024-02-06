@@ -7,10 +7,8 @@
 #include <memory>
 XYEditorView::XYEditorView(
     const juce::String &name,
-    juce::Button::Listener *listener,
-    XYPointModel *model)
+    juce::Button::Listener *listener)
     : buttonListener(listener)
-    , pointModel(model)
     , whiteButtonStyle(Constants::WHITE_COLOUR, true)
     , blueButtonStyle(Constants::BLUE_COLOUR)
     , orangeButtonStyle(Constants::ORGANGE_COLOUR)
@@ -69,6 +67,10 @@ void XYEditorView::configureChannelSelectButtons() {
   rightChannelButton.setLookAndFeel(&greenButtonStyle);
   splitChannelsButton.setLookAndFeel(&blueButtonStyle);
 
+  setColours(leftChannelButton, Constants::ORGANGE_COLOUR);
+  setColours(rightChannelButton, Constants::GREEN_COLOUR);
+  setColours(splitChannelsButton, Constants::BLUE_COLOUR);
+
   leftChannelButton.setClickingTogglesState(true);
   rightChannelButton.setClickingTogglesState(true);
   splitChannelsButton.setClickingTogglesState(true);
@@ -89,6 +91,9 @@ void XYEditorView::configureChannelSelectButtons() {
 void XYEditorView::configureGridSelectButtons() {
   gridSelectLeftButton.setLookAndFeel(&whiteButtonStyle);
   gridSelectRightButton.setLookAndFeel(&whiteButtonStyle);
+  gridLabel.setLookAndFeel(&whiteButtonStyle);
+  setColours(gridSelectLeftButton, juce::Colours::transparentWhite);
+  setColours(gridSelectRightButton, juce::Colours::transparentWhite);
 
   gridSelectLeftButton.setButtonText(Constants::TEXT_BUTTON_GRID_LEFT);
   gridSelectRightButton.setButtonText(Constants::TEXT_BUTTON_GRID_RIGHT);
@@ -99,7 +104,6 @@ void XYEditorView::configureGridSelectButtons() {
 }
 
 void XYEditorView::configureCanvasRulers() {
-  pointCanvas.setPointModel(pointModel);
   horizontalRuler.setAlignment(CanvasRuler::Alignment::Top);
   updateGridResolution(std::pow(2, activeGridIndex + 1));
   horizontalRuler.setTickMarkerSize(
@@ -150,7 +154,7 @@ void XYEditorView::setCanvasColour(juce::Colour colour) {
 }
 
 void XYEditorView::setCanvasPointModel(XYPointModel *model) {
-  pointModel = model;
+  pointCanvas.setPointModel(model);
 }
 
 void XYEditorView::setChannelButtonsVisible(bool visible) {
@@ -169,3 +173,19 @@ void XYEditorView::paint(juce::Graphics &g) {
   g.drawRect(gridLabel.getBounds().expanded(0, 2), 2);
 }
 void XYEditorView::resized() { xmlLayouter.updateComponentBounds(); }
+
+void XYEditorView::setColours(juce::Button &button, juce::Colour colour) {
+  button.setColour(juce::TextButton::buttonColourId, colour.withAlpha(0.1f));
+  button.setColour(
+      juce::TextButton::buttonOnColourId,
+      colour.withAlpha(0.2f).withLightness(0.6));
+  button.setColour(
+      juce::TextButton::buttonDown, colour.withAlpha(0.2f).withLightness(0.6));
+
+  button.setColour(juce::TextButton::buttonNormal, colour);
+  button.setColour(
+      juce::TextButton::buttonDown, colour.withLightness(0.4).withAlpha(0.2f));
+
+  button.setColour(juce::TextButton::textColourOnId, juce::Colours::black);
+  button.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+}

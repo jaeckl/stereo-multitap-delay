@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "PluginProcessor.h"
 #include "Presets/IPreset.h"
+#include "Views/FileBrowserView.h"
 #include "Views/XYEditorView.h"
 #include <BinaryData.h>
 #include <format>
@@ -27,7 +28,9 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     , bypassButton(Constants::COMPONENT_BUTTON_BYPASS)
     , presetComboBox(Constants::COMPONENT_COMBOBOX_PRESETS)
     , fileSystemButton("button-filesystem")
-    , xyEditorView("view-xyeditor", this, activeEditorConfig.get())
+    , xyEditorView("view-xyEditor", this)
+    , fileBrowserView("view-fileBrowser")
+
     , xmlLayouter(this, BinaryData::base_layout_xml)
     , processorRef(p) {
   // Make sure that before the constructor has finished, you've set the
@@ -35,7 +38,7 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
   // setSize(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
   setResizable(false, false);
   activeEditorConfig->initialize(processorRef.delayLineConfig, &processorRef);
-
+  xyEditorView.setCanvasPointModel(activeEditorConfig.get());
   initializeControls();
   addControlsToView();
 }
@@ -44,7 +47,7 @@ void ProcessorEditor::initializeControls() {
   configureBackgroundImage();
   configureRotarySliders();
   configurePresetComboBox();
-
+  fileBrowserView.addListener(this);
   wetDrySlider.addListener(this);
   gainSlider.addListener(this);
   presetComboBox.addListener(this);
@@ -62,6 +65,8 @@ void ProcessorEditor::addControlsToView() {
   addAndMakeVisible(presetComboBox);
   addAndMakeVisible(fileSystemButton);
   addAndMakeVisible(xyEditorView);
+  addAndMakeVisible(fileBrowserView);
+  fileBrowserView.setVisible(false);
 
   xmlLayouter.updateComponentBounds();
 }
@@ -140,8 +145,10 @@ void ProcessorEditor::buttonClicked(juce::Button *button) {
     showGroupB();
   if (button == &bypassButton)
     updateAudioBypass();
-  if (button == &fileSystemButton)
+  if (button == &fileSystemButton) {
     xyEditorView.setVisible(!xyEditorView.isVisible());
+    fileBrowserView.setVisible(!fileBrowserView.isVisible());
+  }
 }
 
 void ProcessorEditor::comboBoxChanged(juce::ComboBox *comboBox) {
@@ -196,19 +203,27 @@ void ProcessorEditor::showGroupA() {
   xyEditorView.setCanvasColour(Constants::ORGANGE_COLOUR);
   auto *conf = dynamic_cast<MultiDelayEditorConfig *>(activeEditorConfig.get());
   conf->enableGroupA();
-  repaint();
+  xyEditorView.repaint();
 }
 void ProcessorEditor::showGroupB() {
   xyEditorView.setCanvasColour(Constants::GREEN_COLOUR);
   auto *conf = dynamic_cast<MultiDelayEditorConfig *>(activeEditorConfig.get());
   conf->enableGroupB();
-  repaint();
+  xyEditorView.repaint();
 }
 
 std::pair<int, int> ProcessorEditor::computeWetDryRatio(float value) {
   return {
       static_cast<int>((1.0f - value) * 100),
       static_cast<int>(std::round(value * 100.0f))};
+}
+
+void ProcessorEditor::fileAccepted(const juce::File &file) {
+  applyPreset(presetManager.loadPresetFromFile(file));
+  // xyEditorView.setVisible(!xyEditorView.isVisible());
+  // fileBrowserView.setVisible(!fileBrowserView.isVisible());
+  fileSystemButton.setToggleState(
+      false, juce::NotificationType::sendNotification);
 }
 
 ProcessorEditor::~ProcessorEditor() {}

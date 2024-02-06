@@ -6,7 +6,7 @@ const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 300;
 
 // main theme colours
-const juce::Colour WHITE_COLOUR = juce::Colour(100, 100, 100);
+const juce::Colour WHITE_COLOUR = juce::Colour(255, 255, 255);
 const juce::Colour BLUE_COLOUR = juce::Colour(76, 144, 255);
 const juce::Colour ORGANGE_COLOUR = juce::Colour(255, 144, 76);
 const juce::Colour GREEN_COLOUR = juce::Colour(144, 255, 76);
@@ -29,6 +29,16 @@ const juce::String COMPONENT_COMBOBOX_PRESETS = "comboBox-preset";
 const juce::String COMPONENT_BUTTON_GRID_LEFT = "button-gridLeft";
 const juce::String COMPONENT_BUTTON_GRID_RIGHT = "button-gridRight";
 const juce::String COMPONENT_LABEL_GRID_RES = "label-gridRes";
+
+const juce::String COMPONENT_BREADCRUMB_DIRS = "breadcrumb-dirs";
+const juce::String COMPONENT_FILELIST = "filelist";
+const juce::String COMPONENT_BUTTON_BACK = "button-back";
+const juce::String COMPONENT_TEXT_LABEL_PATH = "label-folderpath";
+const juce::String COMPONENT_LABEL_NO_PRESET = "label-nopreset";
+const juce::String TEXT_PRESET_FILE_WILDCARD = "*.xml";
+const juce::String TEXT_PRESET_FOLDER_WILDCARD = "*";
+const juce::String TEXT_PRESETS_NOT_FOUND = "No Presets Found";
+
 // component labels
 const juce::String TEXT_BUTTON_CHANNEL_SPLIT = "X";
 const juce::String TEXT_BUTTON_CHANNEL_LEFT = "L";
@@ -40,6 +50,8 @@ const juce::String TEXT_UNIT_SLIDER_WETDRY = "mix";
 const juce::String TEXT_UNIT_SLIDER_GAIN = "db";
 
 const juce::String TEXT_RULER_HORIZONTAL_TICKS_END = "1 bar";
+
+const juce::String TEXT_CRUMB_SYMBOL = " > ";
 
 // button groups
 enum RadioGroups { LeftRightChannel = 1001 };

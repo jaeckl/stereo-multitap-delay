@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Components/BreadCrumb.h"
 #include "Components/BypassButton.h"
 #include "Components/CanvasRuler.h"
 #include "Components/CustomRotaryKnob.h"
@@ -12,6 +13,7 @@
 #include "LookAndFeel/CustomButtonStyle.h"
 #include "PluginProcessor.h"
 #include "Presets/PresetManager.h"
+#include "Views/FileBrowserView.h"
 #include "Views/XYEditorView.h"
 #include <memory>
 #include <utility>
@@ -21,7 +23,8 @@ class ProcessorEditor final
     : public juce::AudioProcessorEditor
     , private juce::Slider::Listener
     , private juce::Button::Listener
-    , private juce::ComboBox::Listener {
+    , private juce::ComboBox::Listener
+    , private FileBrowserView::Listener {
 public:
   explicit ProcessorEditor(AudioPluginAudioProcessor &);
   ~ProcessorEditor() override;
@@ -29,6 +32,7 @@ public:
   //==============================================================================
   void paint(juce::Graphics &) override;
   void resized() override;
+  void fileAccepted(const juce::File &file) override;
 
 private:
   juce::FileLogger fileLogger;
@@ -43,7 +47,6 @@ private:
   CustomButtonStyle blueButtonStyle;
   CustomButtonStyle orangeButtonStyle;
   CustomButtonStyle greenButtonStyle;
-
   juce::ImageComponent backgroundImg;
 
   CustomRotaryKnob wetDrySlider;
@@ -55,10 +58,7 @@ private:
   FileSystemButton fileSystemButton;
 
   XYEditorView xyEditorView;
-
-  std::vector<juce::Point<float>> combinedPoints;
-  std::vector<juce::Point<float>> leftChannelPoints;
-  std::vector<juce::Point<float>> rightChannelPoints;
+  FileBrowserView fileBrowserView;
 
   XMLElementLayouter xmlLayouter;
 

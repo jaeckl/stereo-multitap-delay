@@ -98,18 +98,19 @@ void XYPointCanvas::paint(juce::Graphics &g) {
   // g.setColour(juce::Colours::red);
   g.setColour(pointColour.withAlpha(0.04f));
   g.fillRect(getLocalBounds());
-
-  for (size_t i = 0; i < static_cast<size_t>(model->getNumPoints()); ++i) {
-    auto point = discreteFromFractionalPoint(
-        model->getPoint(i), getWidth(), getHeight());
-    if (optionalPointIndex.has_value() && i == optionalPointIndex.value()) {
-      g.setColour(pointColour.withLightness(0.8));
-      g.fillEllipse(point.x - 7, point.y - 7, 14, 14);
-      g.drawRect(point.x - 1, point.y, 2, getHeight() - point.y);
-    } else {
-      g.setColour(pointColour);
-      g.fillEllipse(point.x - 5, point.y - 5, 10, 10);
-      g.drawRect(point.x - 1, point.y, 2, getHeight() - point.y);
+  if (model) {
+    for (size_t i = 0; i < static_cast<size_t>(model->getNumPoints()); ++i) {
+      auto point = discreteFromFractionalPoint(
+          model->getPoint(i), getWidth(), getHeight());
+      if (optionalPointIndex.has_value() && i == optionalPointIndex.value()) {
+        g.setColour(pointColour.withLightness(0.8));
+        g.fillEllipse(point.x - 7, point.y - 7, 14, 14);
+        g.drawRect(point.x - 1, point.y, 2, getHeight() - point.y);
+      } else {
+        g.setColour(pointColour);
+        g.fillEllipse(point.x - 5, point.y - 5, 10, 10);
+        g.drawRect(point.x - 1, point.y, 2, getHeight() - point.y);
+      }
     }
   }
 

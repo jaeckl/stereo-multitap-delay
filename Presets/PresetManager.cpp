@@ -17,6 +17,7 @@ void PresetManager::loadFromMemory() {
   }
 }
 void PresetManager::loadFromFileSystem() {}
+
 const IPreset *PresetManager::getPreset(size_t presetId) {
   return presets[presetId].get();
 }
@@ -26,4 +27,9 @@ juce::StringArray PresetManager::getPresetNameList() {
   for (auto &preset : presets)
     result.add(preset->getName());
   return result;
+}
+
+size_t PresetManager::loadPresetFromFile(const juce::File &file) {
+  presets.push_back(FilePreset::fromFile(file));
+  return presets.size() - 1;
 }

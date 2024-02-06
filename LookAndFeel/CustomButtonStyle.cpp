@@ -1,21 +1,28 @@
 #include "CustomButtonStyle.h"
+#include "Constants.h"
 #include <BinaryData.h>
-CustomButtonStyle::CustomButtonStyle(
-    const juce::Colour &colour,
-    bool isFlat,
-    const char *imageResource)
+CustomButtonStyle::CustomButtonStyle(const juce::Colour &colour, bool isFlat)
     : flat(isFlat) {
   setColour(juce::TextButton::buttonColourId, colour.darker(1.0));
   setColour(juce::TextButton::buttonOnColourId, colour);
-  setColour(juce::TextButton::textColourOnId, juce::Colours::black);
-  setColour(juce::TextButton::textColourOffId, juce::Colours::white);
-  int size = 0;
-  const char *data = BinaryData::getNamedResource(imageResource, size);
-
-  if (data != nullptr && size > 0) {
-    buttonIcon = juce::ImageCache::getFromMemory(data, size);
-  }
+  iconFolderSmall = loadImage(
+      BinaryData::icon_folder_small_png, BinaryData::icon_folder_small_pngSize);
+  iconFolderSmallOn = loadImage(
+      BinaryData::icon_folder_small_on_png,
+      BinaryData::icon_folder_small_on_pngSize);
+  iconFileSmall = loadImage(
+      BinaryData::icon_file_small_png, BinaryData::icon_file_small_pngSize);
+  iconFileSmallOn = loadImage(
+      BinaryData::icon_file_small_on_png,
+      BinaryData::icon_file_small_on_pngSize);
 }
+juce::Image
+CustomButtonStyle::loadImage(const char *resourceName, int resourceSize) {
+  auto instream = juce::MemoryInputStream(resourceName, resourceSize, false);
+  auto format = juce::ImageFileFormat::findImageFormatForStream(instream);
+  return format->decodeImage(instream);
+}
+
 void CustomButtonStyle::drawButtonBackground(
     juce::Graphics &g,
     juce::Button &button,
@@ -24,30 +31,91 @@ void CustomButtonStyle::drawButtonBackground(
     bool shouldDrawButtonAsDown) {
   juce::ignoreUnused(shoulDrawButtonAsHighlighted);
 
-  g.setColour(backgroundColour.withAlpha(0.2f).withLightness(0.6));
-
-  if (!button.getToggleState()) {
-    g.setColour(backgroundColour.withAlpha(0.2f));
+  if (button.isToggleable()) {
+    if (button.getToggleState())
+      g.setColour(button.findColour(juce::TextButton::buttonOnColourId));
+    else
+      g.setColour(button.findColour(juce::TextButton::buttonColourId));
+  } else {
+    if (shouldDrawButtonAsDown)
+      g.setColour(button.findColour(juce::TextButton::buttonDown));
+    else
+      g.setColour(button.findColour(juce::TextButton::buttonNormal));
   }
 
-  if (shouldDrawButtonAsDown) {
-    g.setColour(backgroundColour.withAlpha(0.2f).withLightness(0.6));
-  }
-
-  // fill background
   g.fillAll();
 
-  // fill border
-  if (!button.getToggleState() && !shouldDrawButtonAsDown && !flat) {
-    g.setColour(backgroundColour.withAlpha(0.4f).withLightness(0.35));
+  if (button.isToggleable() && !button.getToggleState() && !flat) {
+    g.setColour(button.findColour(juce::TextButton::buttonColourId)
+                    .withMultipliedAlpha(2.0));
     g.drawRect(button.getLocalBounds(), 2);
   }
+}
 
+juce::Font CustomButtonStyle::getLabelFont(juce::Label &) {
+  return font.boldened();
+}
+
+juce::Font
+CustomButtonStyle::getTextButtonFont(juce::TextButton &button, int height) {
+  return font.boldened();
+}
+
+void CustomButtonStyle::drawFileBrowserRow(
+    juce::Graphics &g,
+    int width,
+    int height,
+    const juce::File &file,
+    const juce::String &filename,
+    juce::Image *icon,
+    const juce::String &fileSizeDescription,
+    const juce::String &fileTimeDescription,
+    bool isDirectory,
+    bool isItemSelected,
+    int itemIndex,
+    juce::DirectoryContentsDisplayComponent &) {
+  juce::ignoreUnused(
+      file, icon, fileSizeDescription, fileTimeDescription, itemIndex);
+  juce::Image image;
+  if (isItemSelected) {
+    if (isDirectory)
+      image = iconFolderSmallOn;
+    else
+      image = iconFileSmallOn;
+    g.fillAll(juce::Colours::white);
+    g.setColour(juce::Colours::black);
+  } else {
+    if (isDirectory)
+      image = iconFolderSmall;
+    else
+      image = iconFileSmall;
+    g.setColour(juce::Colours::white);
+  }
+  image.duplicateIfShared();
   g.drawImageWithin(
-      buttonIcon,
-      0,
-      0,
-      button.getWidth(),
-      button.getHeight(),
-      juce::RectanglePlacement::centred);
+      image, 0, 0, height, height, juce::RectanglePlacement::centred);
+  g.drawFittedText(
+      filename,
+      {height, 0, width - height, height},
+      juce::Justification::centredLeft,
+      1);
+}
+void CustomButtonStyle::drawScrollbar(
+    juce::Graphics &g,
+    juce::ScrollBar &scrollbar,
+    int x,
+    int y,
+    int width,
+    int height,
+    bool isScrollbarVertical,
+    int thumbStartPosition,
+    int thumbSize,
+    bool isMouseOver,
+    bool isMouseDown) {
+  juce::ignoreUnused(scrollbar, isMouseOver, isMouseDown);
+  g.setColour(Constants::WHITE_COLOUR);
+  if (isScrollbarVertical)
+    g.fillRect(x, thumbStartPosition, width, thumbSize);
+  else
+    g.fillRect(thumbStartPosition, y, thumbSize, height);
 }

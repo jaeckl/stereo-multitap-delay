@@ -10,7 +10,9 @@ FilePreset::fromMemory(const char *name, size_t size) {
   return nullptr;
 }
 std::unique_ptr<FilePreset> FilePreset::fromFile(const juce::File &file) {
-  return nullptr;
+  auto stream = file.createInputStream();
+  if (stream)
+    return fromString(stream->readEntireStreamAsString());
 }
 std::unique_ptr<FilePreset> FilePreset::fromString(juce::String xmlString) {
   juce::String name;
