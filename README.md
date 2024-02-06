@@ -4,7 +4,8 @@
 This plugin allows you to create stereo multitap delay effects in your audio projects.
 
 ## Key Features
-
+- Easily load and mange preset files directly within the plugin
+  - Browse your file system and select preset files to instantly hear new presets ![](Docs/front_image_browse.png)
 - Draw delay timestamps on a canvas
   - Adjust position and amplitude of each timestamp
 - Single and multichannel delay modes
