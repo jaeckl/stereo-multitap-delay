@@ -18,7 +18,9 @@ This plugin allows you to create stereo multitap delay effects in your audio pro
   - Select between processing the left (L), right (R), or both channels 
 
 ![](Docs/switch_channel.gif)
-
+- Adjust input frequency band
+  - Top left rotary slider controls the cutoff frequency for the filter processing the input signal
+  - Switch between lowpass and highpass filter by selecting the corresponding button ( below the cutoff slider)
 - Adjustable wet/dry mix
   - Top right rotary slider controls blend between dry input signal and wet delayed signal
 - Output gain adjustment
