@@ -141,7 +141,18 @@ void FileBrowserView::configureNotFoundLabel() {
   notFoundLabel.setJustificationType(juce::Justification::centred);
 }
 void FileBrowserView::configureFileList() {
-  fileListComponent.setLookAndFeel(&whiteButtonStyle);
+  fileListComponent.setLookAndFeel(&flatLookAndFeel);
+  fileListComponent.setColour(
+      juce::DirectoryContentsDisplayComponent::textColourId,
+      Constants::WHITE_COLOUR);
+  fileListComponent.setColour(
+      juce::DirectoryContentsDisplayComponent::highlightedTextColourId,
+      juce::Colours::black);
+  fileListComponent.setColour(
+      juce::DirectoryContentsDisplayComponent::highlightColourId,
+      Constants::WHITE_COLOUR);
+  fileListComponent.getVerticalScrollBar().setColour(
+      juce::ScrollBar::thumbColourId, Constants::WHITE_COLOUR);
   fileListComponent.addListener(this);
 }
 

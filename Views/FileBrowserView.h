@@ -1,8 +1,7 @@
 #pragma once
-#include "Components/BreadCrumb.h"
 #include "Components/CustomFileListComponent.h"
 #include "Components/UIElementPlacer.h"
-#include "LookAndFeel/CustomLookAndFeel.h"
+#include "LookAndFeel/OnScreenFlatLookAndFeel.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 class FileBrowserView
     : public juce::Component
@@ -28,7 +27,7 @@ public:
   void removeListener(Listener *listener);
 
 private:
-  CustomLookAndFeel whiteButtonStyle;
+  OnScreenFlatLookAndFeel flatLookAndFeel;
   juce::TimeSliceThread thread;
   juce::WildcardFileFilter wildCardFilter;
   juce::DirectoryContentsList contentList;

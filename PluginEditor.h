@@ -7,15 +7,13 @@
 #include "Components/MultiDelayEditorConfig.h"
 #include "Components/SingleDelayEditorConfig.h"
 #include "Components/UIElementPlacer.h"
-
-#include "LookAndFeel/CustomLookAndFeel.h"
+#include "LookAndFeel/OnScreenFlatLookAndFeel.h"
 #include "PluginProcessor.h"
 #include "Presets/PresetManager.h"
 #include "Views/FileBrowserView.h"
 #include "Views/XYEditorView.h"
 #include <memory>
 #include <utility>
-#include <vector>
 //==============================================================================
 class ProcessorEditor final
     : public juce::AudioProcessorEditor
@@ -34,8 +32,8 @@ public:
 
 private:
   juce::FileLogger fileLogger;
-  CustomLookAndFeel customStyle;
-  CustomLookAndFeel customStyleFlat;
+  OnScreenFlatLookAndFeel onScreenLookAndFeel;
+  OnScreenFlatLookAndFeel onScreenFlatLookAndFeel;
   PresetManager presetManager;
 
   std::shared_ptr<SingleDelayEditorConfig> delayEditorConfigSingle;

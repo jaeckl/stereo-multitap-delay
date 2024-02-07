@@ -102,8 +102,9 @@ target_sources(
           Components/FileSystemButton.cpp
           Components/BreadCrumb.cpp
           Components/CustomFileListComponent.cpp
-          LookAndFeel/CustomLookAndFeel.cpp
           LookAndFeel/CustomRotarySliderStyle.cpp
+          LookAndFeel/OnScreenFlatLookAndFeel.cpp
+          LookAndFeel/OnScreenBorderedLookAndFeel.cpp
           Presets/FilePreset.cpp
           Presets/PresetManager.cpp
           Views/XYEditorView.cpp

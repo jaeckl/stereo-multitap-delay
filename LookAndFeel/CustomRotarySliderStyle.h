@@ -7,6 +7,7 @@
 class CustomRotarySliderStyle : public juce::LookAndFeel_V4 {
 private:
   juce::Image rotaryKnobImage;
+  juce::Image rotaryKnobBackground;
   juce::Colour baseColour;
   juce::Font textFont;
   juce::Font rotaryValueFont;

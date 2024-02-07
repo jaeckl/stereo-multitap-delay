@@ -1,19 +1,15 @@
 #pragma once
-#include <algorithm>
 #include <juce_gui_basics/juce_gui_basics.h>
-#include <memory>
-class CustomLookAndFeel : public juce::LookAndFeel_V4 {
+
+class OnScreenFlatLookAndFeel : public juce::LookAndFeel_V4 {
 public:
-  explicit CustomLookAndFeel(bool flat = false);
+  OnScreenFlatLookAndFeel();
   void drawButtonBackground(
       juce::Graphics &g,
       juce::Button &button,
       const juce::Colour &backgroundColour,
       bool shoulDrawButtonAsHighlighted,
       bool shouldDrawButtonAsDown) override;
-
-  juce::Font getLabelFont(juce::Label &) override;
-  juce::Font getTextButtonFont(juce::TextButton &button, int height) override;
   void drawFileBrowserRow(
       juce::Graphics &,
       int width,
@@ -39,20 +35,12 @@ public:
       int thumbSize,
       bool isMouseOver,
       bool isMouseDown) override;
-  void drawComboBox(
-      juce::Graphics &,
-      int width,
-      int height,
-      bool isButtonDown,
-      int buttonX,
-      int buttonY,
-      int buttonW,
-      int buttonH,
-      juce::ComboBox &) override;
+  const juce::Image *getDefaultDirectoryImage();
+  const juce::Image *getDefaultDirectoryImageOn();
+  const juce::Image *getDefaultFileImage();
+  const juce::Image *getDefaultFileImageOn();
 
 private:
-  bool flat = false;
-  juce::Font font;
   juce::Image iconFolderSmall;
   juce::Image iconFolderSmallOn;
   juce::Image iconFileSmall;

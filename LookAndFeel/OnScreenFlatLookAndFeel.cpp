@@ -1,8 +1,6 @@
-#include "CustomLookAndFeel.h"
-#include "Constants.h"
+#include "OnScreenFlatLookAndFeel.h"
 #include <BinaryData.h>
-CustomLookAndFeel::CustomLookAndFeel(bool isFlat)
-    : flat(isFlat) {
+OnScreenFlatLookAndFeel::OnScreenFlatLookAndFeel() {
   iconFolderSmall = loadImage(
       BinaryData::icon_folder_small_png, BinaryData::icon_folder_small_pngSize);
   iconFolderSmallOn = loadImage(
@@ -15,20 +13,18 @@ CustomLookAndFeel::CustomLookAndFeel(bool isFlat)
       BinaryData::icon_file_small_on_pngSize);
 }
 juce::Image
-CustomLookAndFeel::loadImage(const char *resourceName, int resourceSize) {
+OnScreenFlatLookAndFeel::loadImage(const char *resourceName, int resourceSize) {
   auto instream = juce::MemoryInputStream(resourceName, resourceSize, false);
   auto format = juce::ImageFileFormat::findImageFormatForStream(instream);
   return format->decodeImage(instream);
 }
-
-void CustomLookAndFeel::drawButtonBackground(
+void OnScreenFlatLookAndFeel::drawButtonBackground(
     juce::Graphics &g,
     juce::Button &button,
     const juce::Colour &backgroundColour,
     bool shoulDrawButtonAsHighlighted,
     bool shouldDrawButtonAsDown) {
-  juce::ignoreUnused(shoulDrawButtonAsHighlighted);
-
+  juce::ignoreUnused(backgroundColour, shoulDrawButtonAsHighlighted);
   if (button.isToggleable()) {
     if (button.getToggleState())
       g.setColour(button.findColour(juce::TextButton::buttonOnColourId));
@@ -42,24 +38,9 @@ void CustomLookAndFeel::drawButtonBackground(
   }
 
   g.fillAll();
-
-  if (button.isToggleable() && !button.getToggleState() && !flat) {
-    g.setColour(button.findColour(juce::TextButton::buttonColourId)
-                    .withMultipliedAlpha(2.0));
-    g.drawRect(button.getLocalBounds(), 2);
-  }
 }
 
-juce::Font CustomLookAndFeel::getLabelFont(juce::Label &) {
-  return font.boldened();
-}
-
-juce::Font
-CustomLookAndFeel::getTextButtonFont(juce::TextButton &button, int height) {
-  return font.boldened();
-}
-
-void CustomLookAndFeel::drawFileBrowserRow(
+void OnScreenFlatLookAndFeel::drawFileBrowserRow(
     juce::Graphics &g,
     int width,
     int height,
@@ -71,23 +52,27 @@ void CustomLookAndFeel::drawFileBrowserRow(
     bool isDirectory,
     bool isItemSelected,
     int itemIndex,
-    juce::DirectoryContentsDisplayComponent &) {
+    juce::DirectoryContentsDisplayComponent &dcc) {
   juce::ignoreUnused(
       file, icon, fileSizeDescription, fileTimeDescription, itemIndex);
+  auto fileListComp = dynamic_cast<juce::Component *>(&dcc);
   juce::Image image;
   if (isItemSelected) {
     if (isDirectory)
       image = iconFolderSmallOn;
     else
       image = iconFileSmallOn;
-    g.fillAll(juce::Colours::white);
-    g.setColour(juce::Colours::black);
+    g.fillAll(fileListComp->findColour(
+        juce::DirectoryContentsDisplayComponent::highlightColourId));
+    g.setColour(fileListComp->findColour(
+        juce::DirectoryContentsDisplayComponent::highlightedTextColourId));
   } else {
     if (isDirectory)
       image = iconFolderSmall;
     else
       image = iconFileSmall;
-    g.setColour(juce::Colours::white);
+    g.setColour(fileListComp->findColour(
+        juce::DirectoryContentsDisplayComponent::textColourId));
   }
   image.duplicateIfShared();
   g.drawImageWithin(
@@ -98,7 +83,7 @@ void CustomLookAndFeel::drawFileBrowserRow(
       juce::Justification::centredLeft,
       1);
 }
-void CustomLookAndFeel::drawScrollbar(
+void OnScreenFlatLookAndFeel::drawScrollbar(
     juce::Graphics &g,
     juce::ScrollBar &scrollbar,
     int x,
@@ -111,20 +96,21 @@ void CustomLookAndFeel::drawScrollbar(
     bool isMouseOver,
     bool isMouseDown) {
   juce::ignoreUnused(scrollbar, isMouseOver, isMouseDown);
-  g.setColour(Constants::WHITE_COLOUR);
+  g.setColour(scrollbar.findColour(juce::ScrollBar::thumbColourId));
   if (isScrollbarVertical)
     g.fillRect(x, thumbStartPosition, width, thumbSize);
   else
     g.fillRect(thumbStartPosition, y, thumbSize, height);
 }
-
-void CustomLookAndFeel::drawComboBox(
-    juce::Graphics &,
-    int width,
-    int height,
-    bool isButtonDown,
-    int buttonX,
-    int buttonY,
-    int buttonW,
-    int buttonH,
-    juce::ComboBox &) {}
+const juce::Image *OnScreenFlatLookAndFeel::getDefaultDirectoryImage() {
+  return &iconFolderSmall;
+}
+const juce::Image *OnScreenFlatLookAndFeel::getDefaultDirectoryImageOn() {
+  return &iconFolderSmallOn;
+}
+const juce::Image *OnScreenFlatLookAndFeel::getDefaultFileImage() {
+  return &iconFileSmall;
+}
+const juce::Image *OnScreenFlatLookAndFeel::getDefaultFileImageOn() {
+  return &iconFileSmallOn;
+}

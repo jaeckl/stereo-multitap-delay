@@ -4,13 +4,10 @@
 #include <BinaryData.h>
 #include <cmath>
 #include <format>
-#include <memory>
 XYEditorView::XYEditorView(
     const juce::String &name,
     juce::Button::Listener *listener)
     : buttonListener(listener)
-    , customLookAndFeel()
-    , customLookAndFeelFlat(true)
     , splitChannelsButton(Constants::COMPONENT_BUTTON_CHANNEL_SPLIT)
     , leftChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_LEFT)
     , rightChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_RIGHT)
@@ -61,9 +58,9 @@ void XYEditorView::addControlsToView() {
 }
 
 void XYEditorView::configureChannelSelectButtons() {
-  leftChannelButton.setLookAndFeel(&customLookAndFeel);
-  rightChannelButton.setLookAndFeel(&customLookAndFeel);
-  splitChannelsButton.setLookAndFeel(&customLookAndFeel);
+  leftChannelButton.setLookAndFeel(&borderedLookAndFeel);
+  rightChannelButton.setLookAndFeel(&borderedLookAndFeel);
+  splitChannelsButton.setLookAndFeel(&borderedLookAndFeel);
 
   setColours(leftChannelButton, Constants::ORGANGE_COLOUR);
   setColours(rightChannelButton, Constants::GREEN_COLOUR);
@@ -87,9 +84,8 @@ void XYEditorView::configureChannelSelectButtons() {
 }
 
 void XYEditorView::configureGridSelectButtons() {
-  gridSelectLeftButton.setLookAndFeel(&customLookAndFeelFlat);
-  gridSelectRightButton.setLookAndFeel(&customLookAndFeelFlat);
-  gridLabel.setLookAndFeel(&customLookAndFeelFlat);
+  gridSelectLeftButton.setLookAndFeel(&flatLookAndFeel);
+  gridSelectRightButton.setLookAndFeel(&flatLookAndFeel);
   setColours(gridSelectLeftButton, juce::Colours::transparentWhite);
   setColours(gridSelectRightButton, juce::Colours::transparentWhite);
 
