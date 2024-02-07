@@ -20,8 +20,11 @@ CustomRotarySliderStyle::CustomRotarySliderStyle(const juce::Colour &colour)
   };
 }
 
-void CustomRotarySliderStyle::setRotaryUnitText(juce::String text) {
+void CustomRotarySliderStyle::setRotaryUnitText(const juce::String &text) {
   rotaryUnitText = text;
+}
+void CustomRotarySliderStyle::setTitle(const juce::String &text) {
+  rotaryTitle = text;
 }
 void CustomRotarySliderStyle::setSliderFormater(
     std::function<juce::String(juce::Slider *)> formater) {
@@ -62,5 +65,10 @@ void CustomRotarySliderStyle::drawRotarySlider(
       rotaryUnitText,
       slider.getLocalBounds().reduced(20, 24),
       juce::Justification::centredBottom,
+      true);
+  g.drawFittedText(
+      rotaryTitle,
+      slider.getLocalBounds().reduced(20, 24),
+      juce::Justification::centredTop,
       true);
 }

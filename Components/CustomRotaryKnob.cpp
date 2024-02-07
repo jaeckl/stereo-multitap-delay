@@ -16,3 +16,6 @@ void CustomRotaryKnob::setValueFormater(
     std::function<juce::String(juce::Slider *)> formater) {
   style.setSliderFormater(formater);
 }
+void CustomRotaryKnob::setTitle(const juce::String &name) {
+  style.setTitle(name);
+}

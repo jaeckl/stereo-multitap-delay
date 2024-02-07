@@ -99,6 +99,7 @@ void ProcessorEditor::configureRotarySliders() {
       Constants::WETDRY_STEP,
       Constants::WETDRY_VALUE,
       Constants::TEXT_UNIT_SLIDER_WETDRY,
+      Constants::TEXT_TITLE_WETDRY,
       [this](juce::Slider *s) -> juce::String {
         auto ratio = computeWetDryRatio(s->getValue());
         return juce::String(std::format(
@@ -111,6 +112,7 @@ void ProcessorEditor::configureRotarySliders() {
       Constants::GAIN_STEP,
       Constants::GAIN_VALUE,
       Constants::TEXT_UNIT_SLIDER_GAIN,
+      Constants::TEXT_TITLE_GAIN,
       [](juce::Slider *s) -> juce::String {
         if (s->getValue() >= 0)
           return juce::String(std::format(
@@ -130,10 +132,12 @@ void ProcessorEditor::configureRotarySlider(
     float stepSize,
     float value,
     juce::String unitString,
+    juce::String titleString,
     std::function<juce::String(juce::Slider *)> formater) {
   slider->setRange(minValue, maxValue, stepSize);
   slider->setValue(value);
   slider->setUnitName(unitString);
+  slider->setTitle(titleString);
   slider->setValueFormater(formater);
 }
 void ProcessorEditor::configureLowHighPassControls() {
@@ -148,6 +152,7 @@ void ProcessorEditor::configureLowHighPassControls() {
       Constants::FILTER_STEP,
       Constants::FILTER_VALUE,
       Constants::TEXT_UNIT_SLIDER_KHZ,
+      Constants::TEXT_TITLE_FILTER,
       [&](auto s) -> juce::String {
         float val = std::pow(10, s->getValue());
 

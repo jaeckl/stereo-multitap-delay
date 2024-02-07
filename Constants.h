@@ -57,6 +57,10 @@ const juce::String TEXT_UNIT_SLIDER_GAIN = "db";
 const juce::String TEXT_UNIT_SLIDER_HZ = "Hz";
 const juce::String TEXT_UNIT_SLIDER_KHZ = "kHz";
 
+const juce::String TEXT_TITLE_WETDRY = "Dry/Wet";
+const juce::String TEXT_TITLE_GAIN = "Gain";
+const juce::String TEXT_TITLE_FILTER = "Filter";
+
 const juce::String TEXT_RULER_HORIZONTAL_TICKS_END = "1 bar";
 
 const juce::String TEXT_CRUMB_SYMBOL = " > ";

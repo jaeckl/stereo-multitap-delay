@@ -7,6 +7,7 @@ private:
 
 public:
   explicit CustomRotaryKnob(const juce::String &name, juce::Colour colour);
+  void setTitle(const juce::String &name);
   void setUnitName(const juce::String &name);
   void setValueFormater(std::function<juce::String(juce::Slider *)> formater);
 };

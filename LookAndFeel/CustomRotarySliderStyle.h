@@ -12,12 +12,14 @@ private:
   juce::Font textFont;
   juce::Font rotaryValueFont;
   juce::String rotaryUnitText;
+  juce::String rotaryTitle;
   std::function<juce::String(juce::Slider *)> sliderFormatingFunction;
 
 public:
   explicit CustomRotarySliderStyle(const juce::Colour &colour);
 
-  void setRotaryUnitText(juce::String text);
+  void setRotaryUnitText(const juce::String &text);
+  void setTitle(const juce::String &text);
   void setSliderFormater(std::function<juce::String(juce::Slider *)> formater);
   void drawRotarySlider(
       juce::Graphics &g,

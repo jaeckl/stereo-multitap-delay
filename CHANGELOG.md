@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added classe HighpassButton and LowPassButton as DrawableButton derivatives
 - Added a StateVariableTPTFilter to PluginProcessor to filter incoming signal
 - Added new rotary slider in PluginEditor to control the cutoff frequency of the StateVariableTPTFilter in PluginProcessor 
-
+- Added titles to rotary knobs in the user interface
 ### Changed
 - None
 ### Deprecated

@@ -79,6 +79,7 @@ private:
       float stepSize,
       float value,
       juce::String unitString,
+      juce::String titleString,
       std::function<juce::String(juce::Slider *)> formater);
 
   void sliderValueChanged(juce::Slider *slider) override;
