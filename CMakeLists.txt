@@ -102,7 +102,7 @@ target_sources(
           Components/FileSystemButton.cpp
           Components/BreadCrumb.cpp
           Components/CustomFileListComponent.cpp
-          LookAndFeel/CustomButtonStyle.cpp
+          LookAndFeel/CustomLookAndFeel.cpp
           LookAndFeel/CustomRotarySliderStyle.cpp
           Presets/FilePreset.cpp
           Presets/PresetManager.cpp

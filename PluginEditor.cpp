@@ -3,7 +3,7 @@
 #include "Components/FileSystemButton.h"
 #include "Components/IDelayEditorConfig.h"
 #include "Constants.h"
-#include "LookAndFeel/CustomButtonStyle.h"
+#include "LookAndFeel/CustomLookAndFeel.h"
 #include "PluginProcessor.h"
 #include "Presets/IPreset.h"
 #include "Views/FileBrowserView.h"

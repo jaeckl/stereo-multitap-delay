@@ -8,7 +8,7 @@
 #include "Components/SingleDelayEditorConfig.h"
 #include "Components/UIElementPlacer.h"
 
-#include "LookAndFeel/CustomButtonStyle.h"
+#include "LookAndFeel/CustomLookAndFeel.h"
 #include "PluginProcessor.h"
 #include "Presets/PresetManager.h"
 #include "Views/FileBrowserView.h"
@@ -34,8 +34,8 @@ public:
 
 private:
   juce::FileLogger fileLogger;
-  CustomButtonStyle customStyle;
-  CustomButtonStyle customStyleFlat;
+  CustomLookAndFeel customStyle;
+  CustomLookAndFeel customStyleFlat;
   PresetManager presetManager;
 
   std::shared_ptr<SingleDelayEditorConfig> delayEditorConfigSingle;

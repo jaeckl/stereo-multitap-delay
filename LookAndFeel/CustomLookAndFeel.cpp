@@ -1,10 +1,8 @@
-#include "CustomButtonStyle.h"
+#include "CustomLookAndFeel.h"
 #include "Constants.h"
 #include <BinaryData.h>
-CustomButtonStyle::CustomButtonStyle(bool isFlat)
+CustomLookAndFeel::CustomLookAndFeel(bool isFlat)
     : flat(isFlat) {
-  // setColour(juce::TextButton::buttonColourId, colour.darker(1.0));
-  // setColour(juce::TextButton::buttonOnColourId, colour);
   iconFolderSmall = loadImage(
       BinaryData::icon_folder_small_png, BinaryData::icon_folder_small_pngSize);
   iconFolderSmallOn = loadImage(
@@ -17,13 +15,13 @@ CustomButtonStyle::CustomButtonStyle(bool isFlat)
       BinaryData::icon_file_small_on_pngSize);
 }
 juce::Image
-CustomButtonStyle::loadImage(const char *resourceName, int resourceSize) {
+CustomLookAndFeel::loadImage(const char *resourceName, int resourceSize) {
   auto instream = juce::MemoryInputStream(resourceName, resourceSize, false);
   auto format = juce::ImageFileFormat::findImageFormatForStream(instream);
   return format->decodeImage(instream);
 }
 
-void CustomButtonStyle::drawButtonBackground(
+void CustomLookAndFeel::drawButtonBackground(
     juce::Graphics &g,
     juce::Button &button,
     const juce::Colour &backgroundColour,
@@ -52,16 +50,16 @@ void CustomButtonStyle::drawButtonBackground(
   }
 }
 
-juce::Font CustomButtonStyle::getLabelFont(juce::Label &) {
+juce::Font CustomLookAndFeel::getLabelFont(juce::Label &) {
   return font.boldened();
 }
 
 juce::Font
-CustomButtonStyle::getTextButtonFont(juce::TextButton &button, int height) {
+CustomLookAndFeel::getTextButtonFont(juce::TextButton &button, int height) {
   return font.boldened();
 }
 
-void CustomButtonStyle::drawFileBrowserRow(
+void CustomLookAndFeel::drawFileBrowserRow(
     juce::Graphics &g,
     int width,
     int height,
@@ -100,7 +98,7 @@ void CustomButtonStyle::drawFileBrowserRow(
       juce::Justification::centredLeft,
       1);
 }
-void CustomButtonStyle::drawScrollbar(
+void CustomLookAndFeel::drawScrollbar(
     juce::Graphics &g,
     juce::ScrollBar &scrollbar,
     int x,
@@ -120,7 +118,7 @@ void CustomButtonStyle::drawScrollbar(
     g.fillRect(thumbStartPosition, y, thumbSize, height);
 }
 
-void CustomButtonStyle::drawComboBox(
+void CustomLookAndFeel::drawComboBox(
     juce::Graphics &,
     int width,
     int height,

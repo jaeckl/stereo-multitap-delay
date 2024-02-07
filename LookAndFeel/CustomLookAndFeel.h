@@ -2,9 +2,9 @@
 #include <algorithm>
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
-class CustomButtonStyle : public juce::LookAndFeel_V4 {
+class CustomLookAndFeel : public juce::LookAndFeel_V4 {
 public:
-  explicit CustomButtonStyle(bool flat = false);
+  explicit CustomLookAndFeel(bool flat = false);
   void drawButtonBackground(
       juce::Graphics &g,
       juce::Button &button,
@@ -12,8 +12,6 @@ public:
       bool shoulDrawButtonAsHighlighted,
       bool shouldDrawButtonAsDown) override;
 
-  // juce::Font getTextButtonFont(juce::TextButton &, int buttonHeight)
-  // override;
   juce::Font getLabelFont(juce::Label &) override;
   juce::Font getTextButtonFont(juce::TextButton &button, int height) override;
   void drawFileBrowserRow(

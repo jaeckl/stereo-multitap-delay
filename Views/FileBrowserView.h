@@ -2,7 +2,7 @@
 #include "Components/BreadCrumb.h"
 #include "Components/CustomFileListComponent.h"
 #include "Components/UIElementPlacer.h"
-#include "LookAndFeel/CustomButtonStyle.h"
+#include "LookAndFeel/CustomLookAndFeel.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 class FileBrowserView
     : public juce::Component
@@ -28,7 +28,7 @@ public:
   void removeListener(Listener *listener);
 
 private:
-  CustomButtonStyle whiteButtonStyle;
+  CustomLookAndFeel whiteButtonStyle;
   juce::TimeSliceThread thread;
   juce::WildcardFileFilter wildCardFilter;
   juce::DirectoryContentsList contentList;

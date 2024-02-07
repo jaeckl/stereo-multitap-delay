@@ -3,7 +3,7 @@
 #include "Components/UIElementPlacer.h"
 #include "Components/XYPointCanvas.h"
 #include "Components/XYPointModel.h"
-#include "LookAndFeel/CustomButtonStyle.h"
+#include "LookAndFeel/CustomLookAndFeel.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 
 class XYEditorView
@@ -13,8 +13,8 @@ class XYEditorView
 private:
   juce::Button::Listener *buttonListener;
 
-  CustomButtonStyle customLookAndFeel;
-  CustomButtonStyle customLookAndFeelFlat;
+  CustomLookAndFeel customLookAndFeel;
+  CustomLookAndFeel customLookAndFeelFlat;
 
   juce::TextButton splitChannelsButton;
   juce::TextButton leftChannelButton;
