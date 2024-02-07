@@ -18,10 +18,6 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     , delayEditorConfigSingle(std::make_shared<SingleDelayEditorConfig>())
     , delayEditorConfigMulti(std::make_shared<MultiDelayEditorConfig>())
     , activeEditorConfig(delayEditorConfigSingle)
-    , whiteButtonStyle(Constants::WHITE_COLOUR, true)
-    , blueButtonStyle(Constants::BLUE_COLOUR)
-    , orangeButtonStyle(Constants::ORGANGE_COLOUR)
-    , greenButtonStyle(Constants::GREEN_COLOUR)
     , backgroundImg(Constants::COMPONENT_IMAGE_BACKGROUND)
     , wetDrySlider(Constants::COMPONENT_SLIDER_WETDRY, Constants::BLUE_COLOUR)
     , gainSlider(Constants::COMPONENT_SLIDER_GAIN, Constants::BLUE_COLOUR)
@@ -33,9 +29,7 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
 
     , xmlLayouter(this, BinaryData::base_layout_xml)
     , processorRef(p) {
-  // Make sure that before the constructor has finished, you've set the
-  // editor's size to whatever you need it to be.
-  // setSize(Constants::WINDOW_WIDTH, Constants::WINDOW_HEIGHT);
+
   setResizable(false, false);
   activeEditorConfig->initialize(processorRef.delayLineConfig, &processorRef);
   xyEditorView.setCanvasPointModel(activeEditorConfig.get());

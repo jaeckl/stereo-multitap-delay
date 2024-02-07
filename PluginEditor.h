@@ -1,16 +1,13 @@
 #pragma once
 
-#include "Components/BreadCrumb.h"
 #include "Components/BypassButton.h"
-#include "Components/CanvasRuler.h"
 #include "Components/CustomRotaryKnob.h"
 #include "Components/FileSystemButton.h"
 #include "Components/IDelayEditorConfig.h"
 #include "Components/MultiDelayEditorConfig.h"
 #include "Components/SingleDelayEditorConfig.h"
 #include "Components/UIElementPlacer.h"
-#include "Components/XYPointCanvas.h"
-#include "LookAndFeel/CustomButtonStyle.h"
+
 #include "PluginProcessor.h"
 #include "Presets/PresetManager.h"
 #include "Views/FileBrowserView.h"
@@ -43,10 +40,6 @@ private:
   std::shared_ptr<MultiDelayEditorConfig> delayEditorConfigMulti;
   std::shared_ptr<IDelayEditorConfig> activeEditorConfig;
 
-  CustomButtonStyle whiteButtonStyle;
-  CustomButtonStyle blueButtonStyle;
-  CustomButtonStyle orangeButtonStyle;
-  CustomButtonStyle greenButtonStyle;
   juce::ImageComponent backgroundImg;
 
   CustomRotaryKnob wetDrySlider;
