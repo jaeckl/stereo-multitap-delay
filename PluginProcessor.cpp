@@ -13,7 +13,11 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
               .withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
               )
-    , delayLineConfig(new StereoDelayLineConfig) {
+    , delayLineConfig(new StereoDelayLineConfig)
+    , isLowpassFilter(false)
+    , isHighpassFilter(false)
+    , filterValue(0.0f)
+    , filterValueChanged(false) {
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor() {}
@@ -79,8 +83,13 @@ void AudioPluginAudioProcessor::prepareToPlay(
   // Use this method as the place to do any pre-playback
   // initialisation that you need..
   juce::ignoreUnused(sampleRate, samplesPerBlock);
-
-  delayLineConfig->init(getSampleRate());
+  juce::dsp::ProcessSpec spec;
+  spec.sampleRate = sampleRate;
+  spec.maximumBlockSize = samplesPerBlock;
+  spec.numChannels = getTotalNumOutputChannels();
+  inputFilter.reset(new juce::dsp::StateVariableTPTFilter<float>());
+  inputFilter->prepare(spec);
+  delayLineConfig->init(sampleRate);
 }
 
 void AudioPluginAudioProcessor::releaseResources() {
@@ -136,6 +145,24 @@ void AudioPluginAudioProcessor::processBlock(
       wetBuffer.copyFrom(
           channel, 0, buffer, channel, 0, buffer.getNumSamples());
 
+    if (filterValueChanged) {
+      inputFilter->setCutoffFrequency(std::pow(10, filterValue));
+      if (isLowpassFilter && inputFilter->getType() !=
+                                 juce::dsp::StateVariableTPTFilterType::lowpass)
+        inputFilter->setType(juce::dsp::StateVariableTPTFilterType::lowpass);
+      if (isHighpassFilter &&
+          inputFilter->getType() !=
+              juce::dsp::StateVariableTPTFilterType::highpass)
+        inputFilter->setType(juce::dsp::StateVariableTPTFilterType::highpass);
+      filterValueChanged = false;
+    }
+    if (isHighpassFilter || isLowpassFilter) {
+      juce::dsp::AudioBlock<float> block(wetBuffer);
+      juce::dsp::AudioBlock<float> singleChannelBlock(wetBuffer);
+      juce::dsp::ProcessContextReplacing<float> context(singleChannelBlock);
+      inputFilter->process(context);
+    }
+
     delayLineConfig->processBlock(wetBuffer);
     bufferMixer.setWetLevel(delayMix);
     bufferMixer.mix(buffer, buffer, wetBuffer);
@@ -143,6 +170,7 @@ void AudioPluginAudioProcessor::processBlock(
     for (auto channel = 0; channel < buffer.getNumChannels(); ++channel) {
       auto *readBuffer = buffer.getReadPointer(channel);
       auto writeBuffer = buffer.getWritePointer(channel);
+
       for (auto sample = 0; sample < buffer.getNumSamples(); ++sample) {
         writeBuffer[sample] =
             juce::Decibels::decibelsToGain(outputVolume) * readBuffer[sample];

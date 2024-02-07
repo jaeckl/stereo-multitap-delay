@@ -3,7 +3,9 @@
 #include "Components/BypassButton.h"
 #include "Components/CustomRotaryKnob.h"
 #include "Components/FileSystemButton.h"
+#include "Components/HighpassButton.h"
 #include "Components/IDelayEditorConfig.h"
+#include "Components/LowpassButton.h"
 #include "Components/MultiDelayEditorConfig.h"
 #include "Components/SingleDelayEditorConfig.h"
 #include "Components/UIElementPlacer.h"
@@ -46,6 +48,13 @@ private:
 
   BypassButton bypassButton;
 
+  CustomRotaryKnob filterSlider;
+
+  LowpassButton lowpassButton;
+  HighpassButton highpassButton;
+  bool lowpassToggled;
+  bool highpassToggled;
+
   juce::ComboBox presetComboBox;
   FileSystemButton fileSystemButton;
 
@@ -59,6 +68,9 @@ private:
   void configureBackgroundImage();
   void configurePresetComboBox();
   void configureRotarySliders();
+  void configureLowHighPassControls();
+  void configureFileBrowserView();
+  void configureXYEditorView();
 
   void configureRotarySlider(
       CustomRotaryKnob *slider,

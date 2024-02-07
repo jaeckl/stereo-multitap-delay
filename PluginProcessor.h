@@ -3,6 +3,7 @@
 #include "Audio/IDelayLineConfig.h"
 #include "Audio/Mixer/LinearBufferMixer.h"
 #include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_dsp/juce_dsp.h>
 #include <memory>
 #include <vector>
 //==============================================================================
@@ -14,6 +15,11 @@ public:
 
   float delayMix;
   float outputVolume;
+  bool isLowpassFilter;
+  bool isHighpassFilter;
+  bool filterValueChanged;
+  float filterValue;
+
   LinearBufferMixer<float> bufferMixer;
   std::shared_ptr<IDelayLineConfig> delayLineConfig;
   bool isBufferInitialized = false;
@@ -56,7 +62,7 @@ public:
 
 private:
   double bpm = 120;
-
+  std::unique_ptr<juce::dsp::StateVariableTPTFilter<float>> inputFilter;
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
 };

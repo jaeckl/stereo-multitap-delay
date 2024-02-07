@@ -15,6 +15,7 @@ const juce::Colour GREEN_COLOUR = juce::Colour(144, 255, 76);
 const juce::String COMPONENT_IMAGE_BACKGROUND = "image-background";
 const juce::String COMPONENT_SLIDER_WETDRY = "slider-wetdry";
 const juce::String COMPONENT_SLIDER_GAIN = "slider-gain";
+const juce::String COMPONENT_SLIDER_FILTER = "slider-filter";
 const juce::String COMPONENT_BUTTON_CHANNEL_SPLIT = "button-splitChannels";
 const juce::String COMPONENT_BUTTON_CHANNEL_LEFT = "button-leftChannel";
 const juce::String COMPONENT_BUTTON_CHANNEL_RIGHT = "button-rightChannel";
@@ -25,11 +26,14 @@ const juce::String COMPONENT_RULER_VERTICAL = "ruler-vertical";
 const juce::String COMPONENT_COMBOBOX_GRID_RESOLUTION = "comboBox-gridRes";
 
 const juce::String COMPONENT_BUTTON_BYPASS = "button-bypass";
+const juce::String COMPONENT_BUTTON_HIGHPASS = "button-highpass";
+const juce::String COMPONENT_BUTTON_LOWPASS = "button-lowpass";
 const juce::String COMPONENT_COMBOBOX_PRESETS = "comboBox-preset";
 const juce::String COMPONENT_BUTTON_GRID_LEFT = "button-gridLeft";
 const juce::String COMPONENT_BUTTON_GRID_RIGHT = "button-gridRight";
 const juce::String COMPONENT_LABEL_GRID_RES = "label-gridRes";
 
+const juce::String COMPONENT_BUTTON_FILESYTEM = "button-filesystem";
 const juce::String COMPONENT_BREADCRUMB_DIRS = "breadcrumb-dirs";
 const juce::String COMPONENT_FILELIST = "filelist";
 const juce::String COMPONENT_BUTTON_BACK = "button-back";
@@ -39,6 +43,8 @@ const juce::String TEXT_PRESET_FILE_WILDCARD = "*.xml";
 const juce::String TEXT_PRESET_FOLDER_WILDCARD = "*";
 const juce::String TEXT_PRESETS_NOT_FOUND = "No Presets Found";
 
+const juce::String COMPONENT_VIEW_XYEDITOR = "view-xyEditor";
+const juce::String COMPONENT_VIEW_FILEBROWSER = "view-fileBrowser";
 // component labels
 const juce::String TEXT_BUTTON_CHANNEL_SPLIT = "X";
 const juce::String TEXT_BUTTON_CHANNEL_LEFT = "L";
@@ -48,13 +54,15 @@ const juce::String TEXT_BUTTON_GRID_RIGHT = ">";
 
 const juce::String TEXT_UNIT_SLIDER_WETDRY = "mix";
 const juce::String TEXT_UNIT_SLIDER_GAIN = "db";
+const juce::String TEXT_UNIT_SLIDER_HZ = "Hz";
+const juce::String TEXT_UNIT_SLIDER_KHZ = "kHz";
 
 const juce::String TEXT_RULER_HORIZONTAL_TICKS_END = "1 bar";
 
 const juce::String TEXT_CRUMB_SYMBOL = " > ";
 
 // button groups
-enum RadioGroups { LeftRightChannel = 1001 };
+enum RadioGroups { LeftRightChannel = 1001, HighLowPass = 1002 };
 
 // rotary button values
 const float WETDRY_MIN = 0.0f;
@@ -67,9 +75,17 @@ const float GAIN_MAX = 9.0f;
 const float GAIN_STEP = 1.0f;
 const float GAIN_VALUE = 0.0f;
 
+const float FILTER_MIN = std::log10(20.0f);
+const float FILTER_MAX = std::log10(20000.0f);
+const float FILTER_STEP = 0.01f;
+const float FILTER_VALUE = (FILTER_MIN + FILTER_MAX) / 2.0f;
+const float FILTER_VALUES_WITHOUT_PRECISION = 100.0f;
+const float FILTER_VALUES_IN_KHZ = 1000.0f;
+
 constexpr char FORMAT_STRING_WETDRY[] = "{}:{}";
-constexpr char FORMAT_STRING_GAIN_POS[] = "+{:.0}";
-constexpr char FORMAT_STRING_GAIN_NEG[] = "{:.0}";
+constexpr char FORMAT_STRING_FLOAT_ZERO_PREC_POS[] = "+{:.0f}";
+constexpr char FORMAT_STRING_FLOAT_ZERO_PREC[] = "{:.0f}";
+constexpr char FORMAT_STRING_FLOAT_SINGLE_PREC[] = "{:.1f}";
 constexpr char FORMAT_STRING_BEATS[] = "{}/{}";
 
 // ruler

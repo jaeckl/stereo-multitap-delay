@@ -1,4 +1,4 @@
- <layout width="674" height="240">
+ <layout width="548" height="240">
    <component
       id="breadcrumb-dirs"
       width="631"
@@ -7,13 +7,13 @@
       y="22"/>
    <component
       id="filelist"
-      width="623"
+      width="497"
       height="163"
       x="26"
       y="51" />
    <component
       id="label-nopreset"
-      width="623"
+      width="497"
       height="163"
       x="26"
       y="51" />
@@ -25,7 +25,7 @@
       y="22" />
    <component
       id="label-folderpath"
-      width="600"
+      width="474"
       height="24"
       x="47"
       y="22"/>

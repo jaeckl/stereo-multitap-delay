@@ -26,12 +26,6 @@
       x="591"
       y="12" />
     <component
-      id="comboBox-gridRes"
-      width="142"
-      height="32"
-      x="19"
-      y="69" />
-    <component
        id="slider-wetdry"
        width="86"
        height="86"
@@ -44,69 +38,33 @@
        x="697"
        y="196" />
     <component
-       id="component-canvas"
-       width="639"
-       height="170"
-       x="21"
-       y="110" />
+      id="button-lowpass"
+      width="40"
+      height="45"
+      x="20"
+      y="215" />
     <component
-       id="ruler-horizontal"
-       width="640"
-       height="20"
-       x="21"
-       y="280" />
+      id="button-highpass"
+      width="40"
+      height="45"
+      x="60"
+      y="215" />
     <component
-       id="ruler-vertical"
-       width="22"
-       height="171"
-       x="0"
-       y="110" />
-    <component
-       id="button-splitChannels"
-       width="32"
-       height="32"
-       x="628"
-       y="69" />
-    <component
-       id="button-leftChannel"
-       width="32"
-       height="32"
-       x="558"
-       y="69" />
-    <component
-       id="button-rightChannel"
-       width="32"
-       height="32"
-       x="591"
-       y="69" />
-    <component
-       id="button-gridLeft"
-       width="24"
-       height="24"
-       y="73"
-       x="23" />
-    <component 
-      id="button-gridRight"
-      width="24"
-      height="24"
-      y="73"
-      x="133" />
-    <component
-      id="label-gridRes"
-      width="142"
-      height="24"
-      y="73"
-      x="19" />
+      id="slider-filter"
+      width="86"
+      height="86"
+      x="17"
+      y="112" />
     <component 
       id="view-xyEditor"
-      width="674"
+      width="554"
       height="240"
       y="60"
-      x="0" />
+      x="126" />
     <component 
       id="view-fileBrowser"
-      width="674"
+      width="554"
       height="240"
       y="60"
-      x="0" />
+      x="126" />
 </layout>

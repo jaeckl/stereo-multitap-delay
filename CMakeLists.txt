@@ -99,6 +99,8 @@ target_sources(
           Components/UIElementPlacer.cpp
           Components/XYPointCanvas.cpp
           Components/BypassButton.cpp
+          Components/HighpassButton.cpp
+          Components/LowpassButton.cpp
           Components/FileSystemButton.cpp
           Components/BreadCrumb.cpp
           Components/CustomFileListComponent.cpp
@@ -149,6 +151,14 @@ juce_add_binary_data(
   Assets/bypass_button_highlight.png
   Assets/bypass_button_pressed.png
   Assets/bypass_button_pressed_highlight.png
+  Assets/lowpass_button.png
+  Assets/lowpass_button_highlight.png
+  Assets/lowpass_button_pressed.png
+  Assets/lowpass_button_pressed_highlight.png
+  Assets/highpass_button.png
+  Assets/highpass_button_highlight.png
+  Assets/highpass_button_pressed.png
+  Assets/highpass_button_pressed_highlight.png
   Assets/Icons/icon_arrow_left.png
   Assets/Icons/icon_arrow_right.png
   Assets/Icons/icon_folder.png
@@ -187,6 +197,6 @@ target_link_libraries(
   SimpleDelayLine
   PRIVATE AudioPluginData AudioPluginPresets
           # we'd link to it here
-          juce::juce_audio_utils
+          juce::juce_audio_utils juce::juce_dsp
   PUBLIC juce::juce_recommended_config_flags juce::juce_recommended_lto_flags
          juce::juce_recommended_warning_flags)

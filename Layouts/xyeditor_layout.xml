@@ -1,19 +1,19 @@
-<layout width="674" height="240">
+<layout width="548" height="240">
 <component
        id="component-canvas"
-       width="639"
+       width="520"
        height="170"
-       x="21"
+       x="14"
        y="50" />
     <component
        id="ruler-horizontal"
-       width="640"
+       width="522"
        height="20"
-       x="20"
+       x="12"
        y="218" />
     <component
        id="ruler-vertical"
-       width="22"
+       width="14"
        height="170"
        x="0"
        y="50" />
@@ -21,36 +21,36 @@
        id="button-splitChannels"
        width="32"
        height="32"
-       x="628"
+       x="502"
        y="9" />
     <component
        id="button-leftChannel"
        width="32"
        height="32"
-       x="558"
+       x="432"
        y="9" />
     <component
        id="button-rightChannel"
        width="32"
        height="32"
-       x="591"
+       x="465"
        y="9" />
     <component
        id="button-gridLeft"
        width="24"
        height="24"
        y="13"
-       x="23" />
+       x="15" />
     <component 
       id="button-gridRight"
       width="24"
       height="24"
       y="13"
-      x="133" />
+      x="125" />
     <component
       id="label-gridRes"
       width="139"
       height="24"
       y="13"
-      x="20" />
+      x="13" />
  </layout>

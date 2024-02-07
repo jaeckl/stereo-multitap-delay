@@ -102,6 +102,20 @@ void OnScreenFlatLookAndFeel::drawScrollbar(
   else
     g.fillRect(thumbStartPosition, y, thumbSize, height);
 }
+void OnScreenFlatLookAndFeel::drawComboBox(
+    juce::Graphics &g,
+    int width,
+    int height,
+    bool isButtonDown,
+    int buttonX,
+    int buttonY,
+    int buttonW,
+    int buttonH,
+    juce::ComboBox &comboBox) {}
+void OnScreenFlatLookAndFeel::drawPopupMenuBackground(
+    juce::Graphics &,
+    int width,
+    int height) {}
 const juce::Image *OnScreenFlatLookAndFeel::getDefaultDirectoryImage() {
   return &iconFolderSmall;
 }

@@ -35,6 +35,18 @@ public:
       int thumbSize,
       bool isMouseOver,
       bool isMouseDown) override;
+  void drawComboBox(
+      juce::Graphics &,
+      int width,
+      int height,
+      bool isButtonDown,
+      int buttonX,
+      int buttonY,
+      int buttonW,
+      int buttonH,
+      juce::ComboBox &) override;
+  void
+  drawPopupMenuBackground(juce::Graphics &, int width, int height) override;
   const juce::Image *getDefaultDirectoryImage();
   const juce::Image *getDefaultDirectoryImageOn();
   const juce::Image *getDefaultFileImage();

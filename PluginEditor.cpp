@@ -1,7 +1,9 @@
 #include "PluginEditor.h"
 #include "BinaryData.h"
 #include "Components/FileSystemButton.h"
+#include "Components/HighpassButton.h"
 #include "Components/IDelayEditorConfig.h"
+#include "Components/LowpassButton.h"
 #include "Constants.h"
 #include "PluginProcessor.h"
 #include "Presets/IPreset.h"
@@ -24,17 +26,22 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     , wetDrySlider(Constants::COMPONENT_SLIDER_WETDRY, Constants::BLUE_COLOUR)
     , gainSlider(Constants::COMPONENT_SLIDER_GAIN, Constants::BLUE_COLOUR)
     , bypassButton(Constants::COMPONENT_BUTTON_BYPASS)
+    , filterSlider(Constants::COMPONENT_SLIDER_FILTER, Constants::BLUE_COLOUR)
+    , lowpassButton(Constants::COMPONENT_BUTTON_LOWPASS)
+    , highpassButton(Constants::COMPONENT_BUTTON_HIGHPASS)
+    , lowpassToggled(false)
+    , highpassToggled(false)
     , presetComboBox(Constants::COMPONENT_COMBOBOX_PRESETS)
-    , fileSystemButton("button-filesystem")
-    , xyEditorView("view-xyEditor", this)
-    , fileBrowserView("view-fileBrowser")
+    , fileSystemButton(Constants::COMPONENT_BUTTON_FILESYTEM)
+    , xyEditorView(Constants::COMPONENT_VIEW_XYEDITOR, this)
+    , fileBrowserView(Constants::COMPONENT_VIEW_FILEBROWSER)
 
     , xmlLayouter(this, BinaryData::base_layout_xml)
     , processorRef(p) {
 
   setResizable(false, false);
   activeEditorConfig->initialize(processorRef.delayLineConfig, &processorRef);
-  xyEditorView.setCanvasPointModel(activeEditorConfig.get());
+
   initializeControls();
   addControlsToView();
 }
@@ -43,11 +50,10 @@ void ProcessorEditor::initializeControls() {
   configureBackgroundImage();
   configureRotarySliders();
   configurePresetComboBox();
-  xyEditorView.setLookAndFeel(&onScreenFlatLookAndFeel);
-  fileBrowserView.setLookAndFeel(&onScreenLookAndFeel);
-  fileBrowserView.addListener(this);
-  wetDrySlider.addListener(this);
-  gainSlider.addListener(this);
+  configureLowHighPassControls();
+  configureFileBrowserView();
+  configureXYEditorView();
+
   presetComboBox.addListener(this);
   bypassButton.addListener(this);
   fileSystemButton.addListener(this);
@@ -61,6 +67,9 @@ void ProcessorEditor::addControlsToView() {
 
   addAndMakeVisible(bypassButton);
   addAndMakeVisible(presetComboBox);
+  addAndMakeVisible(filterSlider);
+  addAndMakeVisible(lowpassButton);
+  addAndMakeVisible(highpassButton);
   addAndMakeVisible(fileSystemButton);
   addAndMakeVisible(xyEditorView);
   addAndMakeVisible(fileBrowserView);
@@ -78,6 +87,7 @@ void ProcessorEditor::configureBackgroundImage() {
   backgroundImg.setImage(format->decodeImage(imageData));
 }
 void ProcessorEditor::configurePresetComboBox() {
+  presetComboBox.setLookAndFeel(&onScreenFlatLookAndFeel);
   presetComboBox.addItemList(presetManager.getPresetNameList(), 1);
 }
 
@@ -103,12 +113,14 @@ void ProcessorEditor::configureRotarySliders() {
       Constants::TEXT_UNIT_SLIDER_GAIN,
       [](juce::Slider *s) -> juce::String {
         if (s->getValue() >= 0)
-          return juce::String(
-              std::format(Constants::FORMAT_STRING_GAIN_POS, s->getValue()));
+          return juce::String(std::format(
+              Constants::FORMAT_STRING_FLOAT_ZERO_PREC, s->getValue()));
         else
-          return juce::String(
-              std::format(Constants::FORMAT_STRING_GAIN_NEG, s->getValue()));
+          return juce::String(std::format(
+              Constants::FORMAT_STRING_FLOAT_ZERO_PREC, s->getValue()));
       });
+  wetDrySlider.addListener(this);
+  gainSlider.addListener(this);
 }
 
 void ProcessorEditor::configureRotarySlider(
@@ -124,12 +136,58 @@ void ProcessorEditor::configureRotarySlider(
   slider->setUnitName(unitString);
   slider->setValueFormater(formater);
 }
+void ProcessorEditor::configureLowHighPassControls() {
+  highpassButton.setLookAndFeel(&onScreenFlatLookAndFeel);
+  lowpassButton.setLookAndFeel(&onScreenFlatLookAndFeel);
+  highpassButton.setRadioGroupId(Constants::HighLowPass);
+  lowpassButton.setRadioGroupId(Constants::HighLowPass);
+  configureRotarySlider(
+      &filterSlider,
+      Constants::FILTER_MIN,
+      Constants::FILTER_MAX,
+      Constants::FILTER_STEP,
+      Constants::FILTER_VALUE,
+      Constants::TEXT_UNIT_SLIDER_KHZ,
+      [&](auto s) -> juce::String {
+        float val = std::pow(10, s->getValue());
+
+        if (val >= Constants::FILTER_VALUES_IN_KHZ) {
+          filterSlider.setUnitName(Constants::TEXT_UNIT_SLIDER_KHZ);
+          return juce::String(std::format(
+              Constants::FORMAT_STRING_FLOAT_SINGLE_PREC, val / 1000.0f));
+        } else {
+          filterSlider.setUnitName(Constants::TEXT_UNIT_SLIDER_HZ);
+          if (val > Constants::FILTER_VALUES_WITHOUT_PRECISION)
+            return juce::String(
+                std::format(Constants::FORMAT_STRING_FLOAT_ZERO_PREC, val));
+          else
+            return juce::String(
+                std::format(Constants::FORMAT_STRING_FLOAT_SINGLE_PREC, val));
+        }
+      });
+  highpassButton.addListener(this);
+  lowpassButton.addListener(this);
+  filterSlider.addListener(this);
+}
+
+void ProcessorEditor::configureFileBrowserView() {
+  fileBrowserView.setLookAndFeel(&onScreenLookAndFeel);
+  fileBrowserView.addListener(this);
+}
+void ProcessorEditor::configureXYEditorView() {
+  xyEditorView.setLookAndFeel(&onScreenFlatLookAndFeel);
+  xyEditorView.setCanvasPointModel(activeEditorConfig.get());
+}
 
 void ProcessorEditor::sliderValueChanged(juce::Slider *slider) {
   if (slider == &wetDrySlider)
     processorRef.delayMix = wetDrySlider.getValue();
   if (slider == &gainSlider)
     processorRef.outputVolume = gainSlider.getValue();
+  if (slider == &filterSlider) {
+    processorRef.filterValue = slider->getValue();
+    processorRef.filterValueChanged = true;
+  }
 }
 
 void ProcessorEditor::buttonClicked(juce::Button *button) {
@@ -146,6 +204,30 @@ void ProcessorEditor::buttonClicked(juce::Button *button) {
   if (button == &fileSystemButton) {
     xyEditorView.setVisible(!xyEditorView.isVisible());
     fileBrowserView.setVisible(!fileBrowserView.isVisible());
+  }
+  if (button == &lowpassButton) {
+    if (lowpassToggled) {
+      button->setToggleState(
+          false, juce::NotificationType::dontSendNotification);
+      processorRef.isLowpassFilter = false;
+    } else {
+      processorRef.isLowpassFilter = true;
+      processorRef.isHighpassFilter = false;
+    }
+    lowpassToggled = !lowpassToggled;
+    processorRef.filterValueChanged = true;
+  }
+  if (button == &highpassButton) {
+    if (highpassToggled) {
+      button->setToggleState(
+          false, juce::NotificationType::dontSendNotification);
+      processorRef.isHighpassFilter = false;
+    } else {
+      processorRef.isHighpassFilter = true;
+      processorRef.isLowpassFilter = false;
+    }
+    highpassToggled = !highpassToggled;
+    processorRef.filterValueChanged = true;
   }
 }
 
@@ -218,8 +300,6 @@ std::pair<int, int> ProcessorEditor::computeWetDryRatio(float value) {
 
 void ProcessorEditor::fileAccepted(const juce::File &file) {
   applyPreset(presetManager.loadPresetFromFile(file));
-  // xyEditorView.setVisible(!xyEditorView.isVisible());
-  // fileBrowserView.setVisible(!fileBrowserView.isVisible());
   fileSystemButton.setToggleState(
       false, juce::NotificationType::sendNotification);
 }
