@@ -11,6 +11,12 @@ CustomRotarySliderStyle::CustomRotarySliderStyle(const juce::Colour &colour)
   auto format = juce::ImageFileFormat::findImageFormatForStream(inputStream);
   rotaryKnobImage = format->decodeImage(inputStream);
 
+  auto inputStream2 = juce::MemoryInputStream(
+      BinaryData::rotary_knob_background_png,
+      BinaryData::rotary_knob_background_pngSize,
+      false);
+  auto format2 = juce::ImageFileFormat::findImageFormatForStream(inputStream2);
+  rotaryKnobBackground = format2->decodeImage(inputStream2);
   rotaryValueFont.setHeight(16);
   rotaryValueFont.setBold(true);
   textFont.setHeight(12);
@@ -42,6 +48,13 @@ void CustomRotarySliderStyle::drawRotarySlider(
     juce::Slider &slider) {
   juce::ignoreUnused(width);
   juce::ignoreUnused(height);
+  g.drawImageWithin(
+      rotaryKnobBackground,
+      0,
+      0,
+      slider.getWidth(),
+      slider.getHeight(),
+      juce::RectanglePlacement::centred);
   auto angle =
       rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
   float centerX = rotaryKnobImage.getWidth() / 2.0;

@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added new rotary slider in PluginEditor to control the cutoff frequency of the StateVariableTPTFilter in PluginProcessor 
 - Added titles to rotary knobs in the user interface
 ### Changed
-- None
+- Moved rotary slider background into componente paint method
 ### Deprecated
 - None
 ### Removed

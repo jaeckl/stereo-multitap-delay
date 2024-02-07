@@ -147,6 +147,7 @@ juce_add_binary_data(
   SOURCES
   Assets/plugin_background.png
   Assets/rotary_knob.png
+  Assets/rotary_knob_background.png
   Assets/bypass_button.png
   Assets/bypass_button_highlight.png
   Assets/bypass_button_pressed.png
