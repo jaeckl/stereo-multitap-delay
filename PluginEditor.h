@@ -8,6 +8,7 @@
 #include "Components/SingleDelayEditorConfig.h"
 #include "Components/UIElementPlacer.h"
 
+#include "LookAndFeel/CustomButtonStyle.h"
 #include "PluginProcessor.h"
 #include "Presets/PresetManager.h"
 #include "Views/FileBrowserView.h"
@@ -33,7 +34,8 @@ public:
 
 private:
   juce::FileLogger fileLogger;
-
+  CustomButtonStyle customStyle;
+  CustomButtonStyle customStyleFlat;
   PresetManager presetManager;
 
   std::shared_ptr<SingleDelayEditorConfig> delayEditorConfigSingle;
@@ -41,7 +43,6 @@ private:
   std::shared_ptr<IDelayEditorConfig> activeEditorConfig;
 
   juce::ImageComponent backgroundImg;
-
   CustomRotaryKnob wetDrySlider;
   CustomRotaryKnob gainSlider;
 

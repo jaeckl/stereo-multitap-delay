@@ -4,7 +4,7 @@
 #include <memory>
 class CustomButtonStyle : public juce::LookAndFeel_V4 {
 public:
-  explicit CustomButtonStyle(const juce::Colour &colour, bool flat = false);
+  explicit CustomButtonStyle(bool flat = false);
   void drawButtonBackground(
       juce::Graphics &g,
       juce::Button &button,
@@ -41,6 +41,16 @@ public:
       int thumbSize,
       bool isMouseOver,
       bool isMouseDown) override;
+  void drawComboBox(
+      juce::Graphics &,
+      int width,
+      int height,
+      bool isButtonDown,
+      int buttonX,
+      int buttonY,
+      int buttonW,
+      int buttonH,
+      juce::ComboBox &) override;
 
 private:
   bool flat = false;

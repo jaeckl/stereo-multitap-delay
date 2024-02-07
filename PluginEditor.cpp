@@ -3,6 +3,7 @@
 #include "Components/FileSystemButton.h"
 #include "Components/IDelayEditorConfig.h"
 #include "Constants.h"
+#include "LookAndFeel/CustomButtonStyle.h"
 #include "PluginProcessor.h"
 #include "Presets/IPreset.h"
 #include "Views/FileBrowserView.h"
@@ -14,6 +15,8 @@
 ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     : AudioProcessorEditor(&p)
     , fileLogger(juce::File("LogFile.txt"), "Log File")
+    , customStyle()
+    , customStyleFlat(true)
     , presetManager()
     , delayEditorConfigSingle(std::make_shared<SingleDelayEditorConfig>())
     , delayEditorConfigMulti(std::make_shared<MultiDelayEditorConfig>())
@@ -41,6 +44,8 @@ void ProcessorEditor::initializeControls() {
   configureBackgroundImage();
   configureRotarySliders();
   configurePresetComboBox();
+  xyEditorView.setLookAndFeel(&customStyle);
+  fileBrowserView.setLookAndFeel(&customStyle);
   fileBrowserView.addListener(this);
   wetDrySlider.addListener(this);
   gainSlider.addListener(this);

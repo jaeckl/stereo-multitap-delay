@@ -13,10 +13,8 @@ class XYEditorView
 private:
   juce::Button::Listener *buttonListener;
 
-  CustomButtonStyle whiteButtonStyle;
-  CustomButtonStyle blueButtonStyle;
-  CustomButtonStyle orangeButtonStyle;
-  CustomButtonStyle greenButtonStyle;
+  CustomButtonStyle customLookAndFeel;
+  CustomButtonStyle customLookAndFeelFlat;
 
   juce::TextButton splitChannelsButton;
   juce::TextButton leftChannelButton;
@@ -28,10 +26,6 @@ private:
   std::vector<juce::String> gridResolutions;
 
   int activeGridIndex;
-
-  std::vector<juce::Point<float>> combinedPoints;
-  std::vector<juce::Point<float>> leftChannelPoints;
-  std::vector<juce::Point<float>> rightChannelPoints;
 
   XYPointCanvas pointCanvas;
   CanvasRuler horizontalRuler;

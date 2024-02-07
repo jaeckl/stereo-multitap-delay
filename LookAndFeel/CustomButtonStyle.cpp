@@ -1,10 +1,10 @@
 #include "CustomButtonStyle.h"
 #include "Constants.h"
 #include <BinaryData.h>
-CustomButtonStyle::CustomButtonStyle(const juce::Colour &colour, bool isFlat)
+CustomButtonStyle::CustomButtonStyle(bool isFlat)
     : flat(isFlat) {
-  setColour(juce::TextButton::buttonColourId, colour.darker(1.0));
-  setColour(juce::TextButton::buttonOnColourId, colour);
+  // setColour(juce::TextButton::buttonColourId, colour.darker(1.0));
+  // setColour(juce::TextButton::buttonOnColourId, colour);
   iconFolderSmall = loadImage(
       BinaryData::icon_folder_small_png, BinaryData::icon_folder_small_pngSize);
   iconFolderSmallOn = loadImage(
@@ -119,3 +119,14 @@ void CustomButtonStyle::drawScrollbar(
   else
     g.fillRect(thumbStartPosition, y, thumbSize, height);
 }
+
+void CustomButtonStyle::drawComboBox(
+    juce::Graphics &,
+    int width,
+    int height,
+    bool isButtonDown,
+    int buttonX,
+    int buttonY,
+    int buttonW,
+    int buttonH,
+    juce::ComboBox &) {}

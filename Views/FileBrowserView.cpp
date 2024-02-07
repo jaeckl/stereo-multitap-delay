@@ -20,8 +20,7 @@ static juce::String getRootFolderPath() {
 #endif
 }
 FileBrowserView::FileBrowserView(const juce::String &name)
-    : whiteButtonStyle(Constants::WHITE_COLOUR, true)
-    , thread("")
+    : thread("")
     , wildCardFilter(
           Constants::TEXT_PRESET_FILE_WILDCARD,
           Constants::TEXT_PRESET_FOLDER_WILDCARD,

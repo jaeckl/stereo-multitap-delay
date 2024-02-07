@@ -9,10 +9,8 @@ XYEditorView::XYEditorView(
     const juce::String &name,
     juce::Button::Listener *listener)
     : buttonListener(listener)
-    , whiteButtonStyle(Constants::WHITE_COLOUR, true)
-    , blueButtonStyle(Constants::BLUE_COLOUR)
-    , orangeButtonStyle(Constants::ORGANGE_COLOUR)
-    , greenButtonStyle(Constants::GREEN_COLOUR)
+    , customLookAndFeel()
+    , customLookAndFeelFlat(true)
     , splitChannelsButton(Constants::COMPONENT_BUTTON_CHANNEL_SPLIT)
     , leftChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_LEFT)
     , rightChannelButton(Constants::COMPONENT_BUTTON_CHANNEL_RIGHT)
@@ -63,9 +61,9 @@ void XYEditorView::addControlsToView() {
 }
 
 void XYEditorView::configureChannelSelectButtons() {
-  leftChannelButton.setLookAndFeel(&orangeButtonStyle);
-  rightChannelButton.setLookAndFeel(&greenButtonStyle);
-  splitChannelsButton.setLookAndFeel(&blueButtonStyle);
+  leftChannelButton.setLookAndFeel(&customLookAndFeel);
+  rightChannelButton.setLookAndFeel(&customLookAndFeel);
+  splitChannelsButton.setLookAndFeel(&customLookAndFeel);
 
   setColours(leftChannelButton, Constants::ORGANGE_COLOUR);
   setColours(rightChannelButton, Constants::GREEN_COLOUR);
@@ -89,9 +87,9 @@ void XYEditorView::configureChannelSelectButtons() {
 }
 
 void XYEditorView::configureGridSelectButtons() {
-  gridSelectLeftButton.setLookAndFeel(&whiteButtonStyle);
-  gridSelectRightButton.setLookAndFeel(&whiteButtonStyle);
-  gridLabel.setLookAndFeel(&whiteButtonStyle);
+  gridSelectLeftButton.setLookAndFeel(&customLookAndFeelFlat);
+  gridSelectRightButton.setLookAndFeel(&customLookAndFeelFlat);
+  gridLabel.setLookAndFeel(&customLookAndFeelFlat);
   setColours(gridSelectLeftButton, juce::Colours::transparentWhite);
   setColours(gridSelectRightButton, juce::Colours::transparentWhite);
 
