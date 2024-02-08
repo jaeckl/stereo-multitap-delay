@@ -1,4 +1,5 @@
 #include "CanvasRuler.h"
+#include <cmath>
 #include <juce_gui_basics/juce_gui_basics.h>
 
 CanvasRuler::CanvasRuler(const juce::String &name) { setName(name); }
@@ -66,14 +67,15 @@ void CanvasRuler::drawAxisRight(juce::Graphics &g) {
 void CanvasRuler::drawTicksTop(juce::Graphics &g) {
   // draw first tick
   g.fillRect(0, 0, tickMarkerWidth, tickMarkerLength);
-  int sectionWidth = getWidth() / numberOfTicks;
+  int offset = canvasOverflowOffset();
+  float sectionWidth = static_cast<float>(getWidth() - offset) / numberOfTicks;
 
-  for (auto i = 1; i < numberOfTicks; ++i)
-    g.fillRect(
-        i * sectionWidth - tickMarkerWidth / 2,
-        0,
-        tickMarkerWidth,
-        tickMarkerLength);
+  for (auto i = 1; i < numberOfTicks; ++i) {
+    float diff = std::round(i * sectionWidth) - (i * sectionWidth);
+    int tickCenter = std::round(i * sectionWidth) + offset - diff;
+    int tickPosition = tickCenter - tickMarkerWidth / 2;
+    g.fillRect(tickPosition, 0, tickMarkerWidth, tickMarkerLength);
+  }
   // draw last tick
   g.fillRect(
       getWidth() - tickMarkerWidth, 0, tickMarkerWidth, tickMarkerLength);
@@ -82,14 +84,19 @@ void CanvasRuler::drawTicksTop(juce::Graphics &g) {
 void CanvasRuler::drawTicksBottom(juce::Graphics &g) {
   g.fillRect(
       0, getHeight() - tickMarkerLength, tickMarkerWidth, tickMarkerLength);
-  int sectionWidth = getWidth() / numberOfTicks;
+  int offset = canvasOverflowOffset();
+  float sectionWidth = static_cast<float>(getWidth() - offset) / numberOfTicks;
 
-  for (auto i = 1; i < numberOfTicks; ++i)
+  for (auto i = 1; i < numberOfTicks; ++i) {
+    float diff = std::round(i * sectionWidth) - (i * sectionWidth);
+    int tickCenter = std::round(i * sectionWidth) + offset - diff;
+    int tickPosition = tickCenter - tickMarkerWidth / 2;
     g.fillRect(
-        i * sectionWidth - tickMarkerWidth / 2,
+        tickPosition,
         getHeight() - tickMarkerLength,
         tickMarkerWidth,
         tickMarkerLength);
+  }
   // draw last tick
   g.fillRect(
       getWidth() - tickMarkerWidth,
@@ -100,14 +107,17 @@ void CanvasRuler::drawTicksBottom(juce::Graphics &g) {
 
 void CanvasRuler::drawTicksLeft(juce::Graphics &g) {
   g.fillRect(0, 0, tickMarkerLength, tickMarkerWidth);
-  int sectionWidth = getHeight() / numberOfTicks;
 
-  for (auto i = 1; i < numberOfTicks; ++i)
-    g.fillRect(
-        0,
-        i * sectionWidth - tickMarkerWidth / 2,
-        tickMarkerWidth,
-        tickMarkerLength);
+  int offset = canvasOverflowOffset();
+  float sectionHeight =
+      static_cast<float>(getHeight() - offset) / numberOfTicks;
+
+  for (auto i = 1; i < numberOfTicks; ++i) {
+    float diff = std::round(i * sectionHeight) - (i * sectionHeight);
+    int tickCenter = std::round(i * sectionHeight) + offset - diff;
+    int tickPosition = tickCenter - tickMarkerWidth / 2;
+    g.fillRect(0, tickPosition, tickMarkerLength, tickMarkerWidth);
+  }
   // draw last tick
   g.fillRect(
       0, getHeight() - tickMarkerWidth, tickMarkerLength, tickMarkerWidth);
@@ -116,14 +126,20 @@ void CanvasRuler::drawTicksLeft(juce::Graphics &g) {
 void CanvasRuler::drawTicksRight(juce::Graphics &g) {
   g.fillRect(
       getWidth() - tickMarkerLength, 0, tickMarkerLength, tickMarkerWidth);
-  int sectionWidth = getHeight() / numberOfTicks;
+  int offset = canvasOverflowOffset();
+  float sectionHeight =
+      static_cast<float>(getHeight() - offset) / numberOfTicks;
 
-  for (auto i = 1; i < numberOfTicks; ++i)
+  for (auto i = 1; i < numberOfTicks; ++i) {
+    float diff = std::round(i * sectionHeight) - (i * sectionHeight);
+    int tickCenter = std::round(i * sectionHeight) + offset - diff;
+    int tickPosition = tickCenter - tickMarkerWidth / 2;
     g.fillRect(
         getWidth() - tickMarkerLength,
-        i * sectionWidth - tickMarkerWidth / 2,
+        tickPosition,
         tickMarkerLength,
         tickMarkerWidth);
+  }
   // draw last tick
   g.fillRect(
       getWidth() - tickMarkerLength,
@@ -145,14 +161,18 @@ void CanvasRuler::drawTickLabelTop(juce::Graphics &g) {
       getHeight() - tickMarkerLength,
       juce::Justification::centred,
       1);
-  int sectionWidth = getWidth() / numberOfTicks;
+  int offset = canvasOverflowOffset();
+  int sectionWidth = (getWidth() - offset) / numberOfTicks;
 
   for (auto i = 1; i < numberOfTicks; ++i) {
     label = tickLabelFunction(i, numberOfTicks);
     textWidth = font.getStringWidth(label);
+    float diff = std::round(i * sectionWidth) - (i * sectionWidth);
+    int tickCenter = std::round(i * sectionWidth) + offset - diff;
+    int textPosition = tickCenter - textWidth / 2;
     g.drawFittedText(
         label.toStdString(),
-        i * sectionWidth - textWidth / 2,
+        textPosition,
         tickMarkerLength,
         textWidth,
         getHeight() - tickMarkerLength,
@@ -183,14 +203,18 @@ void CanvasRuler::drawTickLabelBottom(juce::Graphics &g) {
       getHeight() - tickMarkerLength,
       juce::Justification::centred,
       1);
-  int sectionWidth = getWidth() / numberOfTicks;
+  int offset = canvasOverflowOffset();
+  int sectionWidth = (getWidth() - offset) / numberOfTicks;
 
   for (auto i = 1; i < numberOfTicks; ++i) {
     label = tickLabelFunction(i, numberOfTicks);
     textWidth = font.getStringWidth(label);
+    float diff = std::round(i * sectionWidth) - (i * sectionWidth);
+    int tickCenter = std::round(i * sectionWidth) + offset - diff;
+    int textPosition = tickCenter - textWidth / 2;
     g.drawFittedText(
         label.toStdString(),
-        i * sectionWidth - textWidth / 2,
+        textPosition,
         0,
         textWidth,
         getHeight() - tickMarkerLength,
@@ -223,15 +247,19 @@ void CanvasRuler::drawTickLabelLeft(juce::Graphics &g) {
       textHeight,
       juce::Justification::centred,
       1);
-  int sectionWidth = getWidth() / numberOfTicks;
+  int offset = canvasOverflowOffset();
+  int sectionHeight = (getHeight() - offset) / numberOfTicks;
 
   for (auto i = 1; i < numberOfTicks; ++i) {
     label = tickLabelFunction(i, numberOfTicks);
     textWidth = font.getStringWidth(label);
+    float diff = std::round(i * sectionHeight) - (i * sectionHeight);
+    int tickCenter = std::round(i * sectionHeight) + offset - diff;
+    int textPosition = tickCenter - textHeight / 2;
     g.drawFittedText(
         label.toStdString(),
         textWidth,
-        i * sectionWidth - textHeight / 2,
+        textPosition,
         textWidth,
         textHeight,
         juce::Justification::centred,
@@ -263,15 +291,19 @@ void CanvasRuler::drawTickLabelRight(juce::Graphics &g) {
       textHeight,
       juce::Justification::centred,
       1);
-  int sectionWidth = getWidth() / numberOfTicks;
+  int offset = canvasOverflowOffset();
+  int sectionHeight = (getHeight() - offset) / numberOfTicks;
 
   for (auto i = 1; i < numberOfTicks; ++i) {
     label = tickLabelFunction(i, numberOfTicks);
     textWidth = font.getStringWidth(label);
+    float diff = std::round(i * sectionHeight) - (i * sectionHeight);
+    int tickCenter = std::round(i * sectionHeight) + offset - diff;
+    int textPosition = tickCenter - textHeight / 2;
     g.drawFittedText(
         label.toStdString(),
         textWidth,
-        i * sectionWidth - textHeight / 2,
+        textPosition,
         textWidth,
         textHeight,
         juce::Justification::centred,
@@ -287,4 +319,11 @@ void CanvasRuler::drawTickLabelRight(juce::Graphics &g) {
       textHeight,
       juce::Justification::centred,
       1);
+}
+
+int CanvasRuler::canvasOverflowOffset() {
+  if (isOverflowRuler)
+    return tickMarkerWidth;
+  else
+    return 0;
 }

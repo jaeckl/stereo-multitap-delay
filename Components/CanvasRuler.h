@@ -23,6 +23,10 @@ private:
   int tickMarkerWidth = 2;
   int axisWidth = 2;
 
+  bool isOverflowRuler = true;
+
+  int canvasOverflowOffset();
+
   void drawAxisTop(juce::Graphics &g);
   void drawAxisBottom(juce::Graphics &g);
   void drawAxisLeft(juce::Graphics &g);
