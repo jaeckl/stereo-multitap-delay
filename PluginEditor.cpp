@@ -31,6 +31,7 @@ ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
     , highpassButton(Constants::COMPONENT_BUTTON_HIGHPASS)
     , lowpassToggled(false)
     , highpassToggled(false)
+    , stickerComponent("image-sticker")
     , presetComboBox(Constants::COMPONENT_COMBOBOX_PRESETS)
     , fileSystemButton(Constants::COMPONENT_BUTTON_FILESYTEM)
     , xyEditorView(Constants::COMPONENT_VIEW_XYEDITOR, this)
@@ -51,6 +52,7 @@ void ProcessorEditor::initializeControls() {
   configureRotarySliders();
   configurePresetComboBox();
   configureLowHighPassControls();
+  configureStickerComponent();
   configureFileBrowserView();
   configureXYEditorView();
 
@@ -70,6 +72,7 @@ void ProcessorEditor::addControlsToView() {
   addAndMakeVisible(filterSlider);
   addAndMakeVisible(lowpassButton);
   addAndMakeVisible(highpassButton);
+  addAndMakeVisible(stickerComponent);
   addAndMakeVisible(fileSystemButton);
   addAndMakeVisible(xyEditorView);
   addAndMakeVisible(fileBrowserView);
@@ -173,6 +176,13 @@ void ProcessorEditor::configureLowHighPassControls() {
   highpassButton.addListener(this);
   lowpassButton.addListener(this);
   filterSlider.addListener(this);
+}
+
+void ProcessorEditor::configureStickerComponent() {
+  auto inputStream = juce::MemoryInputStream(
+      BinaryData::sticker_png, BinaryData::sticker_pngSize, false);
+  auto format = juce::ImageFileFormat::findImageFormatForStream(inputStream);
+  stickerComponent.setImage(format->decodeImage(inputStream));
 }
 
 void ProcessorEditor::configureFileBrowserView() {

@@ -168,6 +168,7 @@ juce_add_binary_data(
   Assets/Icons/icon_folder_small_on.png
   Assets/Icons/icon_file_small.png
   Assets/Icons/icon_file_small_on.png
+  Assets/sticker.png
   Layouts/base_layout.xml
   Layouts/xyeditor_layout.xml
   Layouts/filebrowser_layout.xml)

@@ -48,19 +48,22 @@ void CustomRotarySliderStyle::drawRotarySlider(
     juce::Slider &slider) {
   juce::ignoreUnused(width);
   juce::ignoreUnused(height);
+  // g.fillAll(juce::Colours::red);
   g.drawImageWithin(
       rotaryKnobBackground,
       0,
-      0,
+      25,
       slider.getWidth(),
-      slider.getHeight(),
+      slider.getWidth(),
       juce::RectanglePlacement::centred);
+
   auto angle =
       rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
   float centerX = rotaryKnobImage.getWidth() / 2.0;
   float centerY = rotaryKnobImage.getHeight() / 2.0;
-  auto transform =
-      juce::AffineTransform().rotated(angle, centerX, centerY).translated(x, y);
+  auto transform = juce::AffineTransform()
+                       .rotated(angle, centerX, centerY)
+                       .translated(x, y + 25);
   g.drawImageTransformed(rotaryKnobImage, transform);
 
   g.setColour(baseColour);
@@ -69,19 +72,24 @@ void CustomRotarySliderStyle::drawRotarySlider(
   auto format_string = sliderFormatingFunction(&slider);
   g.drawFittedText(
       format_string,
-      slider.getLocalBounds(),
+      {0, 25, slider.getWidth(), slider.getWidth()},
       juce::Justification::centred,
       true);
+
+  juce::Rectangle<int> bound = juce::Rectangle<int>{
+      0, 0, slider.getWidth(), slider.getHeight() - slider.getWidth()};
+  g.setColour(juce::Colours::lightgrey.withAlpha(0.2f));
+  juce::Rectangle<float> roundBound = bound.reduced(4, 4).toFloat();
+  g.fillRoundedRectangle(roundBound, roundBound.getHeight() / 2);
+  g.drawRoundedRectangle(roundBound, roundBound.getHeight() / 2, 2);
   g.setColour(juce::Colours::grey);
+
   g.setFont(textFont);
   g.drawFittedText(
       rotaryUnitText,
-      slider.getLocalBounds().reduced(20, 24),
+      slider.getLocalBounds().reduced(20, 20),
       juce::Justification::centredBottom,
       true);
-  g.drawFittedText(
-      rotaryTitle,
-      slider.getLocalBounds().reduced(20, 24),
-      juce::Justification::centredTop,
-      true);
+
+  g.drawFittedText(rotaryTitle, bound, juce::Justification::centred, true);
 }

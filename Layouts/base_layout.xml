@@ -28,33 +28,39 @@
     <component
        id="slider-wetdry"
        width="86"
-       height="86"
+       height="111"
        x="697"
-       y="82" />
+       y="67" />
     <component
        id="slider-gain"
        width="86"
-       height="86"
+       height="111"
        x="697"
-       y="196" />
+       y="181" />
     <component
       id="button-lowpass"
       width="40"
       height="45"
       x="20"
-      y="215" />
+      y="175" />
     <component
       id="button-highpass"
       width="40"
       height="45"
       x="60"
-      y="215" />
+      y="175" />
     <component
       id="slider-filter"
       width="86"
-      height="86"
+      height="111"
       x="17"
-      y="112" />
+      y="67" />
+    <component
+      id="image-sticker"
+      width="64"
+      height="64"
+      x="28"
+      y="225" />
     <component 
       id="view-xyEditor"
       width="554"

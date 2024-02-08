@@ -55,6 +55,8 @@ private:
   bool lowpassToggled;
   bool highpassToggled;
 
+  juce::ImageComponent stickerComponent;
+
   juce::ComboBox presetComboBox;
   FileSystemButton fileSystemButton;
 
@@ -69,6 +71,7 @@ private:
   void configurePresetComboBox();
   void configureRotarySliders();
   void configureLowHighPassControls();
+  void configureStickerComponent();
   void configureFileBrowserView();
   void configureXYEditorView();
 
