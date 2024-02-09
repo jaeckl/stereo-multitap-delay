@@ -11,9 +11,12 @@ OnScreenFlatLookAndFeel::OnScreenFlatLookAndFeel() {
   iconFileSmallOn = loadImage(
       BinaryData::icon_file_small_on_png,
       BinaryData::icon_file_small_on_pngSize);
+  iconDropDown = loadImage(
+      BinaryData::icon_dropdown_png, BinaryData::icon_dropdown_pngSize);
 }
-juce::Image
-OnScreenFlatLookAndFeel::loadImage(const char *resourceName, int resourceSize) {
+juce::Image OnScreenFlatLookAndFeel::loadImage(
+    const char *resourceName,
+    size_t resourceSize) {
   auto instream = juce::MemoryInputStream(resourceName, resourceSize, false);
   auto format = juce::ImageFileFormat::findImageFormatForStream(instream);
   return format->decodeImage(instream);
@@ -111,11 +114,23 @@ void OnScreenFlatLookAndFeel::drawComboBox(
     int buttonY,
     int buttonW,
     int buttonH,
-    juce::ComboBox &comboBox) {}
+    juce::ComboBox &comboBox) {
+  juce::ignoreUnused(width, height, isButtonDown, comboBox);
+  g.drawImageWithin(
+      iconDropDown,
+      buttonX,
+      buttonY,
+      buttonW,
+      buttonH,
+      juce::RectanglePlacement::centred);
+}
 void OnScreenFlatLookAndFeel::drawPopupMenuBackground(
-    juce::Graphics &,
+    juce::Graphics &g,
     int width,
-    int height) {}
+    int height) {
+  juce::ignoreUnused(width, height);
+  g.fillAll(juce::Colours::black);
+}
 const juce::Image *OnScreenFlatLookAndFeel::getDefaultDirectoryImage() {
   return &iconFolderSmall;
 }

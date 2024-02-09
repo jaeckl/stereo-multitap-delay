@@ -57,5 +57,7 @@ private:
   juce::Image iconFolderSmallOn;
   juce::Image iconFileSmall;
   juce::Image iconFileSmallOn;
-  juce::Image loadImage(const char *resourceName, int size);
+
+  juce::Image iconDropDown;
+  juce::Image loadImage(const char *resourceName, size_t size);
 };

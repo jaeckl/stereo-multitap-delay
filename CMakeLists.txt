@@ -28,7 +28,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # installed copy of JUCE. If you've included JUCE directly in your source tree
 # (perhaps as a submodule), you'll need to tell CMake to include that
 # subdirectory as part of the build.
-
+find_package(GSL REQUIRED)
 find_package(JUCE CONFIG REQUIRED) # If you've installed JUCE to your system
 # or add_subdirectory(JUCE)                    # If you've put JUCE in a
 # subdirectory called JUCE
@@ -168,6 +168,7 @@ juce_add_binary_data(
   Assets/Icons/icon_folder_small_on.png
   Assets/Icons/icon_file_small.png
   Assets/Icons/icon_file_small_on.png
+  Assets/Icons/icon_dropdown.png
   Assets/sticker.png
   Layouts/base_layout.xml
   Layouts/xyeditor_layout.xml
@@ -199,6 +200,6 @@ target_link_libraries(
   SimpleDelayLine
   PRIVATE AudioPluginData AudioPluginPresets
           # we'd link to it here
-          juce::juce_audio_utils juce::juce_dsp
+          juce::juce_audio_utils juce::juce_dsp GSL::gsl GSL::gslcblas
   PUBLIC juce::juce_recommended_config_flags juce::juce_recommended_lto_flags
          juce::juce_recommended_warning_flags)

@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="true"
      inkscape:zoom="11.99"
-     inkscape:cx="62.92744"
-     inkscape:cy="22.810676"
+     inkscape:cx="107.29775"
+     inkscape:cy="15.971643"
      inkscape:window-width="1620"
      inkscape:window-height="1048"
      inkscape:window-x="0"
@@ -123,6 +123,17 @@
        inkscape:export-filename="../Icons/icon_arrow_left.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
+    <inkscape:page
+       x="26.870779"
+       y="0"
+       width="8.4666662"
+       height="8.4666662"
+       id="page6"
+       margin="0"
+       bleed="0"
+       inkscape:export-filename="../Icons/icon_dropdown.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
   </sodipodi:namedview>
   <defs
      id="defs1" />
@@ -186,6 +197,26 @@
            style="fill:#1b1b1b;fill-opacity:1;stroke-width:2.75707;stroke-linecap:square;paint-order:markers fill stroke"
            d="m 31.443369,-12.94107 -2.574261,2.574262 -1.635559,1.6355588 -0.04806,0.048059 4.209045,4.2098206 0.998369,-1.08288 -2.38125,-2.3812499 h 5.55625 v -1.5875 h -5.55625 l 2.38125,-2.3812495 z"
            sodipodi:nodetypes="cccccccccccc" />
+        <path
+           sodipodi:type="star"
+           style="fill:#f9f9f9;fill-opacity:0.819608;stroke-width:0.79375;paint-order:markers fill stroke"
+           id="path6"
+           inkscape:flatsided="false"
+           sodipodi:sides="3"
+           sodipodi:cx="105.55885"
+           sodipodi:cy="7.9999995"
+           sodipodi:r1="19.723082"
+           sodipodi:r2="9.8615408"
+           sodipodi:arg1="0.52359878"
+           sodipodi:arg2="1.5707963"
+           inkscape:rounded="0"
+           inkscape:randomized="0"
+           d="m 122.63954,17.86154 -17.08069,0 -17.080687,0 8.540345,-14.7923106 8.540342,-14.7923114 8.54035,14.7923109 z"
+           transform="matrix(0.14026069,0,0,-0.12126003,29.813654,-7.3591086)"
+           inkscape:transform-center-y="0.39860355"
+           inkscape:export-filename="../Icons/icon_dropdown.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96" />
       </g>
     </g>
   </g>
