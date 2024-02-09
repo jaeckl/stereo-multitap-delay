@@ -1,0 +1,30 @@
+name: C++ CI with JUCE
+
+on:
+  push:
+    branches: [ development ]
+  pull_request:
+    branches: [ development ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ljaeck/sdlp:latest  # Replace with your actual image path
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+
+    - name: Build the project
+      run: |
+        cmake -B cmake-build -DCMAKE_PREFIX_PATH=/usr/local
+        cmake --build cmake-build --config Release --target All
+    - name: Upload Standalone Artifact
+      uses: actions/upload-artifact@v2
+        with: Standalone-App
+        path: /cmake-build/multitap_artefacts/Release/Standalone/*
+    - name: Upload VST3
+      uses: actions/upload-artifact@v2
+        with: VST3-Plugin
+        path: /cmake-build/multitap-artefacts/Release/VST3/*

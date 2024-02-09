@@ -72,7 +72,7 @@ juce_add_plugin(
   Standalone # The formats to build. Other valid formats are: AAX Unity VST AU
              # AUv3
   PRODUCT_NAME
-  "Simple Delay Line") # The name of the final executable, which can differ
+  "mutlitap") # The name of the final executable, which can differ
 # from the target name `juce_generate_juce_header` will create a JuceHeader.h
 # for a given target, which will be generated into your build tree. This should
 # be included with `#include <JuceHeader.h>`. The include path for this header
