@@ -22,11 +22,11 @@ jobs:
         cmake --build cmake-build --config Release --target All
     - name: Upload Standalone Artifact
       uses: actions/upload-artifact@v2
-        with:
+      with:
           name: Standalone-App
           path: /cmake-build/multitap_artefacts/Release/Standalone/*
     - name: Upload VST3
       uses: actions/upload-artifact@v2
-        with:
+      with:
           name: VST3-Plugin
           path: /cmake-build/multitap-artefacts/Release/VST3/*
