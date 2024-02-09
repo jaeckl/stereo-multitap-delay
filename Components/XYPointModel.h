@@ -12,6 +12,7 @@ public:
   };
   ~XYPointModel() = default;
   virtual void addPoint(const juce::Point<float> &point) = 0;
+  virtual void insertPoint(int index, const juce::Point<float> &point) = 0;
   virtual void removePoint(int pointIndex) = 0;
   virtual juce::Point<float> getPoint(int pointIndex) = 0;
   virtual void clearPoints() = 0;

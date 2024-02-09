@@ -9,6 +9,11 @@ public:
       int delayIndex,
       int delayInSamples,
       float value) = 0;
+  virtual void insertDelayLineValue(
+      int channelIndex,
+      int delayIndex,
+      int delayInSamples,
+      float value) = 0;
   virtual void
   addDelayLineReader(int channelIndex, int delayInSamples, float value) = 0;
   virtual void removeDelayLineReader(int channelIndex, int delayIndex) = 0;

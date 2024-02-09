@@ -33,7 +33,16 @@ void StereoDelayLineConfig::addDelayLineReader(
   if (channelIndex == CHANNEL_RIGHT)
     delayLineRight.addReadingHead(delayInSamples, value);
 }
-
+void StereoDelayLineConfig::insertDelayLineValue(
+    int channelIndex,
+    int delayIndex,
+    int delayInSamples,
+    float value) {
+  if (channelIndex == CHANNEL_LEFT)
+    delayLineLeft.insertReadingHead(delayIndex, delayInSamples, value);
+  if (channelIndex == CHANNEL_RIGHT)
+    delayLineRight.insertReadingHead(delayIndex, delayInSamples, value);
+}
 void StereoDelayLineConfig::setDelayLineValue(
     int channelIndex,
     int delayIndex,

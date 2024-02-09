@@ -30,6 +30,14 @@ void MonoDelayLineConfig::setDelayLineValue(
   juce::ignoreUnused(channelIndex);
   delayLine.setReadingHead(delayIndex, delayInSamples, value);
 }
+void MonoDelayLineConfig::insertDelayLineValue(
+    int channelIndex,
+    int delayIndex,
+    int delayInSamples,
+    float value) {
+  juce::ignoreUnused(channelIndex);
+  delayLine.insertReadingHead(delayIndex, delayInSamples, value);
+}
 
 void MonoDelayLineConfig::removeDelayLineReader(
     int channelIndex,

@@ -46,6 +46,25 @@ void MultiDelayEditorConfig::addPoint(const juce::Point<float> &point) {
     config->addDelayLineReader(1, delayInSamples, 1.0f - point.getY());
   }
 }
+void MultiDelayEditorConfig::insertPoint(
+    int index,
+    const juce::Point<float> &point) {
+  if (index == pointsLeft.size()) {
+    addPoint(point);
+    return;
+  }
+  int delayInSamples =
+      static_cast<int>(point.getX() * processorRef->maxDelayInSamples());
+  auto config =
+      std::dynamic_pointer_cast<StereoDelayLineConfig>(delayLineConfig);
+  if (isGroupAEnabled) {
+    pointsLeft.insert(pointsLeft.begin() + index, point);
+    config->addDelayLineReader(0, delayInSamples, 1.0f - point.getY());
+  } else {
+    pointsRight.insert(pointsRight.begin() + index, point);
+    config->addDelayLineReader(1, delayInSamples, 1.0f - point.getY());
+  }
+}
 void MultiDelayEditorConfig::removePoint(int pointIndex) {
   auto config =
       std::dynamic_pointer_cast<StereoDelayLineConfig>(delayLineConfig);

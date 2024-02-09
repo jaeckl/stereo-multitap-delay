@@ -56,6 +56,20 @@ public:
     return m_readIndices.size() - 1;
   }
 
+  void insertReadingHead(int delayIndex, int delayInSamples, float amplitude) {
+    jassert(juce::isPositiveAndBelow(delayIndex, m_readIndices.size()));
+    jassert(
+        juce::isPositiveAndBelow(delayInSamples, m_buffer.getNumSamples() - 1));
+    int readIndex = m_writeIndex - delayInSamples - 1;
+    if (readIndex < 0)
+      readIndex = m_buffer.getNumSamples() + readIndex;
+    m_readIndices.insert(m_readIndices.begin() + delayIndex, readIndex);
+    m_mixers.insert(
+        m_mixers.begin() + delayIndex, LinearMixer<SampleType>(1.0, amplitude));
+
+    m_readIndices.insert(m_readIndices.begin() + delayIndex, readIndex);
+    m_mixers[static_cast<size_t>(delayIndex)].beta(amplitude);
+  }
   void setReadingHead(int delayIndex, int delayInSamples, float amplitude) {
     jassert(juce::isPositiveAndBelow(delayIndex, m_readIndices.size()));
     jassert(
@@ -66,7 +80,6 @@ public:
     m_readIndices[static_cast<size_t>(delayIndex)] = readIndex;
     m_mixers[static_cast<size_t>(delayIndex)].beta(amplitude);
   }
-
   void removeReadingHead(int delayIndex) {
     jassert(juce::isPositiveAndBelow(delayIndex, m_readIndices.size()));
     m_readIndices.erase(m_readIndices.begin() + delayIndex);

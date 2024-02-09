@@ -20,6 +20,7 @@ public:
       std::shared_ptr<IDelayLineConfig> config,
       AudioPluginAudioProcessor *processor) override;
   void addPoint(const juce::Point<float> &point) override;
+  void insertPoint(int index, const juce::Point<float> &point) override;
   void removePoint(int pointIndex) override;
   juce::Point<float> getPoint(int pointIndex) override;
   void clearPoints() override;

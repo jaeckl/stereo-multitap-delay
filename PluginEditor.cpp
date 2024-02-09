@@ -56,7 +56,6 @@ void ProcessorEditor::initializeControls() {
   configureFileBrowserView();
   configureXYEditorView();
 
-  presetComboBox.addListener(this);
   bypassButton.addListener(this);
   fileSystemButton.addListener(this);
 }
@@ -91,7 +90,17 @@ void ProcessorEditor::configureBackgroundImage() {
 }
 void ProcessorEditor::configurePresetComboBox() {
   presetComboBox.setLookAndFeel(&onScreenFlatLookAndFeel);
+  presetComboBox.setColour(
+      juce::PopupMenu::backgroundColourId, juce::Colours::black);
+  presetComboBox.setColour(juce::PopupMenu::textColourId, juce::Colours::white);
+  presetComboBox.setColour(
+      juce::PopupMenu::highlightedBackgroundColourId, juce::Colours::white);
+  presetComboBox.setColour(
+      juce::PopupMenu::highlightedTextColourId, juce::Colours::black);
+  presetComboBox.getRootMenu();
   presetComboBox.addItemList(presetManager.getPresetNameList(), 1);
+
+  presetComboBox.addListener(this);
 }
 
 void ProcessorEditor::configureRotarySliders() {

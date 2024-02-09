@@ -73,7 +73,30 @@ void SingleDelayEditorConfig::clearPoints() {
 }
 
 int SingleDelayEditorConfig::getNumPoints() { return points.size(); }
-
+void SingleDelayEditorConfig::insertPoint(
+    int pointIndex,
+    const juce::Point<float> &point) {
+  if (pointIndex == points.size()) {
+    addPoint(point);
+    return;
+  }
+  points.insert(points.begin() + pointIndex, point);
+  int delayInSamples =
+      static_cast<int>(point.getX() * processorRef->maxDelayInSamples());
+  if (isStereoDelay) {
+    auto config =
+        std::dynamic_pointer_cast<StereoDelayLineConfig>(delayLineConfig);
+    config->insertDelayLineValue(
+        0, pointIndex, delayInSamples, 1.0f - point.getY());
+    config->insertDelayLineValue(
+        1, pointIndex, delayInSamples, 1.0f - point.getY());
+  } else {
+    auto config =
+        std::dynamic_pointer_cast<MonoDelayLineConfig>(delayLineConfig);
+    config->insertDelayLineValue(
+        0, pointIndex, delayInSamples, 1.0f - point.getY());
+  }
+}
 void SingleDelayEditorConfig::resetPoint(
     int pointIndex,
     const juce::Point<float> &point) {

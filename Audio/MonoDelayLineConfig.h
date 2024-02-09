@@ -19,6 +19,10 @@ public:
       int delayIndex,
       int delayInSamples,
       float value) override;
-
+  void insertDelayLineValue(
+      int channelIndex,
+      int delayIndex,
+      int delayInSamples,
+      float value) override;
   void removeDelayLineReader(int channelIndex, int delayIndex) override;
 };

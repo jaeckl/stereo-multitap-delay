@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Audio/IDelayLineConfig.h"
+#include "Components/XYPointModel.h"
 #include "PluginProcessor.h"
-#include "XYPointCanvas.h"
 #include <memory>
 class IDelayEditorConfig : public XYPointModel {
 public:
