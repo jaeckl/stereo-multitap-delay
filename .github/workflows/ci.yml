@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ljaeck/sdlp:latest  # Replace with your actual image path
+      image: ljaeck/sdlp:v1.0  # Replace with your actual image path
 
     steps:
     - name: Check out repository code
