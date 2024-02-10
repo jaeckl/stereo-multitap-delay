@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     libx11-dev libxcomposite-dev libxcursor-dev libxinerama-dev libxrandr-dev libxrender-dev \
     libwebkit2gtk-4.0-dev \
     libglu1-mesa-dev mesa-common-dev \
-    git cmake \
+    libgsl-dev \
     && rm -rf /var/lib/apt/lists/*
 # Install clang compiler
 
