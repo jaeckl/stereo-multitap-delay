@@ -19,7 +19,7 @@ jobs:
     - name: Build the project
       run: |
         cmake -B cmake-build -DCMAKE_PREFIX_PATH=/usr/local
-        cmake --build cmake-build --config Release --target All
+        cmake --build cmake-build --config Release --target all
     - name: Upload Standalone Artifact
       uses: actions/upload-artifact@v2
       with:
