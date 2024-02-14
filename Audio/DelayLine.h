@@ -13,7 +13,7 @@ public:
       : DelayLine(0, nullptr) {}
 
   DelayLine(int bufferSize, DelayTapsModel *model)
-      : buffer(1, bufferSize)
+      : buffer(1, bufferSize + 1)
       , model(model)
       , mixer(1.0f, 1.0f)
       , writeIndex(0)
@@ -26,7 +26,7 @@ public:
       for (int i = 0; i < model->getNumDelayTaps(); i++) {
         DelayTapsModel::DelayTapInfo info = model->getDelayTap(i);
         jassert(juce::isPositiveAndBelow(
-            info.delayInSamples, buffer.getNumSamples() - 2));
+            info.delayInSamples, buffer.getNumSamples() - 1));
         int readIndex = writeIndex - info.delayInSamples - 1;
 
         if (readIndex < 0)
@@ -52,7 +52,7 @@ public:
     writeIndex = 0;
   }
 
-  int getBufferSize() override { return buffer.getNumSamples(); }
+  int getBufferSize() override { return buffer.getNumSamples() - 1; }
 
   void setFeedBack(float feedBackAmount) override { feedBack = feedBackAmount; }
   void setDelayModel(DelayTapsModel *newModel) override {
