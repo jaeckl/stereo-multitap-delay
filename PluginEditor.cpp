@@ -306,12 +306,14 @@ void ProcessorEditor::showGroupA() {
   xyEditorView.setCanvasColour(Constants::ORGANGE_COLOUR);
   auto *conf = dynamic_cast<MultiDelayEditorConfig *>(activeEditorConfig.get());
   conf->enableGroupA();
+  xyEditorView.setCanvasPointModel(&activeEditorConfig->getPointModel());
   xyEditorView.repaint();
 }
 void ProcessorEditor::showGroupB() {
   xyEditorView.setCanvasColour(Constants::GREEN_COLOUR);
   auto *conf = dynamic_cast<MultiDelayEditorConfig *>(activeEditorConfig.get());
   conf->enableGroupB();
+  xyEditorView.setCanvasPointModel(&activeEditorConfig->getPointModel());
   xyEditorView.repaint();
 }
 

@@ -89,7 +89,7 @@ void AudioPluginAudioProcessor::prepareToPlay(
   spec.numChannels = getTotalNumOutputChannels();
   inputFilter.reset(new juce::dsp::StateVariableTPTFilter<float>());
   inputFilter->prepare(spec);
-  delayLineConfig->init(sampleRate);
+  delayLineConfig->init(samplesPerBar());
 }
 
 void AudioPluginAudioProcessor::releaseResources() {
