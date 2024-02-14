@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Audio/IDelayLineConfig.h"
+#include "Components/XYPointModel.h"
 #include "IDelayEditorConfig.h"
 #include "PluginProcessor.h"
 #include "XYPointCanvas.h"
@@ -13,26 +14,14 @@ private:
   std::shared_ptr<IDelayLineConfig> delayLineConfig;
   AudioPluginAudioProcessor *processorRef;
   bool isGroupAEnabled = false;
-  std::vector<juce::Point<float>> pointsLeft;
-  std::vector<juce::Point<float>> pointsRight;
-  std::vector<XYPointModel::Listener *> listeners;
+  XYPointModel pointsLeft;
+  XYPointModel pointsRight;
 
 public:
   void initialize(
       std::shared_ptr<IDelayLineConfig> config,
       AudioPluginAudioProcessor *processor) override;
-
+  XYPointModel &getPointModel() override;
   void enableGroupA();
   void enableGroupB();
-
-  void addPoint(const juce::Point<float> &point) override;
-  void insertPoint(int index, const juce::Point<float> &point) override;
-  void removePoint(int pointIndex) override;
-  juce::Point<float> getPoint(int pointIndex) override;
-  void clearPoints() override;
-  int getNumPoints() override;
-  void resetPoint(int pointIndex, const juce::Point<float> &point) override;
-  std::vector<juce::Point<float>> getPoints() override;
-  void addListener(Listener *listener) override;
-  void removeListener(Listener *listener) override;
 };

@@ -79,10 +79,11 @@ void XYPointCanvas::mouseDrag(const juce::MouseEvent &event) {
         resetPointVertical(pointIndex, mousePosition);
       else if (isInnerPoint(pointIndex))
         resetPointConstraint(pointIndex, mousePosition);
+      reset_gsl_spline();
+
       break;
     }
     }
-    reset_gsl_spline();
   }
   repaint();
 }
@@ -98,13 +99,11 @@ void XYPointCanvas::mouseDoubleClick(const juce::MouseEvent &event) {
     case Curve: {
       if (isInnerPoint(pointIndex))
         model->removePoint(pointIndex);
+      reset_gsl_spline();
       break;
     }
     }
-
     optionalPointIndex.reset();
-    reset_gsl_spline();
-
   } else {
     size_t index = 0;
     juce::Point<float> newPoint = fractionalFromDiscretePoint(
@@ -113,7 +112,6 @@ void XYPointCanvas::mouseDoubleClick(const juce::MouseEvent &event) {
       if (point.getX() < newPoint.getX())
         index++;
     model->insertPoint(index, newPoint);
-    reset_gsl_spline();
   }
   repaint();
 }

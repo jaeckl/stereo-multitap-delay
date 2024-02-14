@@ -200,7 +200,7 @@ void ProcessorEditor::configureFileBrowserView() {
 }
 void ProcessorEditor::configureXYEditorView() {
   xyEditorView.setLookAndFeel(&onScreenFlatLookAndFeel);
-  xyEditorView.setCanvasPointModel(activeEditorConfig.get());
+  xyEditorView.setCanvasPointModel(&activeEditorConfig->getPointModel());
 }
 
 void ProcessorEditor::sliderValueChanged(juce::Slider *slider) {
@@ -262,11 +262,10 @@ void ProcessorEditor::comboBoxChanged(juce::ComboBox *comboBox) {
 }
 
 void ProcessorEditor::applyPreset(size_t presetId) {
-  activeEditorConfig->clearPoints();
+  activeEditorConfig->getPointModel().clearPoints();
   auto preset = presetManager.getPreset(presetId);
-  activeEditorConfig->clearPoints();
   for (auto &point : preset->getPresetPoints())
-    activeEditorConfig->addPoint(point);
+    activeEditorConfig->getPointModel().addPoint(point);
   presetComboBox.setSelectedId(0, juce::NotificationType::dontSendNotification);
   repaint();
 }
@@ -282,7 +281,7 @@ void ProcessorEditor::showEditorConfig(
     std::shared_ptr<IDelayEditorConfig> config) {
   activeEditorConfig = config;
 
-  xyEditorView.setCanvasPointModel(activeEditorConfig.get());
+  xyEditorView.setCanvasPointModel(&activeEditorConfig->getPointModel());
   activeEditorConfig->initialize(processorRef.delayLineConfig, &processorRef);
 }
 

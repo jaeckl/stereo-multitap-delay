@@ -11,14 +11,18 @@ public:
     virtual void pointReseted(juce::Point<float> point) = 0;
   };
   ~XYPointModel() = default;
-  virtual void addPoint(const juce::Point<float> &point) = 0;
-  virtual void insertPoint(int index, const juce::Point<float> &point) = 0;
-  virtual void removePoint(int pointIndex) = 0;
-  virtual juce::Point<float> getPoint(int pointIndex) = 0;
-  virtual void clearPoints() = 0;
-  virtual int getNumPoints() = 0;
-  virtual void resetPoint(int pointIndex, const juce::Point<float> &point) = 0;
-  virtual std::vector<juce::Point<float>> getPoints() = 0;
-  virtual void addListener(Listener *listener) = 0;
-  virtual void removeListener(Listener *listener) = 0;
+  void addPoint(const juce::Point<float> &point);
+  void insertPoint(int index, const juce::Point<float> &point);
+  void removePoint(int pointIndex);
+  juce::Point<float> getPoint(int pointIndex);
+  void clearPoints();
+  int getNumPoints();
+  void resetPoint(int pointIndex, const juce::Point<float> &point);
+  std::vector<juce::Point<float>> getPoints();
+  void addListener(Listener *listener);
+  void removeListener(Listener *listener);
+
+private:
+  std::vector<juce::Point<float>> data;
+  std::vector<Listener *> listeners;
 };

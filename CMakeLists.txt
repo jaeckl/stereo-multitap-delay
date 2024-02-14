@@ -92,6 +92,7 @@ target_sources(
           PluginProcessor.cpp
           Audio/StereoDelayLineConfig.cpp
           Audio/MonoDelayLineConfig.cpp
+          Audio/DelayTapsModel.cpp
           Components/CanvasRuler.cpp
           Components/CustomRotaryKnob.cpp
           Components/MultiDelayEditorConfig.cpp
@@ -104,6 +105,7 @@ target_sources(
           Components/FileSystemButton.cpp
           Components/BreadCrumb.cpp
           Components/CustomFileListComponent.cpp
+          Components/XYPointModel.cpp
           LookAndFeel/CustomRotarySliderStyle.cpp
           LookAndFeel/OnScreenFlatLookAndFeel.cpp
           LookAndFeel/OnScreenBorderedLookAndFeel.cpp

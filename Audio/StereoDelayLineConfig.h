@@ -1,6 +1,5 @@
 #include "DelayLine.h"
 #include "IDelayLineConfig.h"
-#include "ReverseDelayLine.h"
 
 class StereoDelayLineConfig : public IDelayLineConfig {
 private:
@@ -13,18 +12,5 @@ public:
   void init(int delayLineSize) override;
   void clear() override;
   void processBlock(juce::AudioBuffer<float> &buffer) override;
-  void addDelayLineReader(int channelIndex, int delayInSamples, float value)
-      override;
-
-  void setDelayLineValue(
-      int channelIndex,
-      int delayIndex,
-      int delayInSamples,
-      float value) override;
-  void insertDelayLineValue(
-      int channelIndex,
-      int delayIndex,
-      int delayInSamples,
-      float value) override;
-  void removeDelayLineReader(int channelIndex, int delayIndex) override;
+  void setPointModel(int channel, XYPointModel *model) override;
 };

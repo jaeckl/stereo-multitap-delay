@@ -1,4 +1,5 @@
 #include "StereoDelayLineConfig.h"
+#include "Audio/DelayTapsModel.h"
 
 void StereoDelayLineConfig::init(int delayLineSize) {
   delayLineLeft.setBufferSize(delayLineSize);
@@ -24,41 +25,12 @@ void StereoDelayLineConfig::processBlock(juce::AudioBuffer<float> &buffer) {
         delayLineRight.processSample(inBufferRight[sampleIndex]);
   }
 }
-void StereoDelayLineConfig::addDelayLineReader(
-    int channelIndex,
-    int delayInSamples,
-    float value) {
-  if (channelIndex == CHANNEL_LEFT)
-    delayLineLeft.addReadingHead(delayInSamples, value);
-  if (channelIndex == CHANNEL_RIGHT)
-    delayLineRight.addReadingHead(delayInSamples, value);
-}
-void StereoDelayLineConfig::insertDelayLineValue(
-    int channelIndex,
-    int delayIndex,
-    int delayInSamples,
-    float value) {
-  if (channelIndex == CHANNEL_LEFT)
-    delayLineLeft.insertReadingHead(delayIndex, delayInSamples, value);
-  if (channelIndex == CHANNEL_RIGHT)
-    delayLineRight.insertReadingHead(delayIndex, delayInSamples, value);
-}
-void StereoDelayLineConfig::setDelayLineValue(
-    int channelIndex,
-    int delayIndex,
-    int delayInSamples,
-    float value) {
-  if (channelIndex == CHANNEL_LEFT)
-    delayLineLeft.setReadingHead(delayIndex, delayInSamples, value);
-  if (channelIndex == CHANNEL_RIGHT)
-    delayLineRight.setReadingHead(delayIndex, delayInSamples, value);
-}
 
-void StereoDelayLineConfig::removeDelayLineReader(
-    int channelIndex,
-    int delayIndex) {
-  if (channelIndex == CHANNEL_LEFT)
-    delayLineLeft.removeReadingHead(delayIndex);
-  if (channelIndex == CHANNEL_RIGHT)
-    delayLineRight.removeReadingHead(delayIndex);
+void StereoDelayLineConfig::setPointModel(int channel, XYPointModel *model) {
+  if (channel == CHANNEL_LEFT)
+    delayLineLeft.setDelayModel(
+        DelayTapsModel::fromPointModel(delayLineLeft.getBufferSize(), model));
+  if (channel == CHANNEL_RIGHT)
+    delayLineRight.setDelayModel(
+        DelayTapsModel::fromPointModel(delayLineRight.getBufferSize(), model));
 }

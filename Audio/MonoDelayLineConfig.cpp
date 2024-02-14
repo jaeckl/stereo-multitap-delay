@@ -1,7 +1,7 @@
 #include "MonoDelayLineConfig.h"
+#include "Audio/DelayTapsModel.h"
 void MonoDelayLineConfig::init(int delayLineSize) {
-  if (delayLineSize != delayLine.getBufferSize())
-    delayLine.setBufferSize(delayLineSize);
+  delayLine.setBufferSize(delayLineSize);
 }
 
 void MonoDelayLineConfig::clear() { delayLine.clear(); }
@@ -14,34 +14,9 @@ void MonoDelayLineConfig::processBlock(juce::AudioBuffer<float> &buffer) {
     outBuffer[sampleIndex] = delayLine.processSample(inBuffer[sampleIndex]);
   }
 }
-void MonoDelayLineConfig::addDelayLineReader(
-    int channelIndex,
-    int delayInSamples,
-    float value) {
-  juce::ignoreUnused(channelIndex);
-  delayLine.addReadingHead(delayInSamples, value);
-}
 
-void MonoDelayLineConfig::setDelayLineValue(
-    int channelIndex,
-    int delayIndex,
-    int delayInSamples,
-    float value) {
-  juce::ignoreUnused(channelIndex);
-  delayLine.setReadingHead(delayIndex, delayInSamples, value);
-}
-void MonoDelayLineConfig::insertDelayLineValue(
-    int channelIndex,
-    int delayIndex,
-    int delayInSamples,
-    float value) {
-  juce::ignoreUnused(channelIndex);
-  delayLine.insertReadingHead(delayIndex, delayInSamples, value);
-}
-
-void MonoDelayLineConfig::removeDelayLineReader(
-    int channelIndex,
-    int delayIndex) {
-  juce::ignoreUnused(channelIndex);
-  delayLine.removeReadingHead(delayIndex);
+void MonoDelayLineConfig::setPointModel(int channel, XYPointModel *model) {
+  if (channel == CHANNEL_MONO)
+    delayLine.setDelayModel(
+        DelayTapsModel::fromPointModel(delayLine.getBufferSize(), model));
 }
