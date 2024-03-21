@@ -7,11 +7,11 @@
 #include <memory>
 #include <vector>
 //==============================================================================
-class AudioPluginAudioProcessor final : public juce::AudioProcessor {
+class PluginProcessor final : public juce::AudioProcessor {
 public:
   //==============================================================================
-  AudioPluginAudioProcessor();
-  ~AudioPluginAudioProcessor() override;
+  PluginProcessor();
+  ~PluginProcessor() override;
 
   float delayMix;
   float outputVolume;
@@ -64,5 +64,5 @@ private:
   double bpm = 120;
   std::unique_ptr<juce::dsp::StateVariableTPTFilter<float>> inputFilter;
   //==============================================================================
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginProcessor)
 };

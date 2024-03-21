@@ -1,5 +1,5 @@
 # Use a base image that GitHub Actions supports (e.g., ubuntu:20.04)
-FROM ubuntu:22.04
+FROM ubuntu:23.04
 
 # Avoid user interaction when installing packages
 ARG DEBIAN_FRONTEND=noninteractive

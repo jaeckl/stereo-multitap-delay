@@ -3,7 +3,7 @@
 #include "Audio/StereoDelayLineConfig.h"
 void SingleDelayEditorConfig::initialize(
     std::shared_ptr<IDelayLineConfig> config,
-    AudioPluginAudioProcessor *processor) {
+    PluginProcessor *processor) {
   processorRef = processor;
   if (auto conf = std::dynamic_pointer_cast<MonoDelayLineConfig>(config)) {
     delayLineConfig = conf;

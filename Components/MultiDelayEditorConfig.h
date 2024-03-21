@@ -12,7 +12,7 @@
 class MultiDelayEditorConfig : public IDelayEditorConfig {
 private:
   std::shared_ptr<IDelayLineConfig> delayLineConfig;
-  AudioPluginAudioProcessor *processorRef;
+  PluginProcessor *processorRef;
   bool isGroupAEnabled = false;
   XYPointModel pointsLeft;
   XYPointModel pointsRight;
@@ -20,7 +20,7 @@ private:
 public:
   void initialize(
       std::shared_ptr<IDelayLineConfig> config,
-      AudioPluginAudioProcessor *processor) override;
+      PluginProcessor *processor) override;
   XYPointModel &getPointModel() override;
   void enableGroupA();
   void enableGroupB();

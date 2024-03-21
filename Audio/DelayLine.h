@@ -18,7 +18,6 @@ public:
       , mixer(1.0f, 1.0f)
       , writeIndex(0)
       , feedBack(0.0) {}
-
   SampleType processSample(SampleType sample) override {
 
     SampleType outputSample = 0;
@@ -34,7 +33,7 @@ public:
 
         float delaySample = buffer.getSample(0, readIndex);
 
-        mixer.beta(info.amplitude);
+        mixer.setBeta(info.amplitude);
         outputSample = mixer.mix(outputSample, delaySample);
       }
     }

@@ -24,7 +24,7 @@ class ProcessorEditor final
     , private juce::ComboBox::Listener
     , private FileBrowserView::Listener {
 public:
-  explicit ProcessorEditor(AudioPluginAudioProcessor &);
+  explicit ProcessorEditor(PluginProcessor &);
   ~ProcessorEditor() override;
 
   //==============================================================================
@@ -83,7 +83,7 @@ private:
       float value,
       juce::String unitString,
       juce::String titleString,
-      std::function<juce::String(juce::Slider *)> formater);
+      std::function<juce::String(juce::Slider *)> formatter);
 
   void sliderValueChanged(juce::Slider *slider) override;
   void buttonClicked(juce::Button *button) override;
@@ -98,6 +98,6 @@ private:
 
   void updateAudioBypass();
   void applyPreset(size_t presetId);
-  AudioPluginAudioProcessor &processorRef;
+  PluginProcessor &processorRef;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ProcessorEditor)
 };

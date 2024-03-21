@@ -13,7 +13,7 @@
 #include <format>
 #include <memory>
 //==============================================================================
-ProcessorEditor::ProcessorEditor(AudioPluginAudioProcessor &p)
+ProcessorEditor::ProcessorEditor(PluginProcessor &p)
     : AudioProcessorEditor(&p)
     , fileLogger(juce::File("LogFile.txt"), "Log File")
     , onScreenLookAndFeel()

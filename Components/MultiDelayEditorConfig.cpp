@@ -7,7 +7,7 @@
 
 void MultiDelayEditorConfig::initialize(
     std::shared_ptr<IDelayLineConfig> config,
-    AudioPluginAudioProcessor *processor) {
+    PluginProcessor *processor) {
   processorRef = processor;
   if (auto conf = std::dynamic_pointer_cast<StereoDelayLineConfig>(config)) {
     delayLineConfig = conf;
